@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+/* General Styles */
+body {
+    font-family: 'Poppins', sans-serif !important;
+    background: #ececec;
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.box-area {
+    width: 930px;
+    margin: auto;
+}
+
+/* Form Input Styles */
+.form-check-input {
+    cursor: pointer;
+}
+
+.text-indent {
+    text-indent: .5rem;
+}
+
+::placeholder {
+    font-size: 16px;
+}
+
+/* Password Icon */
+.password__icon {
+    position: absolute;
+    right: 0;
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+/* Image Styles */
+img {
+    position: relative;
+    width: 400px;
+}
+
+/* Media Queries */
+@media (min-width: 1024px) {
+    body {
+        overflow-y: hidden;
+    }
+
+    /* Bouncing Effect */
+    .bounce {
+        animation: bounce 2s infinite alternate;
+        -webkit-animation: bounce 2s infinite alternate;
+    }
+
+    @keyframes bounce {
+        from {
+            transform: translateY(0px);
+        }
+        to {
+            transform: translateY(-25px);
+        }
+    }
+
+    @-webkit-keyframes bounce {
+        from {
+            transform: translateY(0px);
+        }
+        to {
+            transform: translateY(-25px);
+        }
+    }
+
+    /* Form Active States */
+    .register__form.active,
+    .login__form.active {
+        opacity: 1;
+    }
+}
+
+/* Right Box */
+.register_image {
+    margin-left: 200px;
+}
+
+/* Form States for Small Screens */
+.register__form,
+.login__form {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    margin-left: -100%;
+    opacity: 0;
+    transition: margin 1s, opacity .5s;
+    z-index: 1;
+}
+
+.register__form.active {
+    margin-left: 0%;
+    opacity: 1;
+}
+
+.login__form.active {
+    margin-left: 0%;
+    opacity: 1;
+}
+
+
