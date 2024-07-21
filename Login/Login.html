@@ -33,15 +33,15 @@
                             <p class="fw-lighter fs-6">
                                 Don't have an account, <span id="signUp" role="button" class="text-primary">Sign Up</span>
                             </p>
-                            <form action="" class="mt-5">
+                            <form action="login.php" method="post" class="mt-5">
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Email</label>
-                                    <input type="email" class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
+                                    <input type="email" id="email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="d-flex position-relative">
-                                        <input type="password" class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
+                                        <input type="password" id="password" name="password" class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
                                         <span class="password__icon text-primary fs-4 fw-bold bi bi-eye-slash"></span>
                                     </div>
                                 </div>
@@ -125,24 +125,24 @@
                         <p class="fw-lighter fs-6">
                             Have an account, <span id="signIn" role="button" class="text-primary">Sign In</span>
                         </p>
-                        <form action="" class="mt-5">
+                        <form action="register.php" method="post" class="mt-5">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
-                                <input type="text" class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name1">
+                                <input type="text" id="username" name="username" required  class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name">
                             </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Email</label>
-                                <input type="email" class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
+                                <input type="email" id="email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
                             </div>
                             <div class="mb-3">
                                 <label for="username" class="form-label">Password</label>
                                 <div class="d-flex position-relative">
-                                    <input type="password" class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
+                                    <input type="password" id="password" name="password" required class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
                                     <span class="password__icon text-primary fs-4 fw-bold bi bi-eye-slash"></span>
                                 </div>
                             </div>
                             <div class="col text-center">
-                                <button type="submit" class="btn btn-outline-dark btn-lg rounded-pill mt-4 w-100">Sign Up</button>
+                                <button type="submit" value="Register" class="btn btn-outline-dark btn-lg rounded-pill mt-4 w-100">Sign Up</button>
                             </div>
                         </form>
                         <p class="mt-5 text-center">Or Sign in with social platforms</p>
