@@ -16,8 +16,11 @@
 </head>
 <body>
 
-    <div class="d-flex position-absolute align-items-center  top-0 start-0 p-3">
-        <a href="#" class="text-decoration-none fw-bold fs-5">RMIT</a>
+    <div class="d-flex top-0 start-0 top_bar">
+        
+        <a href="https://google.com/" class="text-decoration-none fw-bolder fs-5">
+            <img src="Image/drone icon.png"  alt="">AGRO DRONE</a>
+       
     </div>
     <!-- <div>
         <button id="themeToggleButton" class="btn btn-secondary ms-3">Switch to Night Mode</button>
@@ -36,13 +39,24 @@
                             <form action="login.php" method="post" class="mt-5">
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Email</label>
-                                    <input type="email" id="email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
+                                    <input type="email" id="log_email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
                                 </div>
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Password</label>
                                     <div class="d-flex position-relative">
-                                        <input type="password" id="password" name="password" class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
+                                        <input type="password" id="log_password" name="password" class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
                                         <span class="password__icon text-primary fs-4 fw-bold bi bi-eye-slash"></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex input-group mb-3 justify-content-between">
+                                    <div class="form-check remember_form">
+                                        <input type="checkbox" class="form-check-input" id="formCheck">
+                                        <label for="formCheck" class="form-check-label text-secondary">
+                                            <small>Remember me</small>
+                                        </label>
+                                    </div>
+                                    <div class="forgot">
+                                        <small><a href="#" class="text-decoration-none text-secondary">Forgot password?</a></small>
                                     </div>
                                 </div>
                                 <div class="col text-center">
@@ -131,14 +145,22 @@
                                 <input type="text" id="username" name="username" required  class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name">
                             </div>
                             <div class="mb-3">
-                                <label for="username" class="form-label">Email</label>
-                                <input type="email" id="email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" id="res_email" name="email" required class="form-control text-indent shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3" placeholder="name@example.com">
                             </div>
                             <div class="mb-3">
-                                <label for="username" class="form-label">Password</label>
-                                <div class="d-flex position-relative">
-                                    <input type="password" id="password" name="password" required class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="d-flex position-relative mb-3">
+                                    <input type="password" id="res_password" name="password" required class="form-control text-indent auth__password shadow-sm bg-grey-light border-0 rounded-pill fw-lighter fs-7 p-3">
                                     <span class="password__icon text-primary fs-4 fw-bold bi bi-eye-slash"></span>
+                                </div>
+                                <div class="d-flex input-group">
+                                    <div class="form-check generate_icon">
+                                        <i class="fa-solid fa-rotate-right icon"></i>
+                                        <label class="icon_text">
+                                            <small>Generate Password</small>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col text-center">

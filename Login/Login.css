@@ -14,7 +14,19 @@ body {
     min-height: 100vh;
     min-width: 100vw;
 }
-
+.top_bar{
+    padding: 1rem 1rem 0 1rem;
+}
+.top_bar img{
+    width: 100px;
+}
+.top_bar a{
+    position: relative;
+    color: darkgreen;
+}
+.generate_icon:hover{
+    color: gray;
+}
 .box-area {
     width: 930px;
     margin: auto;
@@ -111,4 +123,19 @@ img {
     opacity: 1;
 }
 
-
+.form-check-input:checked{
+    background-color: black; /* Change this to your desired color */
+    border-color: black;    /* Change this to your desired color */
+}
+.form-check-input:checked:focus {
+    box-shadow: 0 0 0 0.2rem rgba(46, 46, 46, 0.25); /* Adjust the focus shadow if needed */
+}
+.form-check-input:focus {
+    border: black;
+    box-shadow: 0 0 0 0.2rem rgba(46, 46, 46, 0.25); /* Adjust the focus shadow if needed */
+}
+.forgot:hover{
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: underline;
+}
