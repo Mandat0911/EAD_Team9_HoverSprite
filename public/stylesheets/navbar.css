@@ -18,9 +18,6 @@ body{
 /*----------bootstrap-navbar-css------------*/
 .navbar-logo{
 	padding: 10px 30px;
-	color: var(--nav-text-color);
-    font-size: 2rem;
-    font-weight: bold;
 }
 .navbar-mainbg{
 	background-color: var(--nav-bg);
@@ -172,27 +169,4 @@ body{
 		bottom: -25px;
 		left: -25px;
 	}
-}
-/* footer nav */
-footer h5 {
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-footer ul {
-    padding-left: 0;
-}
-
-footer ul li {
-    list-style: none;
-    margin-bottom: 0.5rem;
-}
-
-footer ul li a {
-    color: var(--nav-text-color);
-    text-decoration: none;
-}
-
-footer ul li a:hover {
-    text-decoration: underline;
 }
