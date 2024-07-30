@@ -6,6 +6,19 @@ body{
     padding-bottom: 50px;
 }
 
+.back-navigation{
+    font-size: 30px;
+    margin-left: 30px;
+}
+
+.back-navigation a{
+    color: #091F5B;
+}
+
+.back-navigation a:hover{
+    color: #3d5083;
+    text-decoration: underline;
+}
 .card{
     border: none;
 }

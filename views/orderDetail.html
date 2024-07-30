@@ -14,13 +14,14 @@
     <link rel="stylesheet" href="../public/stylesheets/orderDetail.css">
     <link rel="stylesheet" href="../public/stylesheets/navbar.css">
 
-    <script src="../public/js/nav-ajax.js"></script>
+
     <title>Oder Detail</title>
 </head>
 <body>
     <div id="header"></div>
-
-
+    <div class="back-navigation pt-3">
+        <a href="#"><i class="fa-solid fa-angles-left"></i> Order</a>
+    </div>
     <div class="container mt-5">
         <div class="card rounded-5">
             <div class="card-body">
@@ -102,22 +103,7 @@
             
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div class="mt-5" id="footer"></div>
-
     <script>
         $(document).ready(function(){
             $("#header").load("header.html");
