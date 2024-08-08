@@ -1,0 +1,49 @@
+:root {
+    --primary-color: #091F5B;
+    --secondary-color: #324BA6;
+    --highlight-color: #A98609;
+    --nav-text-color: #ececec;
+    --light-grey: #F9FAFA;
+    --grey: #D9D9D9;
+    --dark-grey: #555555;
+    --light-blue: #6F96D1
+}
+.sidebar h5 {
+     color: var(--primary-color);
+    font-weight: bold;
+}
+.sidebar {
+    border-right: 1px solid #dee2e6;
+    height: 100%;
+}
+.account-info {
+    padding: 20px;
+}
+
+.form-label {
+    color: var(--secondary-color);
+
+}
+.nav-item a{
+    color: var(--primary-color);
+    font-weight: bold;
+}
+.form-control{
+    background-color: var(--grey) !important;
+    border-radius: 10px !important;
+
+}
+.btn {
+    padding: 5px;
+    width: 150px;
+    background-color: var(--secondary-color) !important;
+
+}
+.user-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 1px solid var(--primary-color);
+
+}
+
