@@ -28,87 +28,102 @@
 
 </head>
 <body>
-<header id="header"></header>
+<div id="header"></div>
 <div class="container account-section">
     <div class="row">
         <div class="col-md-3 sidebar">
-            <h5>My account</h5>
+            <h3>My account</h3>
             <ul class="nav flex-column">
                 <li class="nav-item">
-                    <a class="nav-link" href="./userProfile.html">Personal Info</a>
+                    <a class="nav-link active" href="#">Personal Info</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="#">Orders</a>
+                    <a class="nav-link active" href="./orders.html">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <button class="btn btn-primary mt-3" onclick="logout()">Logout</button>
+                    <button class="btn btn-primary rounded-pill mt-3" onclick="logout()"><i class="bi bi-arrow-bar-right mr-5"> Log out</i></button>
+
+
                 </li>
             </ul>
         </div>
         <div class="col-md-9 order-list">
-            <h4>Orders</h4>
-            <table class="table order-table">
-                <thead>
-                <tr>
-                    <th scope="col">no.</th>
-                    <th scope="col">date</th>
-                    <th scope="col">total</th>
-                    <th scope="col">status</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>7</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-pending">Pending</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>6</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-confirmed">Confirmed</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>5</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-assigned">Assigned</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-inprogress">In Progress</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-completed">Completed</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>27-10-2023</td>
-                    <td>100,000 VND</td>
-                    <td class="status-canceled">Canceled</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>12-10-2023</td>
-                    <td>450,000 VND</td>
-                    <td class="status-completed">Completed</td>
-                    <td><button class="btn btn-link">→</button></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="mask d-flex align-items-center h-100">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body p-0">
+                                    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
+                                        <table class="table table-striped mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">No.</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td>7</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-pending">Pending</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>6</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-confirmed">Confirmed</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>5</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-assigned">Assigned</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-inprogress">In Progress</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-completed">Completed</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>27-10-2023</td>
+                                                <td>100,000 VND</td>
+                                                <td class="status-canceled">Canceled</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>12-10-2023</td>
+                                                <td>450,000 VND</td>
+                                                <td class="status-completed">Completed</td>
+                                                <td><button class="btn btn-link">→</button></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

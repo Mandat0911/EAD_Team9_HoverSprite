@@ -1,50 +1,67 @@
 body {
     background-color: #f8f9fa;
 }
+
 .account-section {
     margin: 20px;
 }
+
 .sidebar {
     border-right: 1px solid #dee2e6;
     height: 100%;
 }
+
 .sidebar h5 {
-    margin-top: 20px;
-    margin-left: 20px;
+    color: var(--primary-color);
+    font-weight: bold;
 }
-.sidebar ul {
-    margin-left: 20px;
+
+.nav-item a{
+    color: var(--primary-color);
+    font-weight: bold;
 }
-.sidebar .btn {
-    margin-left: 20px;
-    margin-top: 10px;
+
+body .sidebar .btn {
+    padding: 5px;
+    width: 150px;
+    background-color: var(--secondary-color) !important;
+
 }
-.order-list {
+
+body .order-list {
     padding: 20px;
 }
-.order-table th {
+
+body .table th {
     background-color: #112D57;
     color: white;
 }
-.order-table td {
+
+.table td {
     background-color: #dee2e6;
     color: black;
 }
-.status-pending {
+
+body table .status-pending {
     color: orange;
 }
-.status-confirmed {
+
+body table .status-confirmed {
     color: blue;
 }
-.status-assigned {
+
+body table .status-assigned {
     color: #007bff;
 }
-.status-inprogress {
+
+body table .status-inprogress {
     color: #17a2b8;
 }
-.status-completed {
+
+body table .status-completed {
     color: green;
 }
-.status-canceled {
+
+body table .status-canceled {
     color: red;
 }
