@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+<meta name="description" content="Smarthr - Bootstrap Admin Template">
+<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+<meta name="author" content="Dreamguys - Bootstrap Admin Template">
+<meta name="robots" content="noindex, nofollow">
+<title>Order</title>
+
+<link rel="shortcut icon" type="image/x-icon" href="../../public/images/favicon.png">
+<link rel="stylesheet" href="../../public/stylesheets/bootstrap.min.css">
+<link rel="stylesheet" href="../../public/stylesheets/line-awesome.min.css">
+<link rel="stylesheet" href="../../public/stylesheets/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../../public/stylesheets/select2.min.css">
+<link rel="stylesheet" href="../../public/stylesheets/bootstrap-datetimepicker.min.css">
+<link rel="stylesheet" href="../../public/stylesheets/style.css">
+
+<script src="https://kit.fontawesome.com/d88c69cf14.js" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../../public/js/popper.min.js"></script>
+<script src="../../public/js/bootstrap.min.js"></script>
+<script src="../../public/js/jquery.slimscroll.min.js"></script>
+<script src="../../public/js/select2.min.js"></script>
+<script src="../../public/js/moment.min.js"></script>
+<script src="../../public/js/bootstrap-datetimepicker.min.js"></script>
+<script src="../../public/js/sidebar.js"></script>
+<script src="../../public/js/app.js"></script>
+<body>
+    <div id="sidebar-placeholder"></div>
+    <!-- Main Content --> 	
+	
+	<div class="page-wrapper">
+		<div class="content container-fluid">
+			<div class="page-header">
+				<div class="row align-items-center">
+					<div class="col">
+						<h3 class="page-title">Order Status</h3>
+						<ul class="breadcrumb">
+							<li class="breadcrumb-item"><a href="admin-dashboard.html">Dashboard</a></li>
+							<li class="breadcrumb-item active" style="color: #ff9b44; text-decoration: underline;">Status</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+	
+			<div class="row filter-row">
+				<div class="col-sm-6 col-md-3">
+					<div class="form-group form-focus">
+						<div class="cal-icon">
+							<input class="form-control floating datetimepicker" type="text">
+						</div>
+						<label class="focus-label">From</label>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3">
+					<div class="form-group form-focus">
+						<div class="cal-icon">
+							<input class="form-control floating datetimepicker" type="text">
+						</div>
+						<label class="focus-label">To</label>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3">
+					<div class="form-group form-focus select-focus">
+						<select class="select floating">
+							<option>Select Status</option>
+							<option>Pending</option>
+							<option>Paid</option>
+							<option>Partially Paid</option>
+						</select>
+						<label class="focus-label">Status</label>
+					</div>
+				</div>
+				<div class="col-sm-6 col-md-3">
+					<a href="#" class="btn btn-success btn-block">Search</a>
+				</div>
+			</div>
+	
+			<div class="row">
+				<div class="col-md-12">
+					<div class="table-responsive">
+						<table class="table table-striped custom-table mb-0">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Order Number</th>
+									<th>Client</th>
+									<th>Created Date</th>
+									<th>Due Date</th>
+									<th>Amount</th>
+									<th>Status</th>
+									<th class="text-right">Action</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>1</td>
+									<td><a href="order-view.html">#INV-0001</a></td>
+									<td>Global Technologies</td>
+									<td>11 Mar 2019</td>
+									<td>17 Mar 2019</td>
+									<td>$2099</td>
+									<td><span class="badge bg-inverse-success">Paid</span></td>
+									<td class="text-right">
+										<div class="dropdown dropdown-action">
+											<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+												<i class="material-icons">more_vert</i>
+											</a>
+											<div class="dropdown-menu dropdown-menu-right">
+												<!-- <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a> -->
+												<a class="dropdown-item" href="order-view.html"><i class="fa fa-eye m-r-5"></i> View</a>
+												<!-- <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a> -->
+												<a class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td><a href="order-view.html">#INV-0002</a></td>
+									<td>Delta Infotech</td>
+									<td>11 Mar 2019</td>
+									<td>17 Mar 2019</td>
+									<td>$2099</td>
+									<td><span class="badge bg-inverse-info">Sent</span></td>
+									<td class="text-right">
+										<div class="dropdown dropdown-action">
+											<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+												<i class="material-icons">more_vert</i>
+											</a>
+											<div class="dropdown-menu dropdown-menu-right">
+												<!-- <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a> -->
+												<a class="dropdown-item" href="order-view.html"><i class="fa fa-eye m-r-5"></i> View</a>
+												<!-- <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a> -->
+												<a class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td><a href="order-view.html">#INV-0003</a></td>
+									<td>Cream Inc</td>
+									<td>11 Mar 2019</td>
+									<td>17 Mar 2019</td>
+									<td>$2099</td>
+									<td><span class="badge bg-inverse-warning">Partially Paid</span></td>
+									<td class="text-right">
+										<div class="dropdown dropdown-action">
+											<a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+												<i class="material-icons">more_vert</i>
+											</a>
+											<div class="dropdown-menu dropdown-menu-right">
+												<!-- <a class="dropdown-item" href="edit-invoice.html"><i class="fa fa-pencil m-r-5"></i> Edit</a> -->
+												<a class="dropdown-item" href="order-view.html"><i class="fa fa-eye m-r-5"></i> View</a>
+												<!-- <a class="dropdown-item" href="#"><i class="fa fa-file-pdf-o m-r-5"></i> Download</a> -->
+												<a class="dropdown-item" href="#"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+											</div>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	</body>
+	</html>
+	
