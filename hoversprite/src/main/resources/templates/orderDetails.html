@@ -1,0 +1,92 @@
+<div th:fragment="content" class="order-details-container py-3">
+    <!-- Back Navigation -->
+    <div class="back-navigation">
+        <a href="/account/orders"><i class="fa-solid fa-angles-left"></i> Order</a>
+    </div>
+
+    <!-- Order Detail Section -->
+    <div class="container mt-5">
+        <div class="card rounded-5">
+            <div class="card-body">
+                <h2>Order Details</h2>
+                <hr>
+                <div class="row">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <p class="status"><strong>Status:</strong> <span class="badge bg-success">Complete</span></p>
+                        <p><strong>Type of crop:</strong> Vegetable</p>
+                        <p><strong>Farmland area:</strong> 5 decare</p>
+                        <p><strong>Desired date:</strong> 15/08/2024 (Gregorian)</p>
+                        <p><strong>Time slot:</strong> 06:00 - 07:00</p>
+                    </div>
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <p><strong>Unit price:</strong> 30,000 VND / decare</p>
+                    </div>
+                </div>
+                <hr>
+                <!-- Total Price -->
+                <div class="d-flex justify-content-end total">
+                    <p><strong>Total: </strong><h5><span class="badge text-bg-secondary">150,000 VND</span></h5></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Feedback Section -->
+    <div class="container mt-5">
+        <div class="card rounded-5">
+            <div class="card-body">
+                <h2>How was your experience with our service?</h2>
+                <hr>
+                <form action="" id="feedbackForm">
+                    <div class="form-group mb-3">
+                        <!-- Service Quality -->
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="serviceQuality" for="serviceQuality"><strong>Service quality:</strong></label>
+                            </div>
+                            <div class="col-md-6">
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="serviceQuality" id="veryBad" value="Very Bad">
+                                        <label for="veryBad" class="form-check-label">Very Bad</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="serviceQuality" id="bad" value="Bad">
+                                        <label for="bad" class="form-check-label">Bad</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="serviceQuality" id="normal" value="Normal">
+                                        <label for="normal" class="form-check-label">Normal</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="serviceQuality" id="good" value="Good">
+                                        <label for="good" class="form-check-label">Good</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input type="radio" class="form-check-input" name="serviceQuality" id="veryGood" value="Very Good">
+                                        <label for="veryGood" class="form-check-label">Very Good</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Additional Feedback -->
+                        <div class="row mb-3">
+                            <div class="d-flex col-md-6 align-items-center">
+                                <label class="feedback" for="feedback"><strong>Additional Feedback:</strong></label>
+                            </div>
+                            <div class="col-md-6">
+                                <textarea class="form-control rounded-5" id="feedback" rows="3" placeholder="We would love to hear your sharing..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <!-- Submit Button -->
+                <div class="d-flex submitButton">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

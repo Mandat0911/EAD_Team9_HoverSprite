@@ -1,0 +1,37 @@
+# Postgres Database Connection Configuration
+# spring:
+#   datasource:
+#     url: jdbc:postgresql://localhost:5432/databaseOrSchemaName
+#     username: your_db_root_username
+#     password: your_db_root_password 
+#     driver-class-name: org.postgresql.Driver
+#   jpa:
+#     hibernate:
+#       ddl-auto: update
+      
+#     properties:
+#       hibernate:
+#         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# MySQL Connection Configuration
+
+# datasource:
+#   url: jdbc:mysql://localhost:3307/databaseOrSchemaName
+#   username: your_db_root_username
+#   password: your_db_root_password
+#   driver-class-name: com.mysql.cj.jdbc.Driver
+# jpa:
+#   hibernate:
+#     ddl-auto: update
+    
+#   properties:
+#     hibernate:
+#       dialect: org.hibernate.dialect.MySQL8Dialect
+
+application:
+  name: hoversprite
+
+server:
+  port: 8080
+
+  
