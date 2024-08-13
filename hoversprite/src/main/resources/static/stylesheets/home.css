@@ -1,0 +1,114 @@
+/* image carousel */
+.home-container .carousel-item img{
+    opacity: 0.6;
+}
+.home-container .carousel-caption {
+    bottom: 200px;
+    text-align: left;
+}
+
+.home-container .carousel-caption h3 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--highlight-color);
+}
+
+.home-container .carousel-caption h2 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.home-container .carousel-caption .btn {
+    font-size: 2.5rem;
+    font-weight: 900;
+    position: absolute;
+    right: 15px;
+    bottom: 30px;
+}
+
+.home-container .carousel-caption .btn .underline {
+    display: block;
+    width: 50%;
+    height: 5px;
+    background-color: black;
+    margin-top: 5px;
+    transition: width 0.3s;
+}
+
+.home-container .carousel-caption .btn:hover .underline {
+    width: 100%;
+    background-color: white;
+}
+
+.home-container .section-heading {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.home-container h1, .home-container h2 {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.home-container .service-box img {
+    width: 50px;
+    height: 50px;
+}
+
+.home-container .service-box h4 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.home-container .outer-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    background-color: #D4AE63;
+}
+
+.home-container .inner-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: black;
+}
+
+.home-container .text-white {
+    color: white;
+}
+
+/* Bouncing Effect */
+.bounce {
+    animation: bounce 2s infinite alternate;
+    -webkit-animation: bounce 2s infinite alternate;
+}
+
+@keyframes bounce {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(-25px);
+    }
+}
+
+@-webkit-keyframes bounce {
+    from {
+        transform: translateY(0px);
+    }
+    to {
+        transform: translateY(-25px);
+    }
+}
