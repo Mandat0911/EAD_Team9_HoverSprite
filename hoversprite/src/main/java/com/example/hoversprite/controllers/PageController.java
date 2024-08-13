@@ -12,7 +12,6 @@ public class PageController {
         model.addAttribute("title", "Home");
         model.addAttribute("content", "home");
         model.addAttribute("css", "/stylesheets/home.css");
-        // model.addAttribute("js", "/js/home.js");
         return "layout";
     }
 
@@ -28,9 +27,35 @@ public class PageController {
     @GetMapping("/account")
     public String account(Model model) {
         model.addAttribute("title", "Account");
-        model.addAttribute("content", "account");
-        model.addAttribute("css", "/stylesheets/account.css");
-        // model.addAttribute("js", "/js/account.js");
+        model.addAttribute("content", "userProfile"); // Load userProfile by default
+        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("js", "/js/userProfile.js");
+        return "layout";
+    }
+
+    @GetMapping("/account/user_profile")
+    public String userProfile(Model model) {
+        model.addAttribute("title", "User Profile");
+        model.addAttribute("content", "userProfile");
+        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("js", "/js/userProfile.js");
+        return "layout";
+    }
+
+    @GetMapping("/account/orders")
+    public String orders(Model model) {
+        model.addAttribute("title", "Orders");
+        model.addAttribute("content", "orders");
+        model.addAttribute("css", "/stylesheets/orders.css");
+        return "layout";
+    }
+
+    @GetMapping("/account/order_details")
+    public String orderDetail(Model model) {
+        model.addAttribute("title", "Order Details");
+        model.addAttribute("content", "orderDetails");
+        model.addAttribute("css", "/stylesheets/orderDetails.css");
+        model.addAttribute("js", "/js/orderDetails.js");
         return "layout";
     }
 
@@ -39,23 +64,6 @@ public class PageController {
         model.addAttribute("title", "Support");
         model.addAttribute("content", "support");
         model.addAttribute("css", "/stylesheets/support.css");
-        // model.addAttribute("js", "/js/support.js");
         return "layout";
     }
-
-
-    // @GetMapping("/booking")
-    // public String booking() {
-    //     return "booking"; 
-    // }
-
-    // @GetMapping("/account")
-    // public String order() {
-    //     return "account"; 
-    // }
-
-    // @GetMapping("/support")
-    // public String support() {
-    //     return "support"; 
-    // }
 }

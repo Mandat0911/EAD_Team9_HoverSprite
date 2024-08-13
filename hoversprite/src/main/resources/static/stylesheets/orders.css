@@ -1,67 +1,64 @@
-body {
-    background-color: #f8f9fa;
-}
 
-.account-section {
+.orders-container .account-section {
     margin: 20px;
 }
 
-.sidebar {
+.orders-container .sidebar {
     border-right: 1px solid #dee2e6;
     height: 100%;
 }
 
-.sidebar h5 {
+.orders-container .sidebar h5 {
     color: var(--primary-color);
     font-weight: bold;
 }
 
-.nav-item a{
+.orders-container .nav-item a{
     color: var(--primary-color);
     font-weight: bold;
 }
 
-body .sidebar .btn {
+.orders-container .sidebar .btn {
     padding: 5px;
     width: 150px;
     background-color: var(--secondary-color) !important;
 
 }
 
-body .order-list {
+.orders-container .order-list {
     padding: 20px;
 }
 
-body .table th {
+.orders-container .table th {
     background-color: #112D57;
     color: white;
 }
 
-.table td {
+.orders-container .table td {
     background-color: #dee2e6;
     color: black;
 }
 
-body table .status-pending {
+.orders-container table .status-pending {
     color: orange;
 }
 
-body table .status-confirmed {
+.orders-container table .status-confirmed {
     color: blue;
 }
 
-body table .status-assigned {
+.orders-container table .status-assigned {
     color: #007bff;
 }
 
-body table .status-inprogress {
+.orders-container table .status-inprogress {
     color: #17a2b8;
 }
 
-body table .status-completed {
+.orders-container table .status-completed {
     color: green;
 }
 
-body table .status-canceled {
+.orders-container table .status-canceled {
     color: red;
 }

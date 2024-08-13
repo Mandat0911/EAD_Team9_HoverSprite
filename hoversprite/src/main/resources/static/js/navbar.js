@@ -68,6 +68,12 @@ function updateHoriSelector() {
 
 function setActiveLink() {
     var path = window.location.pathname.split("/").pop();
+
+    // If the path is any of the subpages related to account, highlight the Account on navbar
+    if (path === 'user_profile' || path === 'orders' || path === 'order_details') {
+        path = 'account';
+    }
+
     var target = $('#navbarSupportedContent ul li a[href="/' + path + '"]');
     $('#navbarSupportedContent ul li').removeClass("active");
     target.parent().addClass('active');
@@ -76,12 +82,6 @@ function setActiveLink() {
 
 $(document).ready(function () {
     setActiveLink();
-    // $("#navbarSupportedContent").on("click", "li", function(e){
-    //     e.preventDefault();
-    //     $('#navbarSupportedContent ul li').removeClass("active");
-    //     $(this).addClass('active');
-    //     updateHoriSelector();
-    // });
 
     $(window).on('resize', function () {
         updateHoriSelector();

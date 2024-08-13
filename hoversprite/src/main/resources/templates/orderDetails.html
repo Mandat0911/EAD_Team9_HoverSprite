@@ -1,45 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Font Awesome -->
-    <script src="https://kit.fontawesome.com/d88c69cf14.js" crossorigin="anonymous"></script>
-
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/stylesheets/orderDetail.css">
-    <link rel="stylesheet" href="/stylesheets/navbar.css">
-
-    <title>Order Detail</title>
-</head>
-<body>
-    <!-- Header -->
-    <div id="header" th:replace="header :: header"></div>
-
+<div th:fragment="content" class="order-details-container py-3">
     <!-- Back Navigation -->
-    <div class="back-navigation pt-3">
-        <a href="#"><i class="fa-solid fa-angles-left"></i> Order</a>
+    <div class="back-navigation">
+        <a href="/account/orders"><i class="fa-solid fa-angles-left"></i> Order</a>
     </div>
 
     <!-- Order Detail Section -->
     <div class="container mt-5">
         <div class="card rounded-5">
             <div class="card-body">
-                <h2>Order Detail</h2>
+                <h2>Order Details</h2>
                 <hr>
                 <div class="row">
                     <!-- Left Column -->
@@ -120,11 +89,4 @@
             </div>
         </div>
     </div>
-
-    <!-- Footer -->
-    <div id="footer" th:replace="footer :: footer"></div>
-    
-    <!-- Custom JS -->
-    <script src="/js/orderDetail.js"></script>
-</body>
-</html>
+</div>
