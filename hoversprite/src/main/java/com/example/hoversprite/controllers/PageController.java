@@ -24,6 +24,23 @@ public class PageController {
         return "layout";
     }
 
+    @GetMapping("/orders")
+    public String orders(Model model) {
+        model.addAttribute("title", "Orders");
+        model.addAttribute("content", "orders");
+        model.addAttribute("css", "/stylesheets/orders.css");
+        return "layout";
+    }
+
+    @GetMapping("/orders/order_details")
+    public String orderDetail(Model model) {
+        model.addAttribute("title", "Order Details");
+        model.addAttribute("content", "orderDetails");
+        model.addAttribute("css", "/stylesheets/orderDetails.css");
+        model.addAttribute("js", "/js/orderDetails.js");
+        return "layout";
+    }
+
     @GetMapping("/account")
     public String account(Model model) {
         model.addAttribute("title", "Account");
@@ -42,28 +59,12 @@ public class PageController {
         return "layout";
     }
 
-    @GetMapping("/account/orders")
-    public String orders(Model model) {
-        model.addAttribute("title", "Orders");
-        model.addAttribute("content", "orders");
-        model.addAttribute("css", "/stylesheets/orders.css");
+    @GetMapping("/account/notifications")
+    public String notifications(Model model) {
+        model.addAttribute("title", "Notifications");
+        model.addAttribute("content", "notifications");
+        model.addAttribute("css", "/stylesheets/notifications.css");
         return "layout";
     }
 
-    @GetMapping("/account/order_details")
-    public String orderDetail(Model model) {
-        model.addAttribute("title", "Order Details");
-        model.addAttribute("content", "orderDetails");
-        model.addAttribute("css", "/stylesheets/orderDetails.css");
-        model.addAttribute("js", "/js/orderDetails.js");
-        return "layout";
-    }
-
-    @GetMapping("/support")
-    public String support(Model model) {
-        model.addAttribute("title", "Support");
-        model.addAttribute("content", "support");
-        model.addAttribute("css", "/stylesheets/support.css");
-        return "layout";
-    }
 }
