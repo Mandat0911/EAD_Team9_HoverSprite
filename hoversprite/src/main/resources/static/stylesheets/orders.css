@@ -1,0 +1,64 @@
+
+.orders-container .account-section {
+    margin: 20px;
+}
+
+.orders-container .sidebar {
+    border-right: 1px solid #dee2e6;
+    height: 100%;
+}
+
+.orders-container .sidebar h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.orders-container .nav-item a{
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+.orders-container .sidebar .btn {
+    padding: 5px;
+    width: 150px;
+    background-color: var(--secondary-color) !important;
+
+}
+
+.orders-container .order-list {
+    padding: 20px;
+}
+
+.orders-container .table th {
+    background-color: #112D57;
+    color: white;
+}
+
+.orders-container .table td {
+    background-color: #dee2e6;
+    color: black;
+}
+
+.orders-container table .status-pending {
+    color: orange;
+}
+
+.orders-container table .status-confirmed {
+    color: blue;
+}
+
+.orders-container table .status-assigned {
+    color: #007bff;
+}
+
+.orders-container table .status-inprogress {
+    color: #17a2b8;
+}
+
+.orders-container table .status-completed {
+    color: green;
+}
+
+.orders-container table .status-canceled {
+    color: red;
+}
