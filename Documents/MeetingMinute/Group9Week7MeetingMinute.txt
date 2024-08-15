@@ -1,0 +1,7 @@
+Group 9 Week 7 Meeting minutes
+1. What did your team do well last week?
+The team had designed an Entity–relationship model for the project and also implemented most of the front-end of the project. The team had also planned and split tasks for the back-end of the project to the members.
+2. What are the impediments of your project?
+The team still lack active communications between members leading to mismatched progress in the project. 
+3. What are your solutions to address the impediments stated in section 2?
+The team will organize and double the amounts of group meeting from 1 to 2 per week in order to check the progress more frequently but also to detect any struggling members and assists them for a smoother project process.
