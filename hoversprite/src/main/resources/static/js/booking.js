@@ -59,4 +59,57 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
+
+    // DateTimePicker Initialization
+    const datePicker = document.querySelector('#date-picker');
+    const calendarContainer = document.querySelector('.calendar-container');
+
+    datePicker.addEventListener('change', () => {
+        const selectedDate = new Date(datePicker.value);
+        generateCalendar(selectedDate);
+    });
+
+    function generateCalendar(selectedDate) {
+        const daysOfWeek = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+        const lunarDates = ['1', '2', '3', '4', '5', '6', '7']; // Placeholder for Lunar dates
+        const calendarRowHeaders = calendarContainer.querySelectorAll('.header-cell');
+        const calendarRows = calendarContainer.querySelectorAll('.calendar-row');
+
+        // Update the Date Header
+        for (let i = 0; i < 7; i++) {
+            const currentDay = new Date(selectedDate);
+            currentDay.setDate(selectedDate.getDate() + i);
+            const gregorianDate = currentDay.getDate();
+            const dayName = daysOfWeek[currentDay.getDay()];
+
+            calendarRowHeaders[i].innerHTML = `${dayName}<br>${gregorianDate}<br><small>${lunarDates[i]}</small>`;
+        }
+
+        // Handle Selection of Time Slots
+        calendarRows.forEach((row, rowIndex) => {
+            const buttons = row.querySelectorAll('.select-btn');
+
+            buttons.forEach((button, buttonIndex) => {
+                button.classList.remove('selected');
+                button.classList.add('available');
+                button.removeAttribute('disabled');
+
+                button.addEventListener('click', function () {
+                    // Reset other selections
+                    const allButtons = calendarContainer.querySelectorAll('.select-btn');
+                    allButtons.forEach(btn => {
+                        btn.classList.remove('selected');
+                        btn.classList.add('available');
+                    });
+
+                    // Select the clicked button
+                    button.classList.add('selected');
+                    button.classList.remove('available');
+                });
+            });
+        });
+    }
+
+    // Initialize the calendar on load with the current date
+    generateCalendar(new Date());
 });
