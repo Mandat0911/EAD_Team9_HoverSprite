@@ -3,17 +3,7 @@
 /* General Styles */
 body {
     font-family: 'Poppins', sans-serif !important;
-}
-
-#background_video {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
-    object-fit: cover;
- 
+    background: #ececec;
 }
 
 /* Container Styles */
@@ -23,7 +13,6 @@ body {
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
-    
 }
 .top_bar{
     padding: 1rem 1rem 0 1rem;
@@ -35,9 +24,7 @@ body {
     position: relative;
     color: darkgreen;
 }
-.generate_icon:hover{
-    color: gray;
-}
+
 .box-area {
     width: 930px;
     margin: auto;
@@ -56,6 +43,26 @@ body {
     font-size: 16px;
 }
 
+.register_personal_info input::placeholder {
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: center;
+}
+.register_personal_info input{
+    font-size: 11px;
+}
+
+.register_phone_number input::placeholder {
+    font-size: 16px;
+}
+
+.register_phone_number input {
+    font-size: 16px;
+}
+
+.login_username input::placeholder{
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: left;
+}
 /* Password Icon */
 .password__icon {
     position: absolute;
