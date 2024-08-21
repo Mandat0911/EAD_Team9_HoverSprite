@@ -1,0 +1,9 @@
+Group 9 Week 8 Meeting minutes
+1. What did your team do well last week?
+The team had revised and improve the ERD diagram significantly and successfully implemented most of the front end.
+
+2. What are the impediments of your project?
+There are struggles with implementing the log-in function that links with facebook. The team also has troubles with processing datas in image formats and making the UML diagram for architecture due to being inexperience of making one. 
+
+3. What are your solutions to address the impediments stated in section 2?
+As for the facebook log-in function, the team will try to implement it the same way with the google log-in function, by getting tokens and debug when problems arise. The team will also research further into various video resources on youtube to widen our approached in implementations for the project. And lastly, the team will continue working and improving on rendering calendar according to the date picker.
