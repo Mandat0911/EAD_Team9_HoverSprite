@@ -1,0 +1,11 @@
+1. What did your team do well last week?
+
+The team has not made much progress due to upcoming deadlines.
+
+2. What are the impediments of your project?
+
+Mostly time constraints from each member, the team loose some developing momentum. The team has appointed meeting minutes 2 hours before the appointed time.
+
+3.What are your solutions to address the impediments stated in section 2. until the next week meeting.
+
+The team has tested and successfully used social media links as well as their API. For now, the team declared to implemented date picker and calender for the project.
