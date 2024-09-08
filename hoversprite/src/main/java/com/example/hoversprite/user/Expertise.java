@@ -1,4 +1,4 @@
-package com.example.hoversprite.user.models;
+package com.example.hoversprite.user;
 
 public enum Expertise {
     APPRENTICE,
