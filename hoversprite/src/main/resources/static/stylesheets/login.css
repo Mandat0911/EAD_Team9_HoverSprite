@@ -1,18 +1,30 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 
-/* General Styles */
-body {
-    font-family: 'Poppins', sans-serif !important;
-    background: #ececec;
+#background_video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+    object-fit: cover;
 }
 
 /* Container Styles */
-.container {
+/* .container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     min-width: 100vw;
+    
+} */
+.login-container {
+    width: 100%;
+    padding: 50px 30px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items:flex-start;
 }
 .top_bar{
     padding: 1rem 1rem 0 1rem;
@@ -79,9 +91,9 @@ img {
 
 /* Media Queries */
 @media (min-width: 1024px) {
-    body {
+    /* body {
         overflow-y: hidden;
-    }
+    } */
 
     /* Bouncing Effect */
     .bounce {
@@ -120,7 +132,7 @@ img {
 }
 
 /* Form States for Small Screens */
-.register__form,
+/* .register__form,
 .login__form {
     position: absolute;
     width: 100%;
@@ -129,9 +141,18 @@ img {
     opacity: 0;
     transition: margin 1s, opacity .5s;
     z-index: 1;
+} */
+.register__form,
+.login__form {
+    /* position: absolute; */
+    width: 100%; 
+    opacity: 0;
+    margin-left: -100%;
+    transition: margin 1s, opacity .5s;
+    z-index: 2;
 }
 
-.register__form.active {
+/* .register__form.active {
     margin-left: 0%;
     opacity: 1;
 }
@@ -139,6 +160,13 @@ img {
 .login__form.active {
     margin-left: 0%;
     opacity: 1;
+} */
+ 
+.register__form.active,
+.login__form.active {
+    margin-left: 0%;
+    opacity: 1;
+    z-index: 3;
 }
 
 .form-check-input:checked{

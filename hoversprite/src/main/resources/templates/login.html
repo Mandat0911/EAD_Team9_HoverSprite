@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,9 +14,23 @@
     <link rel="stylesheet" href="login.css">
     <title>Login</title>
 </head>
-<body>
-    <div class="container login__form active">
-        <div class="row d-flex border rounded-5 p-3 bg-white shadow box-area">
+<body> -->
+
+ <div th:fragment="content" class="login-container">
+    <!-- <video autoplay  muted loop id="background_video">
+        <source src="Image/video.mp4" type="video/mp4">
+    </video> -->
+    <!-- <div class="d-flex top-0 start-0 top_bar">
+        
+        <a href="https://google.com/" class="text-decoration-none fw-bolder fs-5">
+            <img src="/images/drone-icon.png"  alt="">AGRO DRONE</a>
+       
+    </div> -->
+    <!-- <div>
+        <button id="themeToggleButton" class="btn btn-secondary ms-3">Switch to Night Mode</button>
+    </div> -->
+    <div class="login__form active">
+        <div class="row d-flex border rounded-5 p-3 bg-white shadow bg-body-tertiary box-area">
             <div class="row vh-50 w-100 align-self-center">
                 <div class="col-12 col-lg-6 col-xl-6 px-3">
                     <div class="row vh-50">
@@ -94,13 +108,10 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <!-- Register form -->
-
-    <div class="container register__form">
-        <div class="row d-flex border rounded-5 p-3 bg-white shadow box-area vh-70">
+    <div class="register__form">
+        <div class="row d-flex border rounded-5 p-3 bg-white shadow box-area">
             <div class="col-md-6 right-box d-flex align-items-center">
                 <div class="d-none d-lg-block col-lg-6 col-xl-6 p-5 vh-50">
                     <div class="row vh-50 p-5">
@@ -224,7 +235,7 @@
             </div>
         </div>
     </div>
-
-    <script src="login.js"></script>
+</div>
+    <!-- <script src="/js/login.js"></script>
 </body>
-</html>
+</html> -->

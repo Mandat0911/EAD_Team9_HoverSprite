@@ -15,6 +15,15 @@ public class PageController {
         return "layout";
     }
 
+    @GetMapping("/login")
+    public String login(Model model) {
+        model.addAttribute("title", "Login");
+        model.addAttribute("content", "login");
+        model.addAttribute("css", "/stylesheets/login.css");
+        model.addAttribute("js", "/js/login.js");
+        return "layout";
+    }
+
     @GetMapping("/booking")
     public String booking(Model model) {
         model.addAttribute("title", "Booking");
