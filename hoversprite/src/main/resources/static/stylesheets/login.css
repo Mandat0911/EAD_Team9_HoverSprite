@@ -36,9 +36,7 @@
     position: relative;
     color: darkgreen;
 }
-.generate_icon:hover{
-    color: gray;
-}
+
 .box-area {
     width: 930px;
     margin: auto;
@@ -57,6 +55,26 @@
     font-size: 16px;
 }
 
+.register_personal_info input::placeholder {
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: center;
+}
+.register_personal_info input{
+    font-size: 11px;
+}
+
+.register_phone_number input::placeholder {
+    font-size: 16px;
+}
+
+.register_phone_number input {
+    font-size: 16px;
+}
+
+.login_username input::placeholder{
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: left;
+}
 /* Password Icon */
 .password__icon {
     position: absolute;
