@@ -1,11 +1,29 @@
 package com.example.hoversprite.controllers;
 
+import com.example.hoversprite.model.User;
+import com.example.hoversprite.repository.RoleRepository;
+import com.example.hoversprite.repository.UserRepository;
+import com.example.hoversprite.service.CustomerDetailService;
+import com.example.hoversprite.service.PasswordValidationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CustomerDetailService customerDetailService;
+    @Autowired
+    private PasswordValidationService passwordValidationService;
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -22,6 +40,33 @@ public class PageController {
         model.addAttribute("css", "/stylesheets/login.css");
         model.addAttribute("js", "/js/login.js");
         return "layout";
+    }
+
+    @GetMapping("/register")
+    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error){
+        model.addAttribute("title", "Register");
+        model.addAttribute("content", "register");
+        model.addAttribute("css", "/stylesheets/login.css");
+        model.addAttribute("js", "/js/login.js");
+        model.addAttribute("user", new User());
+        if (error != null) {
+            model.addAttribute("error", error);
+        }
+        return "layout";  // Assuming 'layout.html' handles the page structure
+    }
+
+    @PostMapping("/process_register")
+    public String processRegister(User user, RedirectAttributes redirectAttributes) {
+        // Validate the password
+        passwordValidationService.validatePassword(user.getPassword());
+
+        try {
+            customerDetailService.registerUser(user);
+            return "redirect:/login";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/register";
+        }
     }
 
     @GetMapping("/booking")
@@ -75,5 +120,6 @@ public class PageController {
         model.addAttribute("css", "/stylesheets/notifications.css");
         return "layout";
     }
+
 
 }
