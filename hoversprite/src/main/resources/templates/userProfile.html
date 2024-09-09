@@ -15,39 +15,93 @@
                     </li>
                 </ul>
             </div>
+
             <div class="col-md-9 account-info">
                 <div class="row mb-5 d-flex justify-content-between">
                     <div class="col-md-6 d-flex align-items-center p-2 ">
                         <img class="user-img mx-5" src="/images/drone-1.png">
-                        <h4>Username</h4>
+                        <h4 id="username">Username</h4>
                     </div>
                     <div class="col-md-6 d-flex flex-row-reverse align-items-center ">
-                        <button class="btn btn-primary rounded-pill" onclick="updateInfo()"><i class="bi bi-pencil-square mr-5">   Update</i></button>
-                    </div>
-    
-                </div>
-    
-                <div class="row">
-                    <div class="col-md-6 mb-3 ">
-                        <label for="fullName" class="form-label ">Full Name</label>
-                        <input type="text" class="form-control col-md-6 " id="fullName">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control col-md-6" id="email">
+                        <button class="btn btn-primary rounded-pill" onclick="openCreateUserModal()"><i class="bi bi-pencil-square mr-5"> Create User</i></button>
                     </div>
                 </div>
+
+                <!-- User Table -->
                 <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="mobile" class="form-label">Mobile</label>
-                        <input type="text" class="form-control col-md-6" id="mobile">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control col-md-6" id="address">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Full Name</th>
+                                    <th>Email</th>
+                                    <th>Mobile</th>
+                                    <th>Address</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerTblBody">
+                                <!-- Rows will be dynamically added here by JS -->
+                            </tbody>
+                        </table>
+
+                        <!-- Pagination Controls -->
+                        <nav aria-label="User Pagination">
+                            <ul id="paginationControls" class="pagination">
+                                <!-- Pagination links will be dynamically added here -->
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="userModalLabel">User Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="form-group">
+                        <label for="fullNameInput" class="form-label">Full Name</label>
+                        <input type="text" id="fullNameInput" class="form-control" placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailInput" class="form-label">Email</label>
+                        <input type="email" id="emailInput" class="form-control" placeholder="Enter email">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobileInput" class="form-label">Mobile</label>
+                        <input type="text" id="mobileInput" class="form-control" placeholder="Enter mobile number">
+                    </div>
+                    <div class="form-group">
+                        <label for="addressInput" class="form-label">Address</label>
+                        <input type="text" id="addressInput" class="form-control" placeholder="Enter address">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="saveUser()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Message -->
+<div id="doneMsgLbl" style="display: none;" class="alert alert-success">
+    Action completed successfully!
+</div>
+
+<script src="config/urlConfig.js"></script>
+      <script src="util/httpUtil.js"></script>
+      <script src="user.js"></script>
