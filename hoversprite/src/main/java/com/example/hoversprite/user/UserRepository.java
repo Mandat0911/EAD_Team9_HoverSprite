@@ -1,5 +1,13 @@
 package com.example.hoversprite.user;
 
-class UserRepository {
-    
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+	List<User> findByFullName(String fullName);
+
+	User findById(long id);
 }
+
