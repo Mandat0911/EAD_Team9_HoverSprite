@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/EAD_Team9_HoverSprite.iml" filepath="$PROJECT_DIR$/.idea/EAD_Team9_HoverSprite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hoversprite/hoversprite.iml" filepath="$PROJECT_DIR$/hoversprite/hoversprite.iml" />
     </modules>
   </component>
 </project>
