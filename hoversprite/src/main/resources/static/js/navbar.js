@@ -80,6 +80,11 @@ function setActiveLink() {
         path = 'account';
     }
 
+    // If the path is any of the subpages related to orders, highlight the Orders on navbar
+    if (path === 'order_details') {
+        path = 'orders';
+    }
+
     var target = $('#navbarSupportedContent ul li a[href="/' + path + '"]');
     $('#navbarSupportedContent ul li').removeClass("active");
     target.parent().addClass('active');

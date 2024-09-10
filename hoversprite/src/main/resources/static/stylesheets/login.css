@@ -1,29 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
 
-/* General Styles */
-body {
-    font-family: 'Poppins', sans-serif !important;
-}
-
-#background_video {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    min-width: 100%;
-    min-height: 100%;
-    z-index: -1;
-    object-fit: cover;
- 
-}
 
 /* Container Styles */
-.container {
+body {
+    font-family: 'Poppins', sans-serif !important;
+    background: #ececec;
+}
+.container{
+    width: 100%;
+    padding: 30px 30px;
+    min-width: 100vw;
     display: flex;
     justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    min-width: 100vw;
-    
+    align-items:center;
 }
 .top_bar{
     padding: 1rem 1rem 0 1rem;
@@ -35,9 +24,7 @@ body {
     position: relative;
     color: darkgreen;
 }
-.generate_icon:hover{
-    color: gray;
-}
+
 .box-area {
     width: 930px;
     margin: auto;
@@ -56,6 +43,43 @@ body {
     font-size: 16px;
 }
 
+.register_personal_info input::placeholder {
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: center;
+}
+.register_personal_info input{
+    font-size: 11px;
+}
+
+.register_phone_number input::placeholder {
+    font-size: 16px;
+}
+
+.register_phone_number input {
+    font-size: 16px;
+}
+
+.login_username input::placeholder{
+    font-size: 12px; /* Change this value to the desired font size */
+    text-align: left;
+}
+
+#email::placeholder {
+    font-size: 12px;
+}
+
+#email {
+    font-size: 12px;
+}
+
+#phone::placeholder{
+    font-size: 12px;
+}
+
+#phone{
+    font-size: 12px;
+}
+
 /* Password Icon */
 .password__icon {
     position: absolute;
@@ -72,9 +96,9 @@ img {
 
 /* Media Queries */
 @media (min-width: 1024px) {
-    body {
+    /* body {
         overflow-y: hidden;
-    }
+    } */
 
     /* Bouncing Effect */
     .bounce {
@@ -112,26 +136,22 @@ img {
     margin-left: 200px;
 }
 
-/* Form States for Small Screens */
 .register__form,
 .login__form {
-    position: absolute;
+    /* position: absolute; */
     width: 100%;
-    height: 100vh;
-    margin-left: -100%;
     opacity: 0;
+    margin-left: -100%;
     transition: margin 1s, opacity .5s;
-    z-index: 1;
+    z-index: 2;
 }
 
-.register__form.active {
-    margin-left: 0%;
-    opacity: 1;
-}
 
+.register__form.active,
 .login__form.active {
     margin-left: 0%;
     opacity: 1;
+    z-index: 3;
 }
 
 .form-check-input:checked{
@@ -150,3 +170,5 @@ img {
     font-size: 1rem;
     text-decoration: underline;
 }
+
+

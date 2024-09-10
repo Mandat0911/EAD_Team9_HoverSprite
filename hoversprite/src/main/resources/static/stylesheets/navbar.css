@@ -8,7 +8,7 @@
 	--light-grey: #F9FAFA;
 	--grey: #D9D9D9;
 	--dark-grey: #555555;
-	--light-blue: #6F96D1
+	--light-blue: #6F96D1;
 }
 html {
     scroll-behavior: smooth;
@@ -171,4 +171,25 @@ body{
 		bottom: -25px;
 		left: -25px;
 	}
+}
+
+/* button styling for all pages */
+.btn-primary {
+    background-color: var(--secondary-color);
+    transition: background-color 0.3s ease;
+}
+
+.btn-secondary {
+    background-color: var(--light-blue);
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+.btn-secondary:hover {
+    background-color: var(--dark-grey);
+    transform: translateY(-2px);
 }
