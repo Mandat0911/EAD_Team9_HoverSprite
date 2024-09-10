@@ -1,65 +1,7 @@
-.orders-container .account-section {
-    margin: 20px;
-}
-
-.orders-container .sidebar {
-    border-right: 1px solid #dee2e6;
-    height: 100%;
-}
-
-.orders-container .sidebar h5 {
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.orders-container .nav-item a{
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-.orders-container .sidebar .btn {
-    padding: 5px;
-    width: 150px;
-    background-color: var(--secondary-color) !important;
-
-}
-
-.orders-container .order-list {
-    padding: 20px;
-}
-
-.orders-container .table th {
-    background-color: #112D57;
-    color: white;
-}
-
-.orders-container .table td {
-    background-color: #dee2e6;
-    color: black;
-}
-
-.orders-container table .status-pending {
-    color: orange;
-}
-
-.orders-container table .status-confirmed {
-    color: blue;
-}
-
-.orders-container table .status-assigned {
-    color: #007bff;
-}
-
-.orders-container table .status-inprogress {
-    color: #17a2b8;
-}
-
-.orders-container table .status-completed {
-    color: green;
-}
-
-.orders-container table .status-canceled {
-    color: red;
+/* Container styling */
+.orders-container {
+    width: 100%;
+    padding: 10px 50px;
 }
 
 /* Font styling */
@@ -67,4 +9,111 @@
     font-size: 2.2rem;
     font-weight: bold;
     color: var(--primary-color);
+    margin-bottom: 30px;
+}
+
+
+/* General Table Styling */
+.orders-container .table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+    background-color: var(--nav-text-color);
+}
+
+.orders-container .table th {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+.orders-container .table tbody tr {
+    border: 1px solid black;
+    background-color: var(--grey);
+    transition: background-color 0.3s ease;
+}
+
+.orders-container .table tbody tr:hover {
+    cursor: pointer;
+    background-color: var(--light-grey);
+}
+
+.orders-container .table td {
+    background-color: inherit;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.2rem;
+}
+
+.orders-container .table td:first-child,
+.orders-container .table td:nth-last-child(2) {
+    font-weight: bold;
+}
+
+.orders-container .table td:first-child,
+.orders-container .table th:first-child {
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.orders-container .table td:last-child,
+.orders-container .table th:last-child {
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+/* Status Colors */
+.orders-container .status-pending {
+    color: #E2A43D;
+}
+
+.orders-container .status-confirmed {
+    color: #A6BFF6;
+}
+
+.orders-container .status-assigned {
+    color: #5A77E0;
+}
+
+.orders-container .status-inprogress {
+    color: #7AA1E0;
+}
+
+.orders-container .status-completed {
+    color: #4CAF50;
+}
+
+.orders-container .status-canceled {
+    color: #D9414F;
+}
+
+/* Button Styling */
+.orders-container i {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.orders-container .table tbody tr:hover i {
+    animation: slide-right .3s ease-in-out both;
+}
+
+/* arrow animation */
+@keyframes slide-right {
+    0% {
+    transform: translateX(0);
+    }
+
+    100% {
+    transform: translateX(6px);
+    }
+}
+
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .orders-container .table th, 
+    .orders-container .table td {
+        font-size: 0.9rem;
+    }
 }

@@ -1,71 +1,128 @@
-.back-navigation{
-    font-size: 30px;
+/* Back navigation style & arrow animation */
+.order-details-container .back-navigation{
+    font-size: 1.3rem;
+    font-weight: 600;
     margin-left: 30px;
-}
-
-.back-navigation a{
     color: #091F5B;
 }
 
-.back-navigation a:hover{
+.order-details-container .back-navigation:hover {
     color: #3d5083;
-    text-decoration: underline;
 }
-.card{
+
+.order-details-container .back-navigation:hover i {
+    animation: slide-right .3s ease-in-out both;
+}
+
+@keyframes slide-right {
+    0% {
+    transform: translateX(0);
+    }
+
+    100% {
+    transform: translateX(-8px);
+    }
+}
+
+/* Card style */
+.order-details-container .card{
     border: none;
 }
 
-.card-header{
+.order-details-container .card-header{
     background-color: white;
 }
 
-.card-body{
+.order-details-container .card-body {
     border-radius: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 }
 
-.form-control{
+.order-details-container .form-control{
     border: 1 solid rgba(0, 0, 0, 0.1);
 }
 
-.form-control::placeholder{
+.order-details-container .form-control::placeholder{
     font-size: 12px;
 }
 
-.submitButton{
-    justify-content: end;
-}
-
-.submitButton .btn-primary{
-    border: none;
-    border-radius: 30px;
-    background-color: #091F5B;
-}
-
-.submitButton .btn-primary:hover{
-    border: none;
-    border-radius: 30px;
-    background-color: #3d5083;
-}
-
-.submitButton .btn-primary:active{
-    border: none;
-    border-radius: 30px;
-    background-color: #9ba6c4;
-}
-
-.form-control{
+.order-details-container .form-control{
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-.serviceQuaity{
-    font-size: larger;
+.order-details-container .badge {
+    border-radius: 8px;
+    font-size: 1.3rem;
+}
+/* 
+.vertical-divider {
+    width: 1px;
+    border-left:1px solid var(--grey);
+    margin: 0 20px;
+    height: 60vh;
+} */
+
+/* Fade-in Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
 }
 
-.feedback{
-    font-size: larger;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
-.badge{
-    font-size: 20px;
+
+/* Rating styling */
+.rating input {
+    display: none;
+}
+
+.rating label {
+    float: right;
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    margin-right: 1rem;
+}
+
+.rating label:before {
+    content: '★';
+}
+
+.rating input:checked ~ label {
+    color: #ffa723;
+}
+
+.rating label:hover,
+.rating label:hover ~ label {
+    color: #ff9e0b;
+}
+
+.rating input:checked + label:hover,
+.rating input:checked + label:hover ~ label,
+.rating input:checked ~ label:hover,
+.rating input:checked ~ label:hover ~ label {
+    color: #e58e09;
+}
+
+/* button styling */
+.order-details-container .btn {
+    margin: 2rem 0 0 2rem;
+    padding: 10px 1.8rem;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.order-details-container .btn-sm {
+    margin: 0;
+    padding: 10px;
 }

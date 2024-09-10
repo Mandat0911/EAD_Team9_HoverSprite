@@ -38,6 +38,7 @@ public class PageController {
         model.addAttribute("title", "Orders");
         model.addAttribute("content", "orders");
         model.addAttribute("css", "/stylesheets/orders.css");
+        model.addAttribute("js", "/js/orders.js");
         return "layout";
     }
 
@@ -76,4 +77,19 @@ public class PageController {
         return "layout";
     }
 
+    @GetMapping("/about")
+    public String about(Model model) {
+        model.addAttribute("title", "About Us");
+        model.addAttribute("content", "about");
+        model.addAttribute("css", "/stylesheets/about.css");
+        return "layout";
+    }
+
+    @GetMapping("/faqs")
+    public String faqs(Model model) {
+        model.addAttribute("title", "FAQs");
+        model.addAttribute("content", "faqs");
+        model.addAttribute("css", "/stylesheets/faqs.css");
+        return "layout";
+    }
 }
