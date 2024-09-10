@@ -1,81 +1,83 @@
 <div th:fragment="content" class="container orders-container">
-    <h1 class="text-center mt-5">Orders List Management</h1>
-    <div class="order-list">
-        <div class="mask d-flex align-items-center h-100">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body p-0">
-                                <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
-                                    <table class="table table-striped mb-0">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">No.</th>
-                                            <th scope="col">Date</th>
-                                            <th scope="col">Total</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col"></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                            <td>7</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-pending">Pending</td>
-                                            <td><button class="btn btn-link"><a href="/orders/order_details">→</a></button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>6</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-confirmed">Confirmed</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-assigned">Assigned</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-inprogress">In Progress</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-completed">Completed</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>27-10-2023</td>
-                                            <td>100,000 VND</td>
-                                            <td class="status-canceled">Canceled</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>12-10-2023</td>
-                                            <td>450,000 VND</td>
-                                            <td class="status-completed">Completed</td>
-                                            <td><button class="btn btn-link">→</button></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <h1 class="text-center mt-5">Orders Management</h1>
+    <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">No.</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Farmer ID</th>
+                    <th scope="col">Sprayer(s) ID</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Status</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr data-order-id="7">
+                    <td>7</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-pending">Pending</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="6">
+                    <td>6</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-confirmed">Confirmed</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="5">
+                    <td>5</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-assigned">Assigned</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="4">
+                    <td>4</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-inprogress">In Progress</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="3">
+                    <td>3</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-completed">Completed</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="2">
+                    <td>2</td>
+                    <td>27-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>100,000 VND</td>
+                    <td class="status-canceled">Canceled</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+                <tr data-order-id="1">
+                    <td>1</td>
+                    <td>12-10-2023</td>
+                    <td></td>
+                    <td></td>
+                    <td>450,000 VND</td>
+                    <td class="status-completed">Completed</td>
+                    <td><a href="/orders/order_details"><i class="fa-solid fa-angle-right"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
