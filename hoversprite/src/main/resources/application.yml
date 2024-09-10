@@ -28,10 +28,10 @@
 #     hibernate:
 #       dialect: org.hibernate.dialect.MySQL8Dialect
 
-application:
-  name: hoversprite
-
-server:
-  port: 8080
+#application:
+#  name: hoversprite
+#
+#server:
+#  port: 8080
 
   

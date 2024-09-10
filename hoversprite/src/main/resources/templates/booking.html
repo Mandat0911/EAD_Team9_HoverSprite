@@ -1,6 +1,6 @@
 
 <div th:fragment="content" class="booking-container">
-    <h1 class="text-center mt-5">Book A Spraying Service</h1>
+    <h1 class="text-center mt-5 fw-bold">Book A Spraying Service</h1>
     <div class="d-flex justify-content-center align-items-center">
         <div class="box-container">
             <div class="progress">
@@ -11,12 +11,12 @@
             <!-- Form item - Farm Details -->
             <form action="#" class="form" id="form">
                 <div class="form-step form-step-active px-4 py-3">
-                    <h3>Order Details</h3>
-                    <h5 class="text-secondary fw-bold">We need a few details to deliver the most suitable drone to your farmland.</h5>
+                    <h3 class="fw-bold" style="color: var(--primary-color);">Order Details</h3>
+                    <h6 class="text-secondary fw-bold">We need a few details to deliver the most suitable drone to your farmland.</h6>
                     <hr class="my-3">
                     <div class="d-flex flex-row justify-content-center">
                         <div class="d-flex flex-column align-items-start w-50">
-                            <h3>Farmer Details</h3>
+                            <h4 class="fw-bold" style="color: var(--primary-color);">Farmer Details</h4>
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                         <div class="d-flex flex-column align-items-start w-50">
-                            <h3>Farmland Details</h3>
+                            <h4 class="fw-bold" style="color: var(--primary-color);">Farmland Details</h4>
                             <div class="form-group input-group">
                                 <label for="crop_type" class="form-label d-block">Type of crop *</label>
                                 <select class="form-control" name="crop_type" id="crop_type" required="true">
@@ -66,15 +66,15 @@
                         </div>
                     </div>
                     
-                    <div class="button-container">
+                    <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-primary btn-next">Next</button>
                     </div>
                 </div>
         
                 <!-- Form item - Book Time Slot -->
                 <div class="form-step px-4 py-3">
-                    <h3>Select a Spraying Session</h3>
-                    <h5 class="text-secondary fw-bold">Note: Fully booked slots are be disabled.</h5>
+                    <h3 class="fw-bold" style="color: var(--primary-color);">Select a Spraying Session</h3>
+                    <h6 class="text-secondary fw-bold">Note: Fully booked slots are be disabled.</h6>
                     <div class="d-flex flex-column align-items-start w-50">
                         <div class="form-group">
                             <label for="datePicker" class="form-label">Date *</label>
@@ -211,7 +211,7 @@
                         </div>
                     </div>
                     
-                    <div class="button-container">
+                    <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary btn-back">Back</button>
                         <button type="button" class="btn btn-primary btn-next">Next</button>
                     </div>
@@ -219,8 +219,8 @@
         
                 <!-- Form item - Payment -->
                 <div class="form-step px-4 py-3">
-                    <h3>Payment</h3>
-                    <h5 class="text-secondary fw-bold">Please choose a payment method.</h5>
+                    <h3 class="fw-bold" style="color: var(--primary-color);">Payment</h3>
+                    <h6 class="text-secondary fw-bold">Please choose a payment method.</h6>
                     <div class="d-flex flex-column align-items-start w-50">
                         <div class="form-group">
                             <div class="form-check">
@@ -252,10 +252,10 @@
                             <input id="email" type="checkbox" class="form-input">
                             <label for="email">Send me an email</label>
                         </div>
-                        <div class="button-container">
-                            <button type="button" class="btn btn-secondary btn-back">Back</button>
-                            <button type="button" class="btn btn-primary btn-submit">Submit</button>
-                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-secondary btn-back">Back</button>
+                        <button type="button" class="btn btn-primary btn-submit">Submit</button>
                     </div>
                 </div>
             </form>

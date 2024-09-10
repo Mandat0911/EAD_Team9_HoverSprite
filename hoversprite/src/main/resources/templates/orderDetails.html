@@ -1,91 +1,217 @@
 <div th:fragment="content" class="order-details-container py-3">
     <!-- Back Navigation -->
-    <div class="back-navigation">
-        <a href="/orders"><i class="fa-solid fa-angles-left"></i> Order</a>
-    </div>
+    <a href="/orders" class="back-navigation"><i class="fa-solid fa-angle-left mx-2"></i>Orders List</a>
 
     <!-- Order Detail Section -->
-    <div class="container mt-5">
-        <div class="card rounded-5">
-            <div class="card-body">
-                <h2>Order Details</h2>
-                <hr>
-                <div class="row">
-                    <!-- Left Column -->
-                    <div class="col-md-6">
-                        <p class="status"><strong>Status:</strong> <span class="badge bg-success">Complete</span></p>
-                        <p><strong>Type of crop:</strong> Vegetable</p>
-                        <p><strong>Farmland area:</strong> 5 decare</p>
-                        <p><strong>Desired date:</strong> 15/08/2024 (Gregorian)</p>
-                        <p><strong>Time slot:</strong> 06:00 - 07:00</p>
-                    </div>
-                    <!-- Right Column -->
-                    <div class="col-md-6">
-                        <p><strong>Unit price:</strong> 30,000 VND / decare</p>
+    <div class="container my-3">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card rounded-5 mb-3">
+                    <div class="card-body py-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="fw-bold m-0" style="color: var(--primary-color);">Order #1</h3>
+                            <p class="status badge bg-success m-0">Confirmed</p>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex flex-column">
+                            <h4 class="fw-bold my-2" style="color: var(--primary-color);">Farmer Details</h4>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Name</h5>
+                                <h5>Nguyen Van A</h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Phone</h5>
+                                <h5>+84 123456789</h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Address</h5>
+                                <h5>123 Street</h5>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex flex-column">
+                            <h4 class="fw-bold my-2" style="color: var(--primary-color);">Farmland Details</h4>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Type of crop</h5>
+                                <h5>Vegetable</h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Farmland area</h5>
+                                <h5>5 decare</h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Desired date</h5>
+                                <h5>15/08/2024 (Gregorian)</h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Time slot</h5>
+                                <h5>06:00 – 07:00 AM</h5>
+                            </div>
+                        </div>
+                        <!-- <hr class="my-3">
+                        <div class="d-flex flex-row justify-content-between align-items-center">
+                            <div class="d-flex flex-column align-items-start">
+                                <h4 class="fw-bold my-2">Unit price</h4>
+                            </div>
+                            <div class="d-flex flex-column align-items-end">
+                                <h4 class="my-2">30,000 VND</h4>
+                                <h5>/decare</h5>
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                        <div class="d-flex flex-row justify-content-between align-items-center">
+                            <div class="d-flex flex-column align-items-start justify-content-center">
+                                <h3 class="fw-bold m-0">Total</h3>
+                            </div>
+                            <div class="d-flex flex-column align-items-end justify-content-center badge" style="background-color: var(--secondary-color)">
+                                <h4 class="fw-bold m-0">150,000 VND</h4>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
-                <hr>
-                <!-- Total Price -->
-                <div class="d-flex justify-content-end total">
-                    <p><strong>Total: </strong><h5><span class="badge text-bg-secondary">150,000 VND</span></h5></p>
+            </div>
+            <div class="col-md-4">
+                <!-- SECTION ONLY FOR RECEPTIONIST & FARMER: view sprayer details -->
+                <div class="card rounded-5 mb-3">
+                    <div class="card-body py-4">
+                        <h4 class="m-0"  style="color: var(--primary-color); font-weight: 600;">Assigned Sprayer(s)</h4>
+                        <hr class="my-3">
+                        <h6 id="noSprayerMessage" class="text-secondary m-0">No sprayer has been assigned to this order yet.</h6>
+                        <!-- Assigned Sprayer Container -->
+                        <div id="assignedSprayerContainer" class="d-flex flex-column">
+                            
+                        </div>
+                        <hr class="my-3">
+
+                        <!-- SECTION ONLY FOR RECEPTIONIST: assign sprayer(s) -->
+                        <!-- Add sprayer button/icon -->
+                        <h6 id="sprayerError" class="text-danger my-3"></h6>
+                        <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
+                            <i class="fa-solid fa-plus"></i> Add Sprayer
+                        </button>
+
+                        <!-- Select another sprayer dropdown (hidden initially) -->
+                        <div id="sprayerSelectContainer" class="d-none mt-3">
+                            <label for="sprayerSelect" class="form-label">Select a sprayer:</label>
+                            <select id="sprayerSelect" class="form-select">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION ONLY FOR SPRAYER: to compute the change amount -->
+                <div class="card rounded-5 mb-3">
+                    <div class="card-body py-4">
+                        <h4 class="m-0" style="color: var(--primary-color); font-weight: 600;">Order Payment</h4>
+                        <hr class="my-3">
+                    
+                        <!-- Display Total Cost -->
+                        <div class="d-flex flex-row justify-content-between align-items-center my-2">
+                            <h5 class="m-0">Total Cost:</h5>
+                            <h5 id="totalCost" class="m-0 text-success">150,000 VND</h5>
+                        </div>
+                    
+                        <!-- Input: Receive Amount -->
+                        <div class="d-flex flex-row justify-content-between align-items-center my-2">
+                            <h5 for="receiveAmount" class="form-label m-0">Received:</h5>
+                            <div class="input-group w-50">
+                                <input type="number" id="receiveAmount" class="form-control m-0 fs-5">
+                                <span class="input-group-text">VND</span>
+                            </div>
+                        </div>
+                    
+                        <!-- Display: Change Amount -->
+                        <div id="changeContainer" class="d-flex flex-row justify-content-between align-items-center my-2 d-none">
+                            <h5>Return:</h5>
+                            <h5 id="changeAmount" class="text-danger">0 VND</h5>
+                        </div>
+                    </div>                    
                 </div>
             </div>
         </div>
+                
+
     </div>
 
     <!-- Feedback Section -->
     <div class="container mt-5">
         <div class="card rounded-5">
             <div class="card-body">
-                <h2>How was your experience with our service?</h2>
+                <h3 class="fw-bold m-0" style="color: var(--primary-color);">How was your experience with our service?</h3>
                 <hr>
                 <form action="" id="feedbackForm">
                     <div class="form-group mb-3">
-                        <!-- Service Quality -->
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label class="serviceQuality" for="serviceQuality"><strong>Service quality:</strong></label>
-                            </div>
-                            <div class="col-md-6">
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="serviceQuality" id="veryBad" value="Very Bad">
-                                        <label for="veryBad" class="form-check-label">Very Bad</label>
+                        <div class="row">
+                            <!-- Service Quality -->
+                            <div class="col-md-6 mb-3">
+                                <h4 class="fw-bold" style="color: var(--primary-color);">Service quality</h4>
+
+                                <!-- Attentiveness Star Rating -->
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 for="attentiveRating" class="form-label m-0">How was the sprayer's <strong>attentiveness</strong>?</h5>
+                                    <div class="rating">
+                                        <input value="5" name="attentive" id="attentive5" type="radio">
+                                        <label title="5 stars" for="attentive5"></label>
+                                        <input value="4" name="attentive" id="attentive4" type="radio">
+                                        <label title="4 stars" for="attentive4"></label>
+                                        <input value="3" name="attentive" id="attentive3" type="radio">
+                                        <label title="3 stars" for="attentive3"></label>
+                                        <input value="2" name="attentive" id="attentive2" type="radio">
+                                        <label title="2 stars" for="attentive2"></label>
+                                        <input value="1" name="attentive" id="attentive1" type="radio">
+                                        <label title="1 star" for="attentive1"></label>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="serviceQuality" id="bad" value="Bad">
-                                        <label for="bad" class="form-check-label">Bad</label>
+                                </div>
+
+                                <!-- Friendliness Star Rating -->
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 for="friendlyRating" class="form-label m-0">How was the sprayer's <strong>friendliness</strong>?</h5>
+                                    <div class="rating">
+                                        <input value="5" name="friendly" id="friendly5" type="radio">
+                                        <label title="5 stars" for="friendly5"></label>
+                                        <input value="4" name="friendly" id="friendly4" type="radio">
+                                        <label title="4 stars" for="friendly4"></label>
+                                        <input value="3" name="friendly" id="friendly3" type="radio">
+                                        <label title="3 stars" for="friendly3"></label>
+                                        <input value="2" name="friendly" id="friendly2" type="radio">
+                                        <label title="2 stars" for="friendly2"></label>
+                                        <input value="1" name="friendly" id="friendly1" type="radio">
+                                        <label title="1 star" for="friendly1"></label>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="serviceQuality" id="normal" value="Normal">
-                                        <label for="normal" class="form-check-label">Normal</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="serviceQuality" id="good" value="Good">
-                                        <label for="good" class="form-check-label">Good</label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input type="radio" class="form-check-input" name="serviceQuality" id="veryGood" value="Very Good">
-                                        <label for="veryGood" class="form-check-label">Very Good</label>
+                                </div>
+
+                                <!-- Professionalism Star Rating -->
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h5 for="professionalRating" class="form-label m-0">How was the sprayer's <strong>professionalism</strong>?</h5>
+                                    <div class="rating">
+                                        <input value="5" name="professional" id="professional5" type="radio">
+                                        <label title="5 stars" for="professional5"></label>
+                                        <input value="4" name="professional" id="professional4" type="radio">
+                                        <label title="4 stars" for="professional4"></label>
+                                        <input value="3" name="professional" id="professional3" type="radio">
+                                        <label title="3 stars" for="professional3"></label>
+                                        <input value="2" name="professional" id="professional2" type="radio">
+                                        <label title="2 stars" for="professional2"></label>
+                                        <input value="1" name="professional" id="professional1" type="radio">
+                                        <label title="1 star" for="professional1"></label>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Additional Feedback -->
-                        <div class="row mb-3">
-                            <div class="d-flex col-md-6 align-items-center">
-                                <label class="feedback" for="feedback"><strong>Additional Feedback:</strong></label>
-                            </div>
-                            <div class="col-md-6">
-                                <textarea class="form-control rounded-5" id="feedback" rows="3" placeholder="We would love to hear your sharing..."></textarea>
+                            <!-- Additional Feedback -->
+                            <div class="col-md-6 mb-3">
+                                <h4 class="form-label fw-bold" for="feedback" style="color: var(--primary-color);">Additional Feedback</h4>
+                                <div class="form-floating">
+                                    <textarea class="form-control rounded-4" placeholder="We would love to hear your sharing..." id="feedback" style="height: 100px"></textarea>
+                                    <label for="feedback">We would love to hear your sharing...</label>
+                                  </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Submit Button -->
+                    <div class="d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary fw-bold">Submit</button>
+                    </div>
                 </form>
-                <!-- Submit Button -->
-                <div class="d-flex submitButton">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
             </div>
         </div>
     </div>
