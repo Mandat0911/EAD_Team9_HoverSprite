@@ -43,16 +43,17 @@ public class PageController {
     }
 
     @GetMapping("/register")
-    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error){
+    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("title", "Register");
         model.addAttribute("content", "register");
         model.addAttribute("css", "/stylesheets/login.css");
         model.addAttribute("js", "/js/login.js");
+
         model.addAttribute("user", new User());
         if (error != null) {
             model.addAttribute("error", error);
         }
-        return "layout";  // Assuming 'layout.html' handles the page structure
+        return "layout";
     }
 
     @PostMapping("/process_register")

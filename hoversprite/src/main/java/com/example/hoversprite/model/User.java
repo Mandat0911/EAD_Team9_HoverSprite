@@ -104,6 +104,10 @@ public class User implements UserDetails {
         return enabled;
     }
 
+    public void setFullName(){
+
+    }
+
     public String getFullName() {
         return this.lastName + " " + this.middleName + " " + this.firstName;
     }

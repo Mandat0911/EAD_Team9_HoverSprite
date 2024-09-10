@@ -115,7 +115,7 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("username")
-                        .defaultSuccessUrl("/list_users")
+                        .defaultSuccessUrl("/")
                         .permitAll()
 //                ) .rememberMe(rememberMe -> rememberMe
 //                        .tokenRepository(persistentTokenRepository())
@@ -123,14 +123,14 @@ public class SecurityConfig {
 //                        .key("uniqueAndSecretKey")
 //                        .rememberMeParameter("remember-me")
 //                        .userDetailsService(customerDetailService) // Here is the usage
-//                ).oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/login")
-//                        .defaultSuccessUrl("/list_users")
-//                        .userInfoEndpoint(userInfo -> userInfo.userService(customerOAuth2UserService))
-//                        .successHandler(oAuth2LoginSuccessHandler)
+                ).oauth2Login(oauth2 -> oauth2
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/")
+                        .userInfoEndpoint(userInfo -> userInfo.userService(customerOAuth2UserService))
+                        .successHandler(oAuth2LoginSuccessHandler)
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
+                        .logoutSuccessUrl("/")
                         .permitAll()
                 );
 

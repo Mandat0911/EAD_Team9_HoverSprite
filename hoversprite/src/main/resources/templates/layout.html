@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,25 +33,28 @@
                 <ul class="navbar-nav ml-auto">
                     <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
                     <li class="nav-item active">
-                        <a class="nav-link" href="/"><i class="fa-solid fa-house"></i>home</a>
+                        <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house"></i>home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/about"><i class="fa-solid fa-info-circle"></i>about</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/about}"><i class="fa-solid fa-info-circle"></i>about</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/faqs"><i class="fa-solid fa-question-circle"></i>faqs</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/faqs}"><i class="fa-solid fa-question-circle"></i>faqs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/booking"><i class="fa-solid fa-calendar"></i>booking</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')"  th:href="@{/booking}"><i class="fa-solid fa-calendar"></i>booking</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/orders"><i class="fa-solid fa-file-lines"></i>orders</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/orders}"><i class="fa-solid fa-file-lines"></i>orders</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/account"><i class="fa-solid fa-user"></i>account</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/account}"><i class="fa-solid fa-user"></i>account</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login"><i class="fa-solid fa-user"></i>log in</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}"><i class="fa-solid fa-user"></i>log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/register}"><i class="fa-solid fa-user"></i>register</a>
                     </li>
                 </ul>
             </div>
