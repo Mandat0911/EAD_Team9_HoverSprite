@@ -5,18 +5,18 @@ const authPassword = document.querySelectorAll('.auth__password')
 const toggleBtn = document.querySelector("#themeToggleButton")
 
 // when click sign up button
-signUp.addEventListener('click', () => {
-    document.querySelector('.login__form').classList.remove('active')
-    document.querySelector('.register__form').classList.add('active')
-   
-});
-
-// when click sign in button
-signIn.addEventListener('click', () => {
-    document.querySelector('.login__form').classList.add('active')
-    document.querySelector('.register__form').classList.remove('active')
-    
-});
+// signUp.addEventListener('click', () => {
+//     document.querySelector('.login__form').classList.remove('active')
+//     document.querySelector('.register__form').classList.add('active')
+//
+// });
+//
+// // when click sign in button
+// signIn.addEventListener('click', () => {
+//     document.querySelector('.login__form').classList.add('active')
+//     document.querySelector('.register__form').classList.remove('active')
+//
+// });
 
 // change hidden password to visible password
 for (var i = 0; i < passwordIcon.length; ++i) {
@@ -39,7 +39,7 @@ function updateFullName() {
     const lastName = document.querySelector('#lastname').value.trim();
     const middleName = document.querySelector('#middlename').value.trim();
     const firstName = document.querySelector('#firstname').value.trim();
-    
+
     const fullName = `  ${lastName} ${middleName} ${firstName}`.trim();
     document.querySelector('#full-name-display').textContent = fullName;
 }
@@ -49,7 +49,7 @@ document.querySelector('#lastname').addEventListener('input', updateFullName);
 document.querySelector('#middlename').addEventListener('input', updateFullName);
 document.querySelector('#firstname').addEventListener('input', updateFullName);
 
-// Function to check if passwords match 
+// Function to check if passwords match
 
 function checkPasswordMatch() {
     const submitBtn = document.querySelector('#submit-btn');
@@ -62,7 +62,7 @@ function checkPasswordMatch() {
             passwordMatchMessage.textContent = "Password match";
             passwordMatchMessage.style.color = "#5ce65c";
             submitBtn.disabled = false;
-            
+
         }else{
             passwordMatchMessage.textContent = "Password don't match";
             passwordMatchMessage.style.color = "#c91b00";
@@ -76,7 +76,7 @@ document.querySelector('#register_password').addEventListener('input', checkPass
 document.querySelector('#confirm-password').addEventListener('input', checkPasswordMatch);
 
 
-document.getElementById('login_username').addEventListener('blur', function() {
+document.getElementById('username').addEventListener('blur', function() {
     const usernameField = document.getElementById('login_username');
     const usernameValue = usernameField.value.trim();
 
@@ -109,10 +109,55 @@ document.getElementById('login_password', 'register_password').addEventListener(
 
     // Check if the password meets the required pattern
     const passwordPattern = /^(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-    
+
     if (!passwordPattern.test(passwordValue)) {
         passwordField.setCustomValidity("Password must contain at least one capital letter, one special character, and be at least 8 characters long.");
     } else {
         passwordField.setCustomValidity("");
     }
 });
+
+document.querySelector('#email').addEventListener('blur', function() {
+    const emailInput = this;
+    const domain = '@hoversprite.com';
+    console.log("active")
+    // Check if the input doesn't already contain the domain
+    if (!emailInput.value.includes(domain)) {
+        // Append the domain if it is not present and the field is not empty
+        if (emailInput.value.trim() !== "") {
+            emailInput.value = emailInput.value.split('@')[0] + domain;
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+        login();
+    });
+});
+
+async function login() {
+    const response = await fetch('/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: document.getElementById('username').value,
+            password: document.getElementById('login_password').value,
+
+        }),
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        localStorage.setItem('token', data.token); // Store the token
+        window.location.href = '/list_users'; // Redirect after login
+    } else {
+        console.error('Login failed');
+        alert('Invalid credentials'); // Optional: Show error to user
+    }
+}
