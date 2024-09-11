@@ -14,4 +14,5 @@ public class CustomerOAuth2UserService extends DefaultOAuth2UserService {
         String clientName = userRequest.getClientRegistration().getClientName();
         return new CustomerOAuth2User(super.loadUser(userRequest),clientName);
     }
+
 }

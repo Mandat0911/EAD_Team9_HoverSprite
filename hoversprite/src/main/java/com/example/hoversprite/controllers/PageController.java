@@ -6,12 +6,15 @@ import com.example.hoversprite.repository.UserRepository;
 import com.example.hoversprite.service.CustomerDetailService;
 import com.example.hoversprite.service.PasswordValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 public class PageController {
@@ -42,8 +45,22 @@ public class PageController {
         return "layout";
     }
 
+//    @GetMapping("/register")
+//    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error) {
+//        model.addAttribute("title", "Register");
+//        model.addAttribute("content", "register");
+//        model.addAttribute("css", "/stylesheets/login.css");
+//        model.addAttribute("js", "/js/login.js");
+//
+//        model.addAttribute("user", new User());
+//         if (error != null) {
+//             model.addAttribute("error", error);
+//         }
+//        return "layout";
+//    }
+
     @GetMapping("/register")
-    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error){
+    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("title", "Register");
         model.addAttribute("content", "register");
         model.addAttribute("css", "/stylesheets/login.css");
@@ -52,7 +69,7 @@ public class PageController {
         if (error != null) {
             model.addAttribute("error", error);
         }
-        return "layout";  // Assuming 'layout.html' handles the page structure
+        return "layout";
     }
 
     @PostMapping("/process_register")
@@ -80,7 +97,7 @@ public class PageController {
 
     @GetMapping("/orders")
     public String orders(Model model) {
-        model.addAttribute("title", "Orders");
+        model.addAttribute("title", "Orders Management");
         model.addAttribute("content", "orders");
         model.addAttribute("css", "/stylesheets/orders.css");
         model.addAttribute("js", "/js/orders.js");
@@ -93,6 +110,18 @@ public class PageController {
         model.addAttribute("content", "orderDetails");
         model.addAttribute("css", "/stylesheets/orderDetails.css");
         model.addAttribute("js", "/js/orderDetails.js");
+        return "layout";
+    }
+
+    @GetMapping("/users")
+    public String users(Model model) {
+        model.addAttribute("title", "Users Management");
+        model.addAttribute("content", "users");
+        model.addAttribute("css", "/stylesheets/users.css");
+        model.addAttribute("js", "/js/users.js");
+
+        List<User> listUsers = userRepository.findAll();
+        model.addAttribute("listUsers", listUsers);
         return "layout";
     }
 
@@ -137,4 +166,6 @@ public class PageController {
         model.addAttribute("css", "/stylesheets/faqs.css");
         return "layout";
     }
+
+
 }

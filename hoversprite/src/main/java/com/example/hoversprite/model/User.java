@@ -25,13 +25,13 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     String lastName;
 
     @Column(length = 50)
     String middleName;
 
-    @Column(nullable = false, length = 50)
+    @Column(length = 50)
     String firstName;
 
     @Column(unique = true, nullable = false)
@@ -46,8 +46,11 @@ public class User implements UserDetails {
     @Column(unique = true)
     String email;
 
-    //    @Enumerated(EnumType.STRING)
+
+//    @Enumerated(EnumType.STRING)
 //    AuthenticatedRoles role;
+
+
     @Column(columnDefinition = "TINYINT(4)")
     boolean enabled = true;
 
@@ -102,6 +105,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public void setFullName(){
+
     }
 
     public String getFullName() {

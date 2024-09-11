@@ -33,5 +33,23 @@
 #
 #server:
 #  port: 8080
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 533619094682-cdjqnhsun0ch2mu9l0q65dn1r3k49uov.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+          facebook:
+            client-id: 1317537535892148
+            client-secret: 919e6ba83e93573dd0e30761fdb6db5c
+            scope:
+              - email
+              - public_profile
+
 
   

@@ -1,6 +1,6 @@
 
 <div th:fragment="content" class="booking-container">
-    <h1 class="text-center mt-5 fw-bold">Book A Spraying Service</h1>
+    <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Book A Spraying Service</h1>
     <div class="d-flex justify-content-center align-items-center">
         <div class="box-container">
             <div class="progress">
@@ -14,8 +14,8 @@
                     <h3 class="fw-bold" style="color: var(--primary-color);">Order Details</h3>
                     <h6 class="text-secondary fw-bold">We need a few details to deliver the most suitable drone to your farmland.</h6>
                     <hr class="my-3">
-                    <div class="d-flex flex-row justify-content-center">
-                        <div class="d-flex flex-column align-items-start w-50">
+                    <div class="row">
+                        <div class="col-md-6">
                             <h4 class="fw-bold" style="color: var(--primary-color);">Farmer Details</h4>
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
@@ -45,7 +45,8 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex flex-column align-items-start w-50">
+                        <hr class="my-5 hidden">
+                        <div class="col-md-6">
                             <h4 class="fw-bold" style="color: var(--primary-color);">Farmland Details</h4>
                             <div class="form-group input-group">
                                 <label for="crop_type" class="form-label d-block">Type of crop *</label>
@@ -75,16 +76,25 @@
                 <div class="form-step px-4 py-3">
                     <h3 class="fw-bold" style="color: var(--primary-color);">Select a Spraying Session</h3>
                     <h6 class="text-secondary fw-bold">Note: Fully booked slots are be disabled.</h6>
-                    <div class="d-flex flex-column align-items-start w-50">
-                        <div class="form-group">
-                            <label for="datePicker" class="form-label">Date *</label>
-                            <input type="text" id="datePicker" class="form-control" placeholder="dd/mm/yyyy">
+                    <hr class="my-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="datePicker" class="form-label">Date *</label>
+                                <input type="text" id="datePicker" class="form-control" placeholder="dd/mm/yyyy">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="datePicker" class="form-label">Time Slot *</label>
+                                <input type="text" id="timePicker" class="form-control" placeholder="hh:mm">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="calendar-container mt-5">
+                    <!-- <div class="calendar-container mt-5"> -->
                         <!-- Date Header -->
-                        <div class="calendar-row header-row">
+                        <!-- <div class="calendar-row header-row">
                             <div class="calendar-cell time-cell"></div>
                             <div class="calendar-cell header-cell">
                                 <div class="day-name">MON</div>
@@ -122,10 +132,10 @@
                                 <div class="lunar-date">7</div>
                             </div>
                             
-                        </div>
+                        </div> -->
                     
                         <!-- Morning Time Slots -->
-                        <div class="calendar-row">
+                        <!-- <div class="calendar-row">
                             <div class="calendar-cell time-cell">4 AM</div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                             <div class="calendar-cell"><button class="select-btn unavailable">Select</button></div>
@@ -174,10 +184,10 @@
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
+                        </div> -->
 
                         <!-- Separation Row -->
-                        <div class="calendar-row">
+                        <!-- <div class="calendar-row">
                             <div class="calendar-cell time-cell">--</div>
                             <div class="calendar-cell"></div>
                             <div class="calendar-cell"></div>
@@ -186,10 +196,10 @@
                             <div class="calendar-cell"></div>
                             <div class="calendar-cell"></div>
                             <div class="calendar-cell"></div>
-                        </div>
+                        </div> -->
                     
                         <!-- Afternoon Time Slots -->
-                        <div class="calendar-row">
+                        <!-- <div class="calendar-row">
                             <div class="calendar-cell time-cell">4 PM</div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
@@ -209,7 +219,7 @@
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                             <div class="calendar-cell"><button class="select-btn available">Select</button></div>
                         </div>
-                    </div>
+                    </div> -->
                     
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary btn-back">Back</button>
@@ -221,36 +231,42 @@
                 <div class="form-step px-4 py-3">
                     <h3 class="fw-bold" style="color: var(--primary-color);">Payment</h3>
                     <h6 class="text-secondary fw-bold">Please choose a payment method.</h6>
-                    <div class="d-flex flex-column align-items-start w-50">
-                        <div class="form-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="payment1" value="Credit / Debit Card" checked>
-                                <label class="form-check-label" for="payment1">Credit / Debit Card</label>
+                    <hr class="my-3">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="payment" class="form-label d-block">Payment Method *</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="payment1" value="Credit / Debit Card" checked>
+                                    <label class="form-check-label" for="payment1">Credit / Debit Card</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="payment" id="payment2" value="Cash on Delivery">
+                                    <label class="form-check-label" for="payment2">Cash on Delivery</label>
+                                </div>
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="payment2" value="Cash on Delivery">
-                                <label class="form-check-label" for="payment2">Cash on Delivery</label>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="card_name" class="form-label d-block">Cardholder Name *</label>
+                                <input type="text" class="form-control" id="card_name" placeholder="NGUYEN VAN A" required>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="card_name" class="form-label d-block">Cardholder Name *</label>
-                            <input type="text" class="form-control" id="card_name" placeholder="NGUYEN VAN A" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="card_number" class="form-label d-block">Card Number *</label>
-                            <input type="text" class="form-control" id="card_number" placeholder="1234 **** **** 1121" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="expiry_date" class="form-label d-block">Expiration Date *</label>
-                            <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv" class="form-label d-block">CVV *</label>
-                            <input type="text" class="form-control" id="cvv" placeholder="123" required>
-                        </div>
-                        <div class="form-group">
-                            <input id="email" type="checkbox" class="form-input">
-                            <label for="email">Send me an email</label>
+                            <div class="form-group">
+                                <label for="card_number" class="form-label d-block">Card Number *</label>
+                                <input type="text" class="form-control" id="card_number" placeholder="1234 **** **** 1121" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="expiry_date" class="form-label d-block">Expiration Date *</label>
+                                <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv" class="form-label d-block">CVV *</label>
+                                <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                            </div>
+                            <div class="form-group">
+                                <input id="email" type="checkbox" class="form-input">
+                                <label for="email">Send me an email</label>
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
@@ -261,40 +277,40 @@
             </form>
         </div>
         <div class="d-none box-container px-4 order-summary-container">
-            <h3>Order Summary</h3>
-            <h5 class="text-secondary fw-bold">Please carefully check your order below.</h5>
-            <hr class="my-5">
+            <h3 class="fw-bold" style="color: var(--primary-color)">Order Summary</h3>
+            <h6 class="text-secondary fw-bold">Please carefully check your order below.</h6>
+            <hr class="my-4">
             <div class="d-flex flex-row justify-content-between">
                 <div class="d-flex flex-column align-items-start">
-                    <h4 class="fw-bold my-2">Type of crop</h4>
-                    <h4 class="fw-bold my-2">Farmland area</h4>
-                    <h4 class="fw-bold my-2">Desired date</h4>
-                    <h4 class="fw-bold my-2">Time slot</h4>
+                    <h5 class="fw-bold my-2">Type of crop</h5>
+                    <h5 class="fw-bold my-2">Farmland area</h5>
+                    <h5 class="fw-bold my-2">Desired date</h5>
+                    <h5 class="fw-bold my-2">Time slot</h5>
                 </div>
                 <div class="d-flex flex-column align-items-end" style="color: var(--secondary-color)">
-                    <h4 class="fw-bold my-2">Vegetable</h4>
-                    <h4 class="fw-bold my-2">5 decare</h4>
-                    <h4 class="fw-bold my-2">15/08/2024 (Gregorian)</h4>
-                    <h4 class="fw-bold my-2">06:00 – 07:00 AM</h4>
+                    <h5 class="fw-bold my-2">Vegetable</h5>
+                    <h5 class="fw-bold my-2">5 decare</h5>
+                    <h5 class="fw-bold my-2">15/08/2024 (Gregorian)</h5>
+                    <h5 class="fw-bold my-2">06:00 – 07:00 AM</h5>
                 </div>
             </div>
-            <hr class="my-5">
+            <hr class="my-4">
             <div class="d-flex flex-row justify-content-between align-items-center">
                 <div class="d-flex flex-column align-items-start">
                     <h4 class="fw-bold my-2">Unit price</h4>
                 </div>
                 <div class="d-flex flex-column align-items-end" style="color: var(--secondary-color)">
                     <h3 class="fw-bold my-2" style="color: var(--secondary-color)">30,000 VND</h3>
-                    <h5 class="fw-bold">/decare</h5>
+                    <h6 class="fw-bold">/decare</h6>
                 </div>
             </div>
-            <hr class="my-5">
+            <hr class="my-4">
             <div class="d-flex flex-row justify-content-between mb-5">
                 <div class="d-flex flex-column align-items-start">
-                    <h2 class="fw-bold my-2">Total</h2>
+                    <h3 class="fw-bold my-2">Total</h3>
                 </div>
                 <div class="d-flex flex-column align-items-end" style="color: var(--secondary-color)">
-                    <h2 class="fw-bold my-2">150,000 VND</h2>
+                    <h3 class="fw-bold my-2">150,000 VND</h3>
                 </div>
             </div>
         </div>
