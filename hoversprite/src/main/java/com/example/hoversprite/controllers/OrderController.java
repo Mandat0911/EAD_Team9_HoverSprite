@@ -1,9 +1,9 @@
 package com.example.hoversprite.controllers;
 
 import com.example.hoversprite.dto.OrderStatusUpdateDto;
-import com.example.hoversprite.order.service.OrderService;
-import com.example.hoversprite.user.models.Order;
-import com.example.hoversprite.order.service.EmailService;
+import com.example.hoversprite.model.Order;
+import com.example.hoversprite.service.EmailService;
+import com.example.hoversprite.service.OrderService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

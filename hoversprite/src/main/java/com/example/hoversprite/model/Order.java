@@ -1,4 +1,6 @@
-package com.example.hoversprite.user.models;
+package com.example.hoversprite.model;
+
+import com.example.hoversprite.model.User;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

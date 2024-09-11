@@ -1,10 +1,10 @@
-package com.example.hoversprite.order.service;
+package com.example.hoversprite.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.hoversprite.repositories.OrderRepository;
-import com.example.hoversprite.user.models.Order;
+import com.example.hoversprite.model.Order;
+import com.example.hoversprite.repository.OrderRepository;
 
 @Service
 public class OrderService {

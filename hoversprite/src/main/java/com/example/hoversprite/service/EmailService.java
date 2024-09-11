@@ -1,4 +1,4 @@
-package com.example.hoversprite.order.service;
+package com.example.hoversprite.service;
 
 import org.springframework.stereotype.Service;
 

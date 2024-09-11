@@ -1,26 +1,42 @@
 package com.example.hoversprite.model;
 
-import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(schema = "hoversprite")
-@Getter(AccessLevel.PUBLIC)
-@Setter(AccessLevel.PUBLIC)
+@Table(schema = "hoversprite", name = "users")
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -29,7 +45,7 @@ public class User implements UserDetails {
     String lastName;
 
     @Column(length = 50)
-    String middleName;
+    String middleName;  // Optional middle name
 
     @Column(nullable = false, length = 50)
     String firstName;
@@ -43,33 +59,32 @@ public class User implements UserDetails {
     @Column(nullable = false)
     String password;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     String email;
 
-    //    @Enumerated(EnumType.STRING)
-//    AuthenticatedRoles role;
     @Column(columnDefinition = "TINYINT(4)")
     boolean enabled = true;
 
-    @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    // Many-to-Many relationship for roles
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+        name = "users_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
     Set<Role> roles = new HashSet<>();
 
-    public User(){};
-
-    public void addRole(Role role){
+    // Method to add a role to the user
+    public void addRole(Role role) {
         this.roles.add(role);
     }
 
-
+    // Return authorities based on the roles of the user
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));  // Ensure roles are prefixed with ROLE_
         }
         return authorities;
     }
@@ -81,9 +96,10 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.phone; // Assuming phone is used as the username
+        return this.phone;  // Assuming phone is used as the username
     }
 
+    // These methods are used by Spring Security to check account status
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -104,7 +120,8 @@ public class User implements UserDetails {
         return enabled;
     }
 
+    // Optional utility method to get the user's full name
     public String getFullName() {
-        return this.lastName + " " + this.middleName + " " + this.firstName;
+        return this.lastName + " " + (this.middleName != null ? this.middleName + " " : "") + this.firstName;
     }
 }

@@ -25,64 +25,16 @@
                                         <div class="table-responsive table-scroll" data-mdb-perfect-scrollbar="true" style="position: relative;">
                                             <table class="table table-striped mb-0">
                                                 <thead>
-                                                <tr>
-                                                    <th scope="col">No.</th>
-                                                    <th scope="col">Date</th>
-                                                    <th scope="col">Total</th>
-                                                    <th scope="col">Status</th>
-                                                    <th scope="col"></th>
-                                                </tr>
+                                                    <tr>
+                                                        <th scope="col" onclick="sortTable('id')">No. <span id="sort-id" class="sort-indicator"></span></th>
+                                                        <th scope="col" onclick="sortTable('date')">Date <span id="sort-date" class="sort-indicator"></span></th>
+                                                        <th scope="col" onclick="sortTable('total')">Total <span id="sort-total" class="sort-indicator"></span></th>
+                                                        <th scope="col" onclick="sortTable('status')">Status <span id="sort-status" class="sort-indicator"></span></th>
+                                                        <th scope="col"></th>
+                                                    </tr>
                                                 </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>7</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-pending">Pending</td>
-                                                    <td><button class="btn btn-link"><a href="/account/order_details">→</a></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>6</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-confirmed">Confirmed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-assigned">Assigned</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-inprogress">In Progress</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-completed">Completed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-canceled">Canceled</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>12-10-2023</td>
-                                                    <td>450,000 VND</td>
-                                                    <td class="status-completed">Completed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
+                                                <tbody id="customerTblBody">
+                                                    <!-- Rows will be dynamically injected here -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -95,4 +47,6 @@
             </div>
         </div>
     </div>
+    <!-- Include the JavaScript file -->
+    <script src="../static/js/notificationTable.js"></script>
 </div>
