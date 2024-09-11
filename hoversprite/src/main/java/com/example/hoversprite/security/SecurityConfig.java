@@ -124,12 +124,12 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .defaultSuccessUrl("/")
                         .permitAll()
-                ) .rememberMe(rememberMe -> rememberMe
-                        .tokenRepository(persistentTokenRepository())
-                        .tokenValiditySeconds(3 * 24 * 60 * 60)
-                        .key("uniqueAndSecretKey")
-                        .rememberMeParameter("remember-me")
-                        .userDetailsService(customerDetailService) // Here is the usage
+//                ) .rememberMe(rememberMe -> rememberMe
+//                        .tokenRepository(persistentTokenRepository())
+//                        .tokenValiditySeconds(3 * 24 * 60 * 60)
+//                        .key("uniqueAndSecretKey")
+//                        .rememberMeParameter("remember-me")
+//                        .userDetailsService(customerDetailService) // Here is the usage
                 ).oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .defaultSuccessUrl("/")

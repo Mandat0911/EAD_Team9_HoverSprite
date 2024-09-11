@@ -26,6 +26,8 @@
                         <img class="user-img mx-5" src="/images/drone-1.png">
                         <h4 sec:authentication="principal.fullName"></h4>
 
+                        <span sec:authentication="principal.authorities">Roles</span>
+
                     </div>
                     <div class="col-md-6 d-flex flex-row-reverse align-items-center ">
                         <button class="btn btn-primary rounded-pill" onclick="updateInfo()"><i class="bi bi-pencil-square mr-5">   Update</i></button>
