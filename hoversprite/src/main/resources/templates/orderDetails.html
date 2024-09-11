@@ -1,4 +1,4 @@
-<div th:fragment="content" class="order-details-container py-3">
+<div th:fragment="content" class="order-details-container py-3" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <!-- Back Navigation -->
     <a href="/orders" class="back-navigation"><i class="fa-solid fa-angle-left mx-2"></i>Orders List</a>
 
@@ -79,16 +79,22 @@
                         <h6 id="noSprayerMessage" class="text-secondary m-0">No sprayer has been assigned to this order yet.</h6>
                         <!-- Assigned Sprayer Container -->
                         <div id="assignedSprayerContainer" class="d-flex flex-column">
-                            
+
+                            <hr class="my-3">
+
+                            <!-- Only visible to RECEPTIONIST role -->
+                            <div sec:authorize="hasAuthority('RECEPTIONIST')">
+                                <h6 id="sprayerError" class="text-danger my-3"></h6>
+                                <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
+                                    <i class="fa-solid fa-plus"></i> Add Sprayer
+                                </button>
+                            </div>
                         </div>
-                        <hr class="my-3">
+
 
                         <!-- SECTION ONLY FOR RECEPTIONIST: assign sprayer(s) -->
                         <!-- Add sprayer button/icon -->
-                        <h6 id="sprayerError" class="text-danger my-3"></h6>
-                        <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
-                            <i class="fa-solid fa-plus"></i> Add Sprayer
-                        </button>
+
 
                         <!-- Select another sprayer dropdown (hidden initially) -->
                         <div id="sprayerSelectContainer" class="d-none mt-3">
