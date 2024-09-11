@@ -17,8 +17,8 @@ public class UserAPI {
     @Autowired
     private UserRepository userRepository;
 
-    @GetMapping
-    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
+    @GetMapping("/all")
+    //@PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
     public List<User> getUsers() {
         return userRepository.findAll();
     }
