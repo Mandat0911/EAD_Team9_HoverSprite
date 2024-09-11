@@ -1,6 +1,10 @@
 package com.example.hoversprite.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,10 +36,17 @@ public class OrderService {
     /**
      * Retrieve all orders
      */
-    public List<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public Page<Order> getAllOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
-
+    public Page<Order> getOrdersByUserId(Long userId, Pageable pageable) {
+        return orderRepository.findOrdersByUserId(userId, pageable);
+    }
+    public Page<Order> getAllOrders(int page, int size, String sortBy, Sort.Direction direction) {
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return orderRepository.findAll(pageable);
+    }
     /**
      * Update an existing order
      */
@@ -81,4 +92,5 @@ public class OrderService {
         // You would replace this with your specific business logic
         return order.getFarmlandArea() * 10; // Assuming $10 per unit of farmland area
     }
+
 }
