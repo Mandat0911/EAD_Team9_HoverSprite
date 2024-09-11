@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper function to format date
     function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' (Gregorian)';
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' (Lunar Date)';
     }
 
     // Helper function to get status color
@@ -161,6 +161,4 @@ document.addEventListener('DOMContentLoaded', function() {
             default: return 'secondary';
         }
     }
-
-    // ... (keep the existing sprayer and payment logic) ...
 });
