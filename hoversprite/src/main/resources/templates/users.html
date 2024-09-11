@@ -7,19 +7,30 @@
                     <th scope="col">ID</th>
                     <th scope="col">Full Name</th>
                     <th scope="col">Email</th>
+<!--                    <th scope="col">Role</th>-->
                     <th scope="col">Phone</th>
                     <th scope="col">Address</th>
+<!--                    <th scope="col">Actions</th>-->
 
                 </tr>
             </thead>
             <tbody id="userTableBody">
-                <!-- <tr user-id="1">
-                    <td>1</td>
-                    <td>Do Phuong Linh</td>
-                    <td>linhdo@hoversprite.com</td>
-                    <td >0123345893</td>
-                    <td>RMIT University</td>
-                </tr> -->
+            <tr th:each="user : ${listUsers}">
+                <td th:text="${user.id}">User ID</td>
+                <td th:text="${user.fullName}">Full Name</td>
+                <td th:text="${user.email}">Email</td> <!-- Corrected field -->
+<!--                <td th:text="${user.firstName}">Role</td>-->
+                <td th:text="${user.phone}">Phone</td>
+                <td th:text="${user.address}">Address</td>
+<!--                <td>-->
+<!--                    &lt;!&ndash; Display user roles in a readable format &ndash;&gt;-->
+<!--                    <span th:each="role : ${user.   roles}" th:text="${role.name}" class="m-2"></span>-->
+<!--                </td>-->
+<!--                <td sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER')">-->
+<!--                    <a sec:authorize="hasAnyAuthority('RECEPTIONIST')" th:href="@{'users/edit/' + ${user.id}}">Edit</a>-->
+
+<!--                </td>-->
+            </tr>
             </tbody>
         </table>
     </div>
