@@ -18,13 +18,13 @@ public class UserAPI {
     private UserRepository userRepository;
 
     @GetMapping
-    //@PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
     public List<User> getUsers() {
         return userRepository.findAll();
     }
 
     @PostMapping
-    //@PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
     public ResponseEntity<User> createUser(@RequestBody @Valid User user){
         User savedUser = userRepository.save(user);
         URI userURI = URI.create("/users/" + savedUser.getId());
