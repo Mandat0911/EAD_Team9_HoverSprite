@@ -1,0 +1,59 @@
+<div class="feedback-form" th:if="${orderStatus == 'Completed'}">
+    <h3>Provide Feedback for Your Service</h3>
+    <form action="/account/submit_feedback" method="post">
+        <!-- Feedback Text Area -->
+        <div class="form-group">
+            <label for="feedbackText">Your feedback</label>
+            <textarea class="form-control" id="feedbackText" name="feedbackText" rows="4" placeholder="Write your feedback..."></textarea>
+        </div>
+        
+        <!-- Overall Rating -->
+        <div class="form-group">
+            <label>Overall Satisfaction:</label>
+            <div class="rating">
+                <input type="radio" name="overallRating" value="1"> 1
+                <input type="radio" name="overallRating" value="2"> 2
+                <input type="radio" name="overallRating" value="3"> 3
+                <input type="radio" name="overallRating" value="4"> 4
+                <input type="radio" name="overallRating" value="5"> 5
+            </div>
+        </div>
+
+        <!-- Additional Ratings -->
+        <div class="form-group">
+            <label>Attentiveness:</label>
+            <div class="rating">
+                <input type="radio" name="attentivenessRating" value="1"> 1
+                <input type="radio" name="attentivenessRating" value="2"> 2
+                <input type="radio" name="attentivenessRating" value="3"> 3
+                <input type="radio" name="attentivenessRating" value="4"> 4
+                <input type="radio" name="attentivenessRating" value="5"> 5
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Friendliness:</label>
+            <div class="rating">
+                <input type="radio" name="friendlinessRating" value="1"> 1
+                <input type="radio" name="friendlinessRating" value="2"> 2
+                <input type="radio" name="friendlinessRating" value="3"> 3
+                <input type="radio" name="friendlinessRating" value="4"> 4
+                <input type="radio" name="friendlinessRating" value="5"> 5
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Professionalism:</label>
+            <div class="rating">
+                <input type="radio" name="professionalismRating" value="1"> 1
+                <input type="radio" name="professionalismRating" value="2"> 2
+                <input type="radio" name="professionalismRating" value="3"> 3
+                <input type="radio" name="professionalismRating" value="4"> 4
+                <input type="radio" name="professionalismRating" value="5"> 5
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Submit Feedback</button>
+    </form>
+</div>
