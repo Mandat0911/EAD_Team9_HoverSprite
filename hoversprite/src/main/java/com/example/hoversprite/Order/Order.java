@@ -15,9 +15,7 @@ public class Order {
     private Long orderId;
 
     @ManyToOne
-    @JoinTable(
-            name = "user",
-            joinColumns = @JoinColumn(name = "id"))
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "CropType")
@@ -158,7 +156,6 @@ public class Order {
     public String toString() {
         return "Order{" +
                 "orderId=" + orderId +
-                ", user=" + user +
                 ", cropType='" + cropType + '\'' +
                 ", farmlandArea=" + farmlandArea +
                 ", time='" + time + '\'' +
