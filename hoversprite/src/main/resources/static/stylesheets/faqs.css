@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif !important;
+}
+
+/* FAQ Section */
+.faq-container h1 {
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.faq-container .accordion-button {
+    font-weight: bold;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.faq-container .accordion-button:focus {
+    box-shadow: none;
+}
+
+.faq-container .accordion-button:not(.collapsed) {
+    background-color: var(--secondary-color);
+}
+
+.faq-container .accordion-item {
+    border: none;
+}
+
+.faq-container .accordion-body {
+    font-size: 1rem;
+    color: #666;
+}
+
