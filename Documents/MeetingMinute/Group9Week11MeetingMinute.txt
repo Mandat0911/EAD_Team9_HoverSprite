@@ -1,0 +1,9 @@
+Group 9 Week 7 Meeting minutes
+1. What did your team do well last week?
+For this week we had implemented various functions for this project such as both log in and sign up features for the website. Moreover the team did also sucessfully able to display most of the back-end to the front end. For instance the website now able to display pages according to roles, user profile details after log in and both the list of all orders and order details.
+
+2. What are the impediments of your project?
+The team still unable to display the orders list based on the user's role (e.g. for farmer, only display orders the farmer made).Not only that but we also struggling to display real time calendar based on the selected day on the date picker. And finally the system still cannot retrieve full details for user who sign up with google/facebook to be displayed on user profile/booking page.
+
+3. What are your solutions to address the impediments stated in section 2?
+For this final push, the teamm will further research from more sources in the internet to solve the impediments of the project and also ask for help from the professor through emails if necessary. And specifically for the unability to retrieve details from google/facebook users, For now we will ask user to complete the details (e.g. must fill in phone number to continue) after user log in for the first time so the system can get the details it needs.
