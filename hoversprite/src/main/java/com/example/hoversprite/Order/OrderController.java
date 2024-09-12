@@ -1,4 +1,4 @@
-package com.example.hoversprite.Order;
+package com.example.hoversprite.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
