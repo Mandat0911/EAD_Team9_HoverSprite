@@ -1,12 +1,8 @@
 package com.example.hoversprite.controllers;
 
-import com.example.hoversprite.model.User;
-import com.example.hoversprite.repository.RoleRepository;
-import com.example.hoversprite.repository.UserRepository;
-import com.example.hoversprite.service.CustomerDetailService;
-import com.example.hoversprite.service.PasswordValidationService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import com.example.hoversprite.model.User;
+import com.example.hoversprite.repository.RoleRepository;
+import com.example.hoversprite.repository.UserRepository;
+import com.example.hoversprite.service.CustomerDetailService;
+import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
 public class PageController {
@@ -167,5 +167,18 @@ public class PageController {
         return "layout";
     }
 
+    @GetMapping("/copyright")
+    public String copyright() {
+        return "copyright";
+    }
 
+    @GetMapping("/terms-of-service")
+    public String terms_of_service() {
+        return "terms-of-service";
+    }
+
+    @GetMapping("/privacy-policy")
+    public String privacy_policy() {
+        return "privacy-policy";
+    }
 }
