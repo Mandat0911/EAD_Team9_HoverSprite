@@ -99,7 +99,18 @@
     transform: translateX(6px);
     }
 }
+#messageContainer {
+    margin-top: 1rem;
+}
 
+#messageContainer .alert {
+    margin-bottom: 0;
+}
+
+#messageContainer .spinner-border {
+    width: 1.5rem;
+    height: 1.5rem;
+}
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
