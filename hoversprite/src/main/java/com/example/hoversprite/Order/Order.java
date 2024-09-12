@@ -1,4 +1,4 @@
-package com.example.hoversprite.order;
+package com.example.hoversprite.Order;
 
 import com.example.hoversprite.model.User;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.example.hoversprite.order;
+package com.example.hoversprite.Order;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
