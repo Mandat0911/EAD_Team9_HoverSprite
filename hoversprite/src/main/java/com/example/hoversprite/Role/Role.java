@@ -1,4 +1,4 @@
-package com.example.hoversprite.model;
+package com.example.hoversprite.Role;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

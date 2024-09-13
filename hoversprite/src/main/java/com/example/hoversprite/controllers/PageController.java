@@ -1,12 +1,12 @@
 package com.example.hoversprite.controllers;
 
-import com.example.hoversprite.model.User;
-import com.example.hoversprite.repository.RoleRepository;
-import com.example.hoversprite.repository.UserRepository;
-import com.example.hoversprite.service.CustomerDetailService;
+import com.example.hoversprite.user.UserDetailService;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.Role.RoleRepository;
+import com.example.hoversprite.user.UserRepository;
+
 import com.example.hoversprite.service.PasswordValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ public class PageController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private CustomerDetailService customerDetailService;
+    private UserDetailService userDetailService;
     @Autowired
     private PasswordValidationService passwordValidationService;
     @Autowired
@@ -78,7 +78,7 @@ public class PageController {
         passwordValidationService.validatePassword(user.getPassword());
 
         try {
-            customerDetailService.registerUser(user);
+            userDetailService.registerUser(user);
             return "redirect:/login";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
@@ -129,7 +129,7 @@ public class PageController {
     public String account(Model model) {
         model.addAttribute("title", "Account");
         model.addAttribute("content", "userProfile"); // Load userProfile by default
-        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         model.addAttribute("js", "/js/userProfile.js");
         return "layout";
     }
@@ -138,7 +138,7 @@ public class PageController {
     public String userProfile(Model model) {
         model.addAttribute("title", "User Profile");
         model.addAttribute("content", "userProfile");
-        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         model.addAttribute("js", "/js/userProfile.js");
         return "layout";
     }
@@ -147,7 +147,7 @@ public class PageController {
     public String notifications(Model model) {
         model.addAttribute("title", "Notifications");
         model.addAttribute("content", "notifications");
-        model.addAttribute("css", "/stylesheets/notifications.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         return "layout";
     }
 

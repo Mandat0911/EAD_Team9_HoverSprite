@@ -1,0 +1,59 @@
+
+.profile-container .sidebar h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+}
+.profile-container .sidebar {
+    border-right: 1px solid #dee2e6;
+    height: 100%;
+}
+.profile-container .box-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    padding: 20px 10px;
+}
+.profile-container .account-info {
+    padding: 20px;
+}
+
+.profile-container .form-label {
+    font-weight: bold;
+    color: var(--secondary-color);
+
+}
+.profile-container .nav-item a{
+    color: var(--primary-color);
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+.profile-container .nav-item a:hover{
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.profile-container .nav-item a.active{
+    font-weight: bold;
+    border-left: 3px solid var(--primary-color);
+}
+
+.profile-container .btn {
+    padding: 5px;
+    width: 150px;
+    background-color: var(--secondary-color) !important;
+}
+
+.profile-container .user-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+}
+
+.profile-container .details {
+    background-color: var(--grey);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
