@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,28 +11,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="/stylesheets/navbar.css">
     <link rel="stylesheet" href="/stylesheets/footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Page-Specific CSS -->
-    <link rel="stylesheet" href="/stylesheets/copyright.css"> <!-- Add this line if you have specific styles for copyright page -->
+    <link rel="stylesheet" href="/stylesheets/copyright.css">
+    <!-- Add this line if you have specific styles for copyright page -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
     <!-- Navbar -->
     <div id="header">
         <nav class="navbar navbar-expand-lg navbar-mainbg">
             <a class="navbar-brand navbar-logo fw-bold" style="color: white; font-size: 50px;" href="/">HoverSprite</a>
-            <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars text-white"></i>
+            <button class="navbar-toggler" type="button" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <!-- Include similar nav items as in layout.html here -->
                     <li class="nav-item">
                         <a class="nav-link" href="/"><i class="fa-solid fa-house"></i> Home</a>
                     </li>
-                    <!-- Add other nav items as needed -->
                 </ul>
             </div>
         </nav>
@@ -41,10 +43,14 @@
     <div id="main-content" class="container mt-4">
         <h1 class="text-center">Copyright Information</h1>
         <p class="text-center">&copy; 2024 HoverSprite. All rights reserved.</p>
-        <p class="text-center">This website and its content are owned by HoverSprite, created by Group 9 and may not be copied, distributed, or reproduced in any way without prior written consent.</p>
+        <p class="text-center">The HoverSprite website and its content are owned and created by Group 9 of EEET2580 -
+            Enterprise Application Development and may not be copied, distributed, or reproduced in any way without
+            prior written consent.</p>
         <p class="text-center">Last updated: September 2024</p>
-        <div class="text-center mt-4">
-            <button class="btn btn-primary" onclick="goBack()">Back</button>
+        <div class="d-flex justify-content-center">
+            <div class="col-md-6 text-center">
+                <img src="/images/RMIT_logo.png" class="img-fluid bounce d-block">
+            </div>
         </div>
     </div>
 
@@ -57,7 +63,9 @@
                         <div class="footer-about">
                             <div class="footer-logo">
                                 <a href="#">
-                                    <p><h1 style="color: white;"><strong>Hover Sprite</strong></h1></p>
+                                    <p>
+                                        <h1 style="color: white;"><strong>Hover Sprite</strong></h1>
+                                    </p>
                                 </a>
                             </div>
                             <p>The Customer is at the heart of our unique business model.</p>
@@ -75,7 +83,7 @@
                             </ul>
                         </div>
                     </div>
-    
+
                     <div class="col-lg-2 col-md-3 col-sm-6 text-center">
                         <div class="footer-widget">
                             <h6>Links</h6>
@@ -89,7 +97,7 @@
                             </ul>
                         </div>
                     </div>
-    
+
                     <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6 text-center">
                         <div class="footer-widget">
                             <h6>Newsletter</h6>
@@ -97,8 +105,9 @@
                                 <p>Be the first to know about new arrivals.</p>
                                 <form action="#">
                                     <input type="email" placeholder="Your email@gmail.com">
-                                    <button type="submit"><span><i class="fa fa-envelope" aria-hidden="true"></i></span></button>
-                                    
+                                    <button type="submit"><span><i class="fa fa-envelope"
+                                                aria-hidden="true"></i></span></button>
+
                                 </form>
                             </div>
                         </div>
@@ -111,7 +120,7 @@
                         </div>
                     </div>
                 </div>
-            </div>  
+            </div>
         </footer>
     </div>
 
@@ -122,4 +131,5 @@
         }
     </script>
 </body>
+
 </html>
