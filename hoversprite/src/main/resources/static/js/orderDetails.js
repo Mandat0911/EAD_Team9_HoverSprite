@@ -1,4 +1,4 @@
-// mock data for list of all sprayers (replace with database)
+// mock data for list of all sprayers (fetch all sprayers from backend here)
 const allSprayers = [
     { name: 'Nguyen Van B', type: 'Adept', available: true },
     { name: 'Tran Van C', type: 'Expert', available: false },
@@ -7,32 +7,32 @@ const allSprayers = [
     { name: 'Phan Van E', type: 'Apprentice', available: false }
 ];
 
-const addSprayerButton = document.getElementById('addSprayerButton');
-const sprayerSelectContainer = document.getElementById('sprayerSelectContainer');
-const sprayerSelect = document.getElementById('sprayerSelect');
-const sprayerError = document.getElementById('sprayerError');
-const noSprayerMessage = document.getElementById('noSprayerMessage');
-const assignedSprayerContainer = document.getElementById('assignedSprayerContainer');
+// const addSprayerButton = document.getElementById('addSprayerButton');
+// const sprayerSelectContainer = document.getElementById('sprayerSelectContainer');
+// const sprayerSelect = document.getElementById('sprayerSelect');
+// const sprayerError = document.getElementById('sprayerError');
+// const noSprayerMessage = document.getElementById('noSprayerMessage');
+// const assignedSprayerContainer = document.getElementById('assignedSprayerContainer');
 
 // Initial flag to check if an apprentice is already added
-let apprenticeAdded = false;
+// let apprenticeAdded = false;
 
-// Function to update the sprayer select dropdown
-function updateSprayerDropdown() {
-    sprayerSelect.innerHTML = ''; // Clear current options
-    allSprayers.forEach(sprayer => {
-        const option = document.createElement('option');
-        option.value = `${sprayer.name} (${sprayer.type})`;
-        option.textContent = `${sprayer.name} (${sprayer.type})`;
+// // Function to update the sprayer select dropdown
+// function updateSprayerDropdown() {
+//     sprayerSelect.innerHTML = ''; // Clear current options
+//     allSprayers.forEach(sprayer => {
+//         const option = document.createElement('option');
+//         option.value = `${sprayer.name} (${sprayer.type})`;
+//         option.textContent = `${sprayer.name} (${sprayer.type})`;
 
-        // If the sprayer is unavailable or if an apprentice is already added, disable apprentice options
-        if (!sprayer.available || (apprenticeAdded && sprayer.type === 'Apprentice')) {
-            option.disabled = true;
-        }
+//         // If the sprayer is unavailable or if an apprentice is already added, disable apprentice options
+//         if (!sprayer.available || (apprenticeAdded && sprayer.type === 'Apprentice')) {
+//             option.disabled = true;
+//         }
 
-        sprayerSelect.appendChild(option);
-    });
-}
+//         sprayerSelect.appendChild(option);
+//     });
+// }
 
 // Function to handle Add Sprayer Button Click
 // addSprayerButton.addEventListener('click', function() {
@@ -84,39 +84,40 @@ function updateSprayerDropdown() {
 // });
 
 // Initial check: if no sprayers assigned, show the error message
-if (assignedSprayerContainer.childElementCount === 0) {
-    sprayerError.textContent = 'Please assign at least one sprayer to this order.';
-    sprayerError.classList.remove('d-none');
-    noSprayerMessage.classList.remove('d-none');
-}
+// if (assignedSprayerContainer.childElementCount === 0) {
+//     sprayerError.textContent = 'Please assign at least one sprayer to this order.';
+//     sprayerError.classList.remove('d-none');
+//     noSprayerMessage.classList.remove('d-none');
+// }
 
-// Update the dropdown initially
-updateSprayerDropdown();
+// // Update the dropdown initially
+// updateSprayerDropdown();
 
 
-const totalCost = 150000; // example total cost
-const receiveAmountInput = document.getElementById('receiveAmount');
-const changeContainer = document.getElementById('changeContainer');
-const changeAmount = document.getElementById('changeAmount');
+// const totalCost = 150000; // example total cost
+// const receiveAmountInput = document.getElementById('receiveAmount');
+// const changeContainer = document.getElementById('changeContainer');
+// const changeAmount = document.getElementById('changeAmount');
 
-// Listen for input changes in the received amount
-receiveAmountInput.addEventListener('input', function() {
-    const receiveAmount = parseInt(receiveAmountInput.value);
+// // Listen for input changes in the received amount
+// receiveAmountInput.addEventListener('input', function() {
+//     const receiveAmount = parseInt(receiveAmountInput.value);
 
-    if (isNaN(receiveAmount) || receiveAmount < 0) {
-        changeContainer.classList.add('d-none');
-        return;
-    }
+//     if (isNaN(receiveAmount) || receiveAmount < 0) {
+//         changeContainer.classList.add('d-none');
+//         return;
+//     }
 
-    if (receiveAmount >= totalCost) {
-        // Calculate the change
-        const change = receiveAmount - totalCost;
-        changeAmount.textContent = change.toLocaleString() + ' VND';
-        changeContainer.classList.remove('d-none');
-    } else {
-        changeContainer.classList.add('d-none');
-    }
-});
+//     if (receiveAmount >= totalCost) {
+//         // Calculate the change
+//         const change = receiveAmount - totalCost;
+//         changeAmount.textContent = change.toLocaleString() + ' VND';
+//         changeContainer.classList.remove('d-none');
+//     } else {
+//         changeContainer.classList.add('d-none');
+//     }
+// });
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get the order ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -137,8 +138,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             document.getElementById('cropType').textContent = order.cropType;
             document.getElementById('farmlandArea').textContent = `${order.farmlandArea} decare`;
-            document.getElementById('desiredDate').textContent = formatDate(order.lunarDate);
-            document.getElementById('timeSlot').textContent = order.timeSlot;
+            document.getElementById('gregorian-date').textContent = formatDate(order.gregorianDate);
+            document.getElementById('lunar-date').textContent = formatDate(order.lunarDate);
+            document.getElementById('timeSlot').textContent = order.time;
 
             // Update total cost in the payment section
             document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
@@ -149,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper function to format date
     function formatDate(dateString) {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }) + ' (Lunar Date)';
+        return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
     }
 
     // Helper function to get status color

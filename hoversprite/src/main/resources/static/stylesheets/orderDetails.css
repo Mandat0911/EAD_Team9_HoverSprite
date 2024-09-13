@@ -86,10 +86,10 @@
 
 .rating label {
     float: right;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: #ccc;
     cursor: pointer;
-    margin-right: 1rem;
+    margin-right: 0.5rem;
 }
 
 .rating label:before {

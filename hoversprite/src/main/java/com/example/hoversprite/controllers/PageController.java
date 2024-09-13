@@ -129,7 +129,7 @@ public class PageController {
     public String account(Model model) {
         model.addAttribute("title", "Account");
         model.addAttribute("content", "userProfile"); // Load userProfile by default
-        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         model.addAttribute("js", "/js/userProfile.js");
         return "layout";
     }
@@ -138,7 +138,7 @@ public class PageController {
     public String userProfile(Model model) {
         model.addAttribute("title", "User Profile");
         model.addAttribute("content", "userProfile");
-        model.addAttribute("css", "/stylesheets/userProfile.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         model.addAttribute("js", "/js/userProfile.js");
         return "layout";
     }
@@ -147,7 +147,7 @@ public class PageController {
     public String notifications(Model model) {
         model.addAttribute("title", "Notifications");
         model.addAttribute("content", "notifications");
-        model.addAttribute("css", "/stylesheets/notifications.css");
+        model.addAttribute("css", "/stylesheets/account.css");
         return "layout";
     }
 

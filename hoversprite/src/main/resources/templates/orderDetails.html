@@ -40,8 +40,12 @@
                                 <h5 id="farmlandArea"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
-                                <h5>Desired date</h5>
-                                <h5 id="desiredDate"></h5>
+                                <h5>Gregorian date</h5>
+                                <h5 id="gregorian-date"></h5>
+                            </div>
+                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
+                                <h5>Lunar date</h5>
+                                <h5 id="lunar-date"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Time slot</h5>
@@ -139,9 +143,9 @@
                                 <h4 class="fw-bold" style="color: var(--primary-color);">Service quality</h4>
 
                                 <!-- Attentiveness Star Rating -->
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 for="attentiveRating" class="form-label m-0">How was the sprayer's <strong>attentiveness</strong>?</h5>
-                                    <div class="rating">
+                                <div class="row align-items-center">
+                                    <h5 for="attentiveRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>attentiveness</strong>?</h5>
+                                    <div class="col-md-4 rating">
                                         <input value="5" name="attentive" id="attentive5" type="radio">
                                         <label title="5 stars" for="attentive5"></label>
                                         <input value="4" name="attentive" id="attentive4" type="radio">
@@ -156,9 +160,9 @@
                                 </div>
 
                                 <!-- Friendliness Star Rating -->
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 for="friendlyRating" class="form-label m-0">How was the sprayer's <strong>friendliness</strong>?</h5>
-                                    <div class="rating">
+                                <div class="row align-items-center">
+                                    <h5 for="friendlyRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>friendliness</strong>?</h5>
+                                    <div class="col-md-4 rating">
                                         <input value="5" name="friendly" id="friendly5" type="radio">
                                         <label title="5 stars" for="friendly5"></label>
                                         <input value="4" name="friendly" id="friendly4" type="radio">
@@ -173,9 +177,9 @@
                                 </div>
 
                                 <!-- Professionalism Star Rating -->
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <h5 for="professionalRating" class="form-label m-0">How was the sprayer's <strong>professionalism</strong>?</h5>
-                                    <div class="rating">
+                                <div class="row align-items-center">
+                                    <h5 for="professionalRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>professionalism</strong>?</h5>
+                                    <div class="col-md-4 rating">
                                         <input value="5" name="professional" id="professional5" type="radio">
                                         <label title="5 stars" for="professional5"></label>
                                         <input value="4" name="professional" id="professional4" type="radio">

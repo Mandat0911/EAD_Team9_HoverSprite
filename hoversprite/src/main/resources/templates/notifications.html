@@ -1,17 +1,21 @@
-<div th:fragment="content" class="notification-container">
+<div th:fragment="content" class="profile-container">
     <div class="container account-section mt-5">
         <div class="row">
             <div class="col-md-3 sidebar">
-                <h3>My account</h3>
+                <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">My Account</h1>
                 <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/account/user_profile"><i class="fa-solid fa-circle-user"></i>Personal Info</a>
+                    <li class="nav-item align-items-center">
+                        <a class="nav-link" th:href="@{/account/user_profile}"><i class="fa-solid fa-circle-user mx-2"></i>Personal Info</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/account/notifications"><i class="fa-solid fa-bell"></i>Notifications</a>
+                        <a class="nav-link active" th:href="@{/account/notifications}"><i class="fa-solid fa-bell mx-2"></i>Notifications</a>
                     </li>
-                    <li class="nav-item">
-                        <button class="btn btn-primary rounded-pill mt-3" onclick="logout()"><i class="bi bi-arrow-bar-right mr-5"> Log out</i></button>
+                    <li class="nav-item mt-5">
+                        <form th:action="@{/logout}" method="post" class="d-flex flex-column align-items-center">
+                            <button type="submit" class="btn btn-primary rounded-pill mt-3">
+                                <i class="bi bi-arrow-bar-right mr-5"></i> Log out
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
