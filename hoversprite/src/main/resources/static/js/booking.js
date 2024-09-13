@@ -205,15 +205,19 @@ const cropTypeInput = document.getElementById('crop-type');
 const areaInput = document.getElementById('area');
 const unitPrice = 30000; // Unit price per decare
 
+let cropType;
+let area;
+let total;
+
 // Summary fields
 const summaryCropType = document.getElementById('summary-crop-type');
 const summaryArea = document.getElementById('summary-area');
 const summaryTotal = document.getElementById('summary-total');
 
 function updateDetailsSummary() {
-    const cropType = cropTypeInput.value;
-    const area = parseFloat(areaInput.value);
-    const total = unitPrice * area;
+    cropType = cropTypeInput.value;
+    area = parseFloat(areaInput.value);
+    total = unitPrice * area;
 
     summaryCropType.textContent = cropType;
     summaryArea.textContent = `${area} decare`;
@@ -424,6 +428,7 @@ const createButton = (text, isDisabled = false, type = 0) => {
   const button = document.createElement("button");
   button.textContent = text;
   button.disabled = isDisabled;
+  button.type = "button";
   button.classList.toggle("today", isToday);
   button.classList.toggle("selected", selected);
   return button;
@@ -464,31 +469,44 @@ const summaryGregDate = document.getElementById('summary-greg-date');
 const summaryLunarDate = document.getElementById('summary-lunar-date');
 const summaryTime = document.getElementById('summary-time');
 
+let selectedTimeSlot;
+
 function updateTimeSummary() {
-    const selectedTimeSlot = document.querySelector('input[name="timePicker"]:checked').value;
+    selectedTimeSlot = document.querySelector('input[name="timePicker"]:checked').value;
     summaryTime.textContent = selectedTimeSlot;
 };
 
+let gregorianDate;
+let lunarDate;
+
 function updateDateSummary() {
-    let gregorianDate;
-    let lunarDate;
     if (!isLunar) {
-        gregorianDate = dateInput.value;
+        // gregorianDate = dateInput.value;
+        const [day, month, year] = dateInput.value.split('/').map(Number);
+        gregorianDate = new Date(year, month - 1, day);
+
         // Convert the Gregorian date to Lunar
         const lunar = Lunar.fromDate(selectedDate);
-        const lunarDay = String(lunar.getDay()).padStart(2, '0');
-        const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
-        lunarDate = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
+        // const lunarDay = String(lunar.getDay()).padStart(2, '0');
+        // const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
+        // lunarDate = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
+        lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
     } else {
-        gregorianDate = selectedDate.toLocaleDateString("en-GB", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-        });
-        lunarDate = dateInput.value;
+        gregorianDate = selectedDate;
+        // lunarDate = dateInput.value;
+        const [day, month, year] = dateInput.value.split('/').map(Number);
+        lunarDate = new Date(year, month - 1, day);
     }
-    summaryGregDate.textContent = gregorianDate;
-    summaryLunarDate.textContent = lunarDate;
+    summaryGregDate.textContent = gregorianDate.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
+    summaryLunarDate.textContent = lunarDate.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
 };
 
 // Event listeners for time slot changes
@@ -498,3 +516,50 @@ timeSlots.forEach(timeSlot => {
 
 updateTimeSummary();
 updateDateSummary();
+
+document.getElementById('booking-form').addEventListener('submit', async function (e) {
+    e.preventDefault();  // Prevent default form submission
+
+    // Fetch user ID from session
+    const userId = document.getElementById('user-id').value;
+
+    const order = {
+        user: {
+            id: parseInt(userId), 
+        },
+        cropType: cropType,
+        farmlandArea: parseInt(area),
+        time: selectedTimeSlot,
+        gregorianDate: gregorianDate,
+        lunarDate: lunarDate,
+        totalCost: total,
+        status: 'PENDING', 
+        createdAt: new Date(),
+        updatedAt: new Date()
+    };
+
+    // Send the order to the backend
+    try {
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(order),
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            alert('Order created successfully!');
+            // Redirect or update the UI
+            window.location.href = '/orders';
+        } else {
+            const errorData = await response.json();  // Get error response data
+            console.log('Error details:', errorData);
+            alert('Failed to create order.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred while creating the order.');
+    }
+});
