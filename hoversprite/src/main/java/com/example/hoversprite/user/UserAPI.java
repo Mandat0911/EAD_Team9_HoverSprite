@@ -1,7 +1,5 @@
-package com.example.hoversprite.controllers;
+package com.example.hoversprite.user;
 
-import com.example.hoversprite.model.User;
-import com.example.hoversprite.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

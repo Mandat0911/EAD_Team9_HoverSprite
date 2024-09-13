@@ -1,5 +1,7 @@
-package com.example.hoversprite.model;
+package com.example.hoversprite.user;
 
+import com.example.hoversprite.oauthAPI.AuthenticationProvider;
+import com.example.hoversprite.Role.Role;
 import jakarta.persistence.Entity;
 // import jakarta.persistence.GeneratedValue;
 // import jakarta.persistence.GenerationType;
@@ -23,33 +25,33 @@ import java.util.*;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(length = 50)
-    String lastName;
+    private String lastName;
 
     @Column(length = 50)
-    String middleName;
+    private String middleName;
 
     @Column(length = 50)
-    String firstName;
+    private String firstName;
 
     @Column(unique = true, nullable = false)
-    String phone;
+    private String phone;
 
-    @Column(nullable = false, length = 200)
-    String address;
+    @Column(nullable = true, length = 200)
+    private String address;
 
     @Column(nullable = false)
-    String password;
+    private String password;
 
-    @Column(unique = true)
-    String email;
-
+    @Column(unique = true, nullable = false)
+    private String email;
 
 //    @Enumerated(EnumType.STRING)
 //    AuthenticatedRoles role;
-
+    @Enumerated(EnumType.STRING)
+    AuthenticationProvider authenticationProvider;
 
     @Column(columnDefinition = "TINYINT(4)")
     boolean enabled = true;
