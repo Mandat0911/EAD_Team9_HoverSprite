@@ -1,7 +1,6 @@
-package com.example.hoversprite.repository;
+package com.example.hoversprite.Role;
 
 
-import com.example.hoversprite.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

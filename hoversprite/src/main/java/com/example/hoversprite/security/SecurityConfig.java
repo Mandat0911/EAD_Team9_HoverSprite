@@ -2,8 +2,8 @@ package com.example.hoversprite.security;
 
 import com.example.hoversprite.security.jwt.JwtTokenFilter;
 import com.example.hoversprite.security.oauth2.OAuth2LoginSuccessHandler;
-import com.example.hoversprite.service.CustomerDetailService;
-import com.example.hoversprite.service.CustomerOAuth2UserService;
+import com.example.hoversprite.user.UserDetailService;
+import com.example.hoversprite.user.UserOAuth2UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -34,9 +33,9 @@ import javax.sql.DataSource;
 )
 public class SecurityConfig {
     @Autowired
-    private CustomerDetailService customerDetailService;
+    private UserDetailService userDetailService;
     @Autowired
-    private CustomerOAuth2UserService customerOAuth2UserService;
+    private UserOAuth2UserService userOAuth2UserService;
     @Autowired
     private DataSource dataSource;
     @Autowired
@@ -47,7 +46,7 @@ public class SecurityConfig {
 
     @Bean
     UserDetailsService userDetailsService() {
-        return new CustomerDetailService();
+        return new UserDetailService();
     }
 
     @Bean
@@ -133,7 +132,7 @@ public class SecurityConfig {
                 ).oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
                         .defaultSuccessUrl("/")
-                        .userInfoEndpoint(userInfo -> userInfo.userService(customerOAuth2UserService))
+                        .userInfoEndpoint(userInfo -> userInfo.userService(userOAuth2UserService))
                         .successHandler(oAuth2LoginSuccessHandler)
                 )
                 .logout(logout -> logout

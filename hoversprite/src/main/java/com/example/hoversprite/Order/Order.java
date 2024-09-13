@@ -1,6 +1,6 @@
 package com.example.hoversprite.Order;
 
-import com.example.hoversprite.model.User;
+import com.example.hoversprite.user.User;
 import jakarta.persistence.*;
 
 import java.util.Date;

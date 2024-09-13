@@ -1,6 +1,6 @@
 package com.example.hoversprite.security.jwt;
 
-import com.example.hoversprite.model.User;
+import com.example.hoversprite.user.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
