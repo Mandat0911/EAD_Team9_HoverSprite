@@ -54,3 +54,31 @@
 .about-container a:hover {
     text-decoration: underline;
 }
+
+.section {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* Light grey background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid #dee2e6; /* Light border for separation */
+}
+
+.procedure-section {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* Light grey background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid #dee2e6; /* Light border for separation */
+}
+.procedure-section h4 {
+    color: #007bff; /* Bootstrap blue for section headings */
+    margin-bottom: 15px;
+}
+.procedure-section h5 {
+    color: #6c757d; /* Muted text color */
+}
+.procedure-img {
+    max-width: 100%; /* Ensure the image scales properly */
+    max-height: 300px; /* Control image height */
+    object-fit: cover;
+}
