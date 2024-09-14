@@ -332,16 +332,12 @@ applyBtn.addEventListener("click", () => {
   validateDateInput();
 
   if (!dateInput.classList.contains("invalid")) {
-    // dateInput.value = selectedDate.toLocaleDateString("en-GB", {
-    //   year: "numeric",
-    //   month: "2-digit",
-    //   day: "2-digit",
-    // });
     updateDateInput();
 
     datepicker.hidden = true;
     // updateDateSummary();
     updateWeekCalendar(selectedDate);
+    highlightSelectedDay(selectedDate);
   }
 });
 
@@ -497,6 +493,7 @@ displayDates();
 
 /* TIME SLOT PICKER (WEEK CALENDAR) */
 const weekCalendar = document.getElementById('week-calendar-container');
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
 // Helper function to get the Monday of the week based on the selected date
 function getMonday(date) {
@@ -513,9 +510,8 @@ function updateWeekCalendar(selectedDate) {
     }
 
     const weekStart = getMonday(new Date(selectedDate)); // Get the Monday of the selected week
-    const calendarCells = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
-    calendarCells.forEach((dayId, index) => {
+    days.forEach((dayId, index) => {
         const currentDate = new Date(weekStart);
         currentDate.setDate(weekStart.getDate() + index);
 
@@ -528,11 +524,163 @@ function updateWeekCalendar(selectedDate) {
         const lunarDateEl = document.getElementById(dayId).querySelector('.lunar-date');
         lunarDateEl.textContent = `${lunar.getDay()}/${lunar.getMonth()}`;
 
-        // Highlight the selected date
-        const isSelectedDate = selectedDate.toDateString() === currentDate.toDateString();
-        document.getElementById(dayId).classList.toggle('highlight', isSelectedDate);
     });
 }
+
+// Example backend data for available slots per time slot (fetch this dynamically from your API)
+const availableSlots = {
+    'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
+    'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+    'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+    'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
+    'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
+    'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
+    'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
+};
+
+const createSlotButton = (availableSlots, dayId, timeSlot) => {
+    const button = document.createElement('button');
+    button.classList.add('select-btn');
+    button.type = 'button';
+    
+    if (availableSlots > 0) {
+        button.textContent = `${availableSlots} slot${availableSlots > 1 ? 's' : ''}`;
+        button.classList.add('available');
+    } else {
+        button.textContent = '0 slot';
+        button.classList.add('unavailable');
+        button.disabled = true;
+    }
+
+    // Store the available slots in a data attribute for resetting later
+    button.dataset.available = availableSlots;
+
+    // Add the click handler for the slot selection
+    button.addEventListener('click', () => handleSlotSelection(button, dayId));
+
+    return button;
+};
+
+
+// Function to render available slots in week calendar cell
+function renderWeekCalendarCells() {
+    const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00']; 
+
+    timeSlots.forEach(timeSlot => {
+        // Create a new row for each time slot
+        const row = document.createElement('div');
+        row.classList.add('calendar-row');
+
+        // Create and append the time cell (leftmost column)
+        const timeCell = document.createElement('div');
+        timeCell.classList.add('calendar-cell', 'time-cell');
+        timeCell.textContent = timeSlot; // Set the time slot text (e.g., '4:00 AM')
+        row.appendChild(timeCell); // Append the time cell to the row
+
+        // For each day of the week
+        days.forEach(dayId => {
+            // Create a cell for each day (Monday to Sunday)
+            const cell = document.createElement('div');
+            cell.classList.add('calendar-cell');
+
+            // Get the number of available slots for the given day and time slot
+            const available = availableSlots[dayId][timeSlot];
+
+            // Create the button element inside the cell
+            const button = createSlotButton(available, dayId, timeSlot);
+
+            // Append the button to the cell
+            cell.appendChild(button);
+
+            // Append the day cell to the row
+            row.appendChild(cell);
+        });
+
+        // Append the entire row (with time cell + 7 day cells) to the week calendar container
+        document.getElementById('week-calendar-container').appendChild(row);
+
+        // Add a separation row after morning sessions
+        if (timeSlot === '7:00') {
+            const separationRow = document.createElement('div');
+            separationRow.classList.add('calendar-row', 'separation-row');
+
+            // Create the separation cells (empty row)
+            const timeSeparator = document.createElement('div');
+            timeSeparator.classList.add('calendar-cell', 'time-cell');
+            timeSeparator.textContent = '--';
+            separationRow.appendChild(timeSeparator); // Append separator for time cell
+
+            days.forEach(() => {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-cell');
+                separationRow.appendChild(emptyCell); // Append empty cells for each day
+            });
+
+            document.getElementById('week-calendar-container').appendChild(separationRow);
+        }
+    });
+}
+
+// Function to highlight the selected day's column in the week calendar
+function highlightSelectedDay(selectedDate) {
+    let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+    // Since our calendar starts on Monday, we need to remap the days
+    const dayMapping = [6, 0, 1, 2, 3, 4, 5]; // Mapping Sunday to index 6, Monday to index 0, etc.
+    selectedDayIndex = dayMapping[selectedDayIndex];
+
+    // Clear previous highlights
+    document.querySelectorAll('.highlight').forEach(cell => {
+        cell.classList.remove('highlight');
+    });
+
+    // Highlight the column for the selected day
+    days.forEach((dayId, index) => {
+        if (index === selectedDayIndex) {
+            // Highlight time slot cells
+            const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
+            cells.forEach(cell => cell.classList.add('highlight'));
+        }
+    });
+}
+
+let previouslySelectedButton = null;
+
+// Function to handle the "Select" button click
+function handleSlotSelection(button, dayId) {
+
+    // If there was a previously selected button, reset it
+    if (previouslySelectedButton) {
+        previouslySelectedButton.classList.add('available');
+        previouslySelectedButton.classList.remove('selected');
+        previouslySelectedButton.textContent = `${previouslySelectedButton.dataset.available} slot${previouslySelectedButton.dataset.available > 1 ? 's' : ''}`;
+        previouslySelectedButton.disabled = false; // Re-enable the button
+    }
+
+    // Update the current button to selected state
+    button.classList.remove('available');
+    button.classList.add('selected');
+    button.textContent = "Selected";
+    button.disabled = true; // Disable the selected button
+
+    // Store the current button as the newly selected button
+    previouslySelectedButton = button;
+
+    // Get the day index for the selected day (starting from Monday)
+    const dayIndex = days.indexOf(dayId);
+
+    // Calculate the new date based on the clicked day
+    const weekStart = getMonday(selectedDate); // Get the Monday of the selected week
+    selectedDate = new Date(weekStart); // Reset selectedDate to Monday of the week
+    selectedDate.setDate(weekStart.getDate() + dayIndex); // Adjust it to the clicked day
+
+    // Now that selectedDate is updated, reflect the change
+    updateDateInput(); // Update the input field
+    highlightSelectedDay(selectedDate); // Highlight the selected day in the week calendar
+    displayDates(); // Update the calendar popup with the selected date highlighted
+}
+
+renderWeekCalendarCells();
 
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
 const timeSlots = document.querySelectorAll('input[name="timePicker"]');

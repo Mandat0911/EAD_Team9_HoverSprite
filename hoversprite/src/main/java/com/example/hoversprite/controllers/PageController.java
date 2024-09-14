@@ -1,10 +1,9 @@
 package com.example.hoversprite.controllers;
 
-import com.example.hoversprite.user.UserDetailService;
-import com.example.hoversprite.user.User;
 import com.example.hoversprite.Role.RoleRepository;
-import com.example.hoversprite.user.UserRepository;
-
+import com.example.hoversprite.User.User;
+import com.example.hoversprite.User.UserDetailService;
+import com.example.hoversprite.User.UserRepository;
 import com.example.hoversprite.service.PasswordValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;

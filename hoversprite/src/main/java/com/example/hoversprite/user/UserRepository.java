@@ -1,4 +1,4 @@
-package com.example.hoversprite.user;
+package com.example.hoversprite.User;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

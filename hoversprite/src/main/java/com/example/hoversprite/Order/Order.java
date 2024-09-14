@@ -1,9 +1,11 @@
 package com.example.hoversprite.Order;
 
-import com.example.hoversprite.user.User;
 import jakarta.persistence.*;
 
 import java.util.Date;
+
+import com.example.hoversprite.Timeslot.Timeslot;
+import com.example.hoversprite.User.User;
 
 @Entity
 @Table(schema = "hoversprite", name = "orders")
@@ -45,6 +47,10 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private OrderStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "timeslot_id")
+    private Timeslot timeslot;
 
     // Constructors, getters, and setters
 
