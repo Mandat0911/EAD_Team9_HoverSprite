@@ -1,7 +1,7 @@
 package com.example.hoversprite.Notification;
 
 import com.example.hoversprite.Order.Order;
-import com.example.hoversprite.model.User;
+import com.example.hoversprite.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;

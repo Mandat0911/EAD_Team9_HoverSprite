@@ -148,6 +148,7 @@ public class PageController {
         model.addAttribute("title", "Notifications");
         model.addAttribute("content", "notifications");
         model.addAttribute("css", "/stylesheets/account.css");
+        model.addAttribute("js", "/js/notifications.js");
         return "layout";
     }
 
