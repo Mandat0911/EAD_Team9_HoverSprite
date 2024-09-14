@@ -1,4 +1,5 @@
-<div th:fragment="content" class="order-details-container py-3" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<div th:fragment="content" class="order-details-container py-3"
+     xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
     <!-- Back Navigation -->
     <a href="/orders" class="back-navigation"><i class="fa-solid fa-angle-left mx-2"></i>Orders List</a>
 
@@ -57,7 +58,8 @@
                             <div class="d-flex flex-column align-items-start justify-content-center">
                                 <h3 class="fw-bold m-0" style="color: var(--primary-color);">Total</h3>
                             </div>
-                            <div class="d-flex flex-column align-items-end justify-content-center badge" style="background-color: var(--secondary-color)">
+                            <div class="d-flex flex-column align-items-end justify-content-center badge"
+                                 style="background-color: var(--secondary-color)">
                                 <h4 class="fw-bold m-0" id="totalCost">150,000 VND</h4>
                             </div>
                         </div>
@@ -68,12 +70,13 @@
                 <!-- SECTION ONLY FOR RECEPTIONIST & FARMER: view sprayer details -->
                 <div class="card rounded-5 mb-3">
                     <div class="card-body py-4">
-                        <h4 class="m-0"  style="color: var(--primary-color); font-weight: 600;">Assigned Sprayer(s)</h4>
+                        <h4 class="m-0" style="color: var(--primary-color); font-weight: 600;">Assigned Sprayer(s)</h4>
                         <hr class="my-3">
-                        <h6 id="noSprayerMessage" class="text-secondary m-0">No sprayer has been assigned to this order yet.</h6>
+                        <h6 id="noSprayerMessage" class="text-secondary m-0">No sprayer has been assigned to this order
+                            yet.</h6>
                         <!-- Assigned Sprayer Container -->
-                        <div id="assignedSprayerContainer" class="d-flex flex-column">                        
-                        
+                        <div id="assignedSprayerContainer" class="d-flex flex-column">
+
                         </div>
 
                         <!-- Only visible to RECEPTIONIST role -->
@@ -91,7 +94,7 @@
                                 </select>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
 
@@ -100,13 +103,13 @@
                     <div class="card-body py-4">
                         <h4 class="m-0" style="color: var(--primary-color); font-weight: 600;">Order Payment</h4>
                         <hr class="my-3">
-                    
+
                         <!-- Display Total Cost -->
                         <div class="d-flex flex-row justify-content-between align-items-center my-2">
                             <h5 class="m-0">Total Cost:</h5>
                             <h5 id="totalCost" class="m-0 text-success">150,000 VND</h5>
                         </div>
-                    
+
                         <!-- Input: Receive Amount -->
                         <div class="d-flex flex-row justify-content-between align-items-center my-2">
                             <h5 for="receiveAmount" class="form-label m-0">Received:</h5>
@@ -115,100 +118,111 @@
                                 <span class="input-group-text">VND</span>
                             </div>
                         </div>
-                    
+
                         <!-- Display: Change Amount -->
-                        <div id="changeContainer" class="d-flex flex-row justify-content-between align-items-center my-2 d-none">
+                        <div id="changeContainer"
+                             class="d-flex flex-row justify-content-between align-items-center my-2 d-none">
                             <h5>Return:</h5>
                             <h5 id="changeAmount" class="text-danger">0 VND</h5>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div>
         </div>
-                
+
 
     </div>
 
     <!-- Feedback Section -->
-    <div class="container mt-5">
-        <div class="card rounded-5">
-            <div class="card-body">
-                <h3 class="fw-bold m-0" style="color: var(--primary-color);">How was your experience with our service?</h3>
-                <hr>
-                <form action="" id="feedbackForm">
-                    <div class="form-group mb-3">
-                        <div class="row">
-                            <!-- Service Quality -->
-                            <div class="col-md-6 mb-3">
-                                <h4 class="fw-bold" style="color: var(--primary-color);">Service quality</h4>
+    <div id="feedbackSection" style="display: none;">
+        <div class="container mt-5">
+            <div class="card rounded-5">
+                <div class="card-body">
+                    <h3 class="fw-bold m-0" style="color: var(--primary-color);">How was your experience with our
+                        service?</h3>
+                    <hr>
+                    <form action="" id="feedbackForm">
+                        <div class="form-group mb-3">
+                            <div class="row">
+                                <!-- Service Quality -->
+                                <div class="col-md-6 mb-3">
+                                    <h4 class="fw-bold" style="color: var(--primary-color);">Service quality</h4>
 
-                                <!-- Attentiveness Star Rating -->
-                                <div class="row align-items-center">
-                                    <h5 for="attentiveRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>attentiveness</strong>?</h5>
-                                    <div class="col-md-4 rating">
-                                        <input value="5" name="attentive" id="attentive5" type="radio">
-                                        <label title="5 stars" for="attentive5"></label>
-                                        <input value="4" name="attentive" id="attentive4" type="radio">
-                                        <label title="4 stars" for="attentive4"></label>
-                                        <input value="3" name="attentive" id="attentive3" type="radio">
-                                        <label title="3 stars" for="attentive3"></label>
-                                        <input value="2" name="attentive" id="attentive2" type="radio">
-                                        <label title="2 stars" for="attentive2"></label>
-                                        <input value="1" name="attentive" id="attentive1" type="radio">
-                                        <label title="1 star" for="attentive1"></label>
+                                    <!-- Attentiveness Star Rating -->
+                                    <div class="row align-items-center">
+                                        <h5 for="attentiveRating" class="col-md-8 form-label m-0">How was the sprayer's
+                                            <strong>attentiveness</strong>?</h5>
+                                        <div class="col-md-4 rating">
+                                            <input value="5" name="attentive" id="attentive5" type="radio">
+                                            <label title="5 stars" for="attentive5"></label>
+                                            <input value="4" name="attentive" id="attentive4" type="radio">
+                                            <label title="4 stars" for="attentive4"></label>
+                                            <input value="3" name="attentive" id="attentive3" type="radio">
+                                            <label title="3 stars" for="attentive3"></label>
+                                            <input value="2" name="attentive" id="attentive2" type="radio">
+                                            <label title="2 stars" for="attentive2"></label>
+                                            <input value="1" name="attentive" id="attentive1" type="radio">
+                                            <label title="1 star" for="attentive1"></label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Friendliness Star Rating -->
+                                    <div class="row align-items-center">
+                                        <h5 for="friendlyRating" class="col-md-8 form-label m-0">How was the sprayer's
+                                            <strong>friendliness</strong>?</h5>
+                                        <div class="col-md-4 rating">
+                                            <input value="5" name="friendly" id="friendly5" type="radio">
+                                            <label title="5 stars" for="friendly5"></label>
+                                            <input value="4" name="friendly" id="friendly4" type="radio">
+                                            <label title="4 stars" for="friendly4"></label>
+                                            <input value="3" name="friendly" id="friendly3" type="radio">
+                                            <label title="3 stars" for="friendly3"></label>
+                                            <input value="2" name="friendly" id="friendly2" type="radio">
+                                            <label title="2 stars" for="friendly2"></label>
+                                            <input value="1" name="friendly" id="friendly1" type="radio">
+                                            <label title="1 star" for="friendly1"></label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Professionalism Star Rating -->
+                                    <div class="row align-items-center">
+                                        <h5 for="professionalRating" class="col-md-8 form-label m-0">How was the
+                                            sprayer's <strong>professionalism</strong>?</h5>
+                                        <div class="col-md-4 rating">
+                                            <input value="5" name="professional" id="professional5" type="radio">
+                                            <label title="5 stars" for="professional5"></label>
+                                            <input value="4" name="professional" id="professional4" type="radio">
+                                            <label title="4 stars" for="professional4"></label>
+                                            <input value="3" name="professional" id="professional3" type="radio">
+                                            <label title="3 stars" for="professional3"></label>
+                                            <input value="2" name="professional" id="professional2" type="radio">
+                                            <label title="2 stars" for="professional2"></label>
+                                            <input value="1" name="professional" id="professional1" type="radio">
+                                            <label title="1 star" for="professional1"></label>
+                                        </div>
                                     </div>
                                 </div>
-
-                                <!-- Friendliness Star Rating -->
-                                <div class="row align-items-center">
-                                    <h5 for="friendlyRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>friendliness</strong>?</h5>
-                                    <div class="col-md-4 rating">
-                                        <input value="5" name="friendly" id="friendly5" type="radio">
-                                        <label title="5 stars" for="friendly5"></label>
-                                        <input value="4" name="friendly" id="friendly4" type="radio">
-                                        <label title="4 stars" for="friendly4"></label>
-                                        <input value="3" name="friendly" id="friendly3" type="radio">
-                                        <label title="3 stars" for="friendly3"></label>
-                                        <input value="2" name="friendly" id="friendly2" type="radio">
-                                        <label title="2 stars" for="friendly2"></label>
-                                        <input value="1" name="friendly" id="friendly1" type="radio">
-                                        <label title="1 star" for="friendly1"></label>
+                                <!-- Additional Feedback -->
+                                <div class="col-md-6 mb-3">
+                                    <h4 class="form-label fw-bold" for="feedback" style="color: var(--primary-color);">
+                                        Additional Feedback</h4>
+                                    <div class="form-floating">
+                                        <textarea class="form-control rounded-4"
+                                                  placeholder="We would love to hear your sharing..." id="feedback"
+                                                  style="height: 100px"></textarea>
+                                        <label for="feedback">We would love to hear your sharing...</label>
                                     </div>
                                 </div>
-
-                                <!-- Professionalism Star Rating -->
-                                <div class="row align-items-center">
-                                    <h5 for="professionalRating" class="col-md-8 form-label m-0">How was the sprayer's <strong>professionalism</strong>?</h5>
-                                    <div class="col-md-4 rating">
-                                        <input value="5" name="professional" id="professional5" type="radio">
-                                        <label title="5 stars" for="professional5"></label>
-                                        <input value="4" name="professional" id="professional4" type="radio">
-                                        <label title="4 stars" for="professional4"></label>
-                                        <input value="3" name="professional" id="professional3" type="radio">
-                                        <label title="3 stars" for="professional3"></label>
-                                        <input value="2" name="professional" id="professional2" type="radio">
-                                        <label title="2 stars" for="professional2"></label>
-                                        <input value="1" name="professional" id="professional1" type="radio">
-                                        <label title="1 star" for="professional1"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Additional Feedback -->
-                            <div class="col-md-6 mb-3">
-                                <h4 class="form-label fw-bold" for="feedback" style="color: var(--primary-color);">Additional Feedback</h4>
-                                <div class="form-floating">
-                                    <textarea class="form-control rounded-4" placeholder="We would love to hear your sharing..." id="feedback" style="height: 100px"></textarea>
-                                    <label for="feedback">We would love to hear your sharing...</label>
-                                  </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary fw-bold">Submit</button>
-                    </div>
-                </form>
+                        <!-- Submit Button -->
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary fw-bold">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
+

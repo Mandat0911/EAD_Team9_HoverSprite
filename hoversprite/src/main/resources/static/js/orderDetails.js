@@ -117,6 +117,14 @@ const allSprayers = [
 //         changeContainer.classList.add('d-none');
 //     }
 // });
+function updateFeedbackSection(status) {
+    const feedbackSection = document.getElementById('feedbackSection');
+    if (status.toLowerCase() === 'completed') {
+        feedbackSection.style.display = 'block';
+    } else {
+        feedbackSection.style.display = 'none';
+    }
+}
 
 document.addEventListener('DOMContentLoaded', function() {
     // Get the order ID from the URL
@@ -144,7 +152,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Update total cost in the payment section
             document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
-            console.log(order)
+            updateFeedbackSection(order.status);
+
         })
         .catch(error => console.error('Error fetching order details:', error));
 
@@ -157,9 +166,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Helper function to get status color
     function getStatusColor(status) {
         switch(status.toLowerCase()) {
-            case 'confirmed': return 'success';
+            case 'completed': return 'success';
             case 'pending': return 'warning';
             case 'cancelled': return 'danger';
+            case 'confirmed': return 'primary';
             default: return 'secondary';
         }
     }
