@@ -1,12 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-
 
 /* Container Styles */
-body {
-    font-family: 'Poppins', sans-serif !important;
-    background: #ececec;
-}
-.container{
+.login-container .container{
     width: 100%;
     padding: 30px 30px;
     min-width: 100vw;
@@ -14,74 +8,74 @@ body {
     justify-content: center;
     align-items:center;
 }
-.top_bar{
+.login-container .top_bar{
     padding: 1rem 1rem 0 1rem;
 }
-.top_bar img{
+.login-container .top_bar img{
     width: 100px;
 }
-.top_bar a{
+.login-container .top_bar a{
     position: relative;
     color: darkgreen;
 }
 
-.box-area {
+.login-container .box-area {
     width: 930px;
     margin: auto;
 }
 
 /* Form Input Styles */
-.form-check-input {
+.login-container .form-check-input {
     cursor: pointer;
 }
 
-.text-indent {
+.login-container .text-indent {
     text-indent: .5rem;
 }
 
-::placeholder {
+.login-container ::placeholder {
     font-size: 16px;
 }
 
-.register_personal_info input::placeholder {
+.login-container .register_personal_info input::placeholder {
     font-size: 12px; /* Change this value to the desired font size */
     text-align: center;
 }
-.register_personal_info input{
+.login-container .register_personal_info input{
     font-size: 11px;
 }
 
-.register_phone_number input::placeholder {
+.login-container .register_phone_number input::placeholder {
     font-size: 16px;
 }
 
-.register_phone_number input {
+.login-container .register_phone_number input {
     font-size: 16px;
 }
 
-.login_username input::placeholder{
+.login-container .login_username input::placeholder{
     font-size: 12px; /* Change this value to the desired font size */
     text-align: left;
 }
 
-#email::placeholder {
+.login-container #email::placeholder {
     font-size: 12px;
 }
 
-#email {
+.login-container #email {
     font-size: 12px;
 }
 
-#phone::placeholder{
+.login-container #phone::placeholder{
     font-size: 12px;
 }
 
-#phone{
+.login-container #phone{
     font-size: 12px;
 }
 
 /* Password Icon */
-.password__icon {
+.login-container .password__icon {
     position: absolute;
     right: 0;
     padding: 15px 20px;
@@ -89,7 +83,7 @@ body {
 }
 
 /* Image Styles */
-img {
+.login-container img {
     position: relative;
     width: 400px;
 }
@@ -132,12 +126,12 @@ img {
 }
 
 /* Right Box */
-.register_image {
+.login-container .register_image {
     margin-left: 200px;
 }
 
-.register__form,
-.login__form {
+.login-container .register__form,
+.login-container .login__form {
     /* position: absolute; */
     width: 100%;
     opacity: 0;
@@ -147,25 +141,25 @@ img {
 }
 
 
-.register__form.active,
-.login__form.active {
+.login-container .register__form.active,
+.login-container .login__form.active {
     margin-left: 0%;
     opacity: 1;
     z-index: 3;
 }
 
-.form-check-input:checked{
+.login-container .form-check-input:checked{
     background-color: black; /* Change this to your desired color */
     border-color: black;    /* Change this to your desired color */
 }
-.form-check-input:checked:focus {
+.login-container .form-check-input:checked:focus {
     box-shadow: 0 0 0 0.2rem rgba(46, 46, 46, 0.25); /* Adjust the focus shadow if needed */
 }
-.form-check-input:focus {
+.login-container .form-check-input:focus {
     border: black;
     box-shadow: 0 0 0 0.2rem rgba(46, 46, 46, 0.25); /* Adjust the focus shadow if needed */
 }
-.forgot:hover{
+.login-container .forgot:hover{
     font-weight: 600;
     font-size: 1rem;
     text-decoration: underline;

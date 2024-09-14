@@ -231,7 +231,7 @@ areaInput.addEventListener('input', updateDetailsSummary);
 // Call updateDetailsSummary on page load to set the initial values
 updateDetailsSummary();
 
-/* DATE PICKER */
+/* DATE PICKER (MONTH CALENDAR) */
 const datepicker = document.querySelector(".datepicker");
 const dateInput = document.querySelector(".date-input");
 const yearInput = datepicker.querySelector(".year-input");
@@ -310,6 +310,7 @@ applyBtn.addEventListener("click", () => {
 
     datepicker.hidden = true;
     // updateDateSummary();
+    updateWeekCalendar(selectedDate);
   }
 });
 
@@ -413,25 +414,28 @@ const displayDates = () => {
 
 // Create a button for each date
 const createButton = (text, isDisabled = false, type = 0) => {
-  const currentDate = new Date();
-  let comparisonDate = new Date(year, month + type, text);
+    const currentDate = new Date();
+    let comparisonDate = new Date(year, month + type, text);
 
-  // Check if the current button is the date today
-  const isToday =
-    currentDate.getDate() === text &&
-    currentDate.getFullYear() === year &&
-    currentDate.getMonth() === month;
+    // Check if the current button is the date today
+    const isToday =
+        currentDate.getDate() === text &&
+        currentDate.getFullYear() === year &&
+        currentDate.getMonth() === month;
 
-  // Check if the current button is selected
-  const selected = selectedDate.getTime() === comparisonDate.getTime();
+    // Check if the date is in the past or is today
+    const isPastOrToday = comparisonDate <= currentDate;
 
-  const button = document.createElement("button");
-  button.textContent = text;
-  button.disabled = isDisabled;
-  button.type = "button";
-  button.classList.toggle("today", isToday);
-  button.classList.toggle("selected", selected);
-  return button;
+    // Check if the current button is selected
+    const selected = selectedDate.getTime() === comparisonDate.getTime();
+
+    const button = document.createElement("button");
+    button.textContent = text;
+    button.disabled = isDisabled || isPastOrToday;
+    button.type = "button";
+    button.classList.toggle("today", isToday);
+    button.classList.toggle("selected", selected);
+    return button;
 };
 const convertBtn = datepicker.querySelector(".convert-to-lunar");
 
@@ -460,6 +464,44 @@ convertBtn.addEventListener("click", () => {
 
 displayDates();
 
+/* TIME SLOT PICKER (WEEK CALENDAR) */
+const weekCalendar = document.getElementById('week-calendar-container');
+
+// Helper function to get the Monday of the week based on the selected date
+function getMonday(date) {
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday (0)
+    return new Date(date.setDate(diff));
+}
+
+// Function to update the week calendar
+function updateWeekCalendar(selectedDate) {
+    if (weekCalendar.classList.contains('d-none')) {
+        weekCalendar.classList.remove('d-none');
+        weekCalendar.classList.add('fade-in'); // Add animation
+    }
+
+    const weekStart = getMonday(new Date(selectedDate)); // Get the Monday of the selected week
+    const calendarCells = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+    calendarCells.forEach((dayId, index) => {
+        const currentDate = new Date(weekStart);
+        currentDate.setDate(weekStart.getDate() + index);
+
+        // Update Gregorian date
+        const gregorianDateEl = document.getElementById(dayId).querySelector('.gregorian-date');
+        gregorianDateEl.textContent = `${currentDate.getDate()}/${currentDate.getMonth() + 1}`;
+
+        // Convert to Lunar date (you already have Lunar.js or similar)
+        const lunar = Lunar.fromDate(currentDate);
+        const lunarDateEl = document.getElementById(dayId).querySelector('.lunar-date');
+        lunarDateEl.textContent = `${lunar.getDay()}/${lunar.getMonth()}`;
+
+        // Highlight the selected date
+        const isSelectedDate = selectedDate.toDateString() === currentDate.toDateString();
+        document.getElementById(dayId).classList.toggle('highlight', isSelectedDate);
+    });
+}
 
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
 const timeSlots = document.querySelectorAll('input[name="timePicker"]');
