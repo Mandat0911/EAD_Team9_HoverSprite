@@ -69,15 +69,13 @@ public class SecurityConfig {
     }
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        System.out.println("return login");
         return (request, response, authException) -> {
-            response.sendRedirect("/login");  // Redirect to login page
+            response.sendRedirect("/login");
         };
     }
+
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
-        System.out.println("return a");
-
         return (request, response, accessDeniedException) -> {
             response.sendRedirect("/error");  // Redirect to error page for unauthorized access
         };
@@ -104,19 +102,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/auth/login","/login").permitAll()
-                                //.requestMatchers("/list_users","/list_orders").authenticated()
-                                //.requestMatchers("/users/edit/**").hasAnyAuthority("RECEPTIONIST")
+                                .requestMatchers("/account/**", "/users/**", "/process_register","/orders/**", "/booking/**").authenticated()
                                 .anyRequest().permitAll()
                 )
+
                 .exceptionHandling(customizer ->
                         customizer
                                 .authenticationEntryPoint(authenticationEntryPoint())  // Handle unauthenticated requests
-                                .accessDeniedHandler(accessDeniedHandler())            // Handle unauthorized access
-                ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                                .accessDeniedHandler(accessDeniedHandler())// Handle unauthorized access
+                )
+
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        })
+                        .authenticationEntryPoint(authenticationEntryPoint())
                 )
                 .formLogin(login -> login
                         .loginPage("/login")
@@ -139,9 +137,8 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .permitAll()
                 );
-
-
-
         return http.build();
     }
+
+
 }

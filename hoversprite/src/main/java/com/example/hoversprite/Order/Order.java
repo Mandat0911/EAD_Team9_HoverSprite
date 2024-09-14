@@ -2,9 +2,13 @@ package com.example.hoversprite.Order;
 
 import com.example.hoversprite.user.User;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Setter
+@Getter
 @Entity
 @Table(schema = "hoversprite", name = "orders")
 public class Order {
@@ -61,94 +65,6 @@ public class Order {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.totalCost = totalCost;
-        this.status = status;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getCropType() {
-        return cropType;
-    }
-
-    public void setCropType(String cropType) {
-        this.cropType = cropType;
-    }
-
-    public Integer getFarmlandArea() {
-        return farmlandArea;
-    }
-
-    public void setFarmlandArea(Integer farmlandArea) {
-        this.farmlandArea = farmlandArea;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public Date getLunarDate() {
-        return lunarDate;
-    }
-
-    public void setLunarDate(Date lunarDate) {
-        this.lunarDate = lunarDate;
-    }
-
-    public Date getGregorianDate() {
-        return gregorianDate;
-    }
-
-    public void setGregorianDate(Date gregorianDate) {
-        this.gregorianDate = gregorianDate;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Double getTotalCost() {
-        return totalCost;
-    }
-
-    public void setTotalCost(Double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public OrderStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
