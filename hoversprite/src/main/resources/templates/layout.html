@@ -32,7 +32,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
+                    <div class="hori-selector" th:if="${content != '404'}"><div class="left"></div><div class="right"></div></div>
                     <li class="nav-item active">
                         <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house"></i>home</a>
                     </li>

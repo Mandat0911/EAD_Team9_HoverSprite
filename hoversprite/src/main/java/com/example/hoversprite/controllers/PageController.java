@@ -7,17 +7,19 @@ import com.example.hoversprite.user.UserRepository;
 
 import com.example.hoversprite.service.PasswordValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
-public class PageController {
+public class PageController implements ErrorController {
 
     @Autowired
     private UserRepository userRepository;
@@ -168,4 +170,10 @@ public class PageController {
     }
 
 
+    @RequestMapping("/error")
+    public String handleError(Model model) {
+        model.addAttribute("title", "404 Not Found");
+        model.addAttribute("content", "404");
+        return "layout";
+    }
 }
