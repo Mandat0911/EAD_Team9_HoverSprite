@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const paymentOptions = document.getElementsByName('payment');
     const creditCardForm = document.querySelector('.credit-card-form-wrapper');
+    const creditCardInputs = creditCardForm.querySelectorAll('input');
 
     paymentOptions.forEach(option => {
         option.addEventListener('change', function () {
@@ -76,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 creditCardForm.classList.remove('slide-out-left');
                 creditCardForm.classList.add('slide-in-left');
                 creditCardForm.style.display = 'block'; 
+                requireCreditCardInputs(true);
             } else {
                 // Hide the credit card form 
                 creditCardForm.classList.remove('slide-in-left');
@@ -84,9 +86,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     creditCardForm.style.display = 'none';
                 }, 500);
+                requireCreditCardInputs(false);
             }
         });
     });
+
+    // Function to toggle the "required" attribute for credit card inputs
+    function requireCreditCardInputs(require) {
+        creditCardInputs.forEach(input => {
+            if (require) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+            }
+        });
+    }
 });
 
 /* FORM VALIDATION */
@@ -99,7 +113,14 @@ const inputsStep1 = {
 };
 
 const inputsStep2 = {
-    datePicker: document.getElementById('datePicker'),
+    datePicker: document.getElementById('datePicker')
+};
+
+const inputsStep3 = {
+    cardName: document.getElementById('card_name'),
+    cardNumber: document.getElementById('card_number'),
+    expiryDate: document.getElementById('expiry_date'),
+    cvv: document.getElementById('cvv')
 };
 
 function validateStep1() {
@@ -117,8 +138,18 @@ function validateStep1() {
 function validateStep2() {
     let isValid = true;
 
-    // Validate date picker in Step 2
     isValid = validateField(inputsStep2.datePicker, isValidDatePicker) && isValid;
+
+    return isValid;
+}
+
+function validateStep3() {
+    let isValid = true;
+
+    isValid = validateField(inputsStep3.cardName, isValidName) && isValid;
+    isValid = validateField(inputsStep3.cardNumber, isValidCardNumber) && isValid;
+    isValid = validateField(inputsStep3.expiryDate, isValidExpiryDate) && isValid;
+    isValid = validateField(inputsStep3.cvv, isValidCVV) && isValid;
 
     return isValid;
 }
