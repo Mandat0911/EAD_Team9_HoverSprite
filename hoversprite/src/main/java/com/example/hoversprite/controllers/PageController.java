@@ -34,6 +34,7 @@ public class PageController implements ErrorController {
         model.addAttribute("title", "Home");
         model.addAttribute("content", "home");
         model.addAttribute("css", "/stylesheets/home.css");
+        //model.addAttribute("js", "/js/home.js");
         return "layout";
     }
 
@@ -169,7 +170,7 @@ public class PageController implements ErrorController {
     }
 
 
-    @RequestMapping("/error")
+    @GetMapping("/error")
     public String handleError(Model model) {
         model.addAttribute("title", "404 Not Found");
         model.addAttribute("content", "404");
