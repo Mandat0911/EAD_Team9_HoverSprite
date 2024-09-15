@@ -1,7 +1,8 @@
 package com.example.hoversprite.oauthAPI;
 
-import com.example.hoversprite.user.User;
 import com.example.hoversprite.security.jwt.JwtTokenUtil;
+import com.example.hoversprite.user.User;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

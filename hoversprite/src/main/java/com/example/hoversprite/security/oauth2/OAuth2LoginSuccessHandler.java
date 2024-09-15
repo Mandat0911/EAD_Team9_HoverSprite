@@ -1,8 +1,9 @@
 package com.example.hoversprite.security.oauth2;
 
 import com.example.hoversprite.oauthAPI.AuthenticationProvider;
-import com.example.hoversprite.user.UserDetailService;
 import com.example.hoversprite.user.User;
+import com.example.hoversprite.user.UserDetailService;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

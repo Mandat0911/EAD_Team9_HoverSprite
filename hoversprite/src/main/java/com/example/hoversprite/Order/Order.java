@@ -1,11 +1,13 @@
 package com.example.hoversprite.Order;
 
-import com.example.hoversprite.user.User;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+
+import com.example.hoversprite.Timeslot.Timeslot;
+import com.example.hoversprite.user.User;
 
 @Setter
 @Getter
@@ -49,6 +51,10 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private OrderStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "timeslot_id")
+    private Timeslot timeslot;
 
     // Constructors, getters, and setters
 
