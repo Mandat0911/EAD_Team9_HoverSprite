@@ -1,4 +1,4 @@
-package com.example.hoversprite.User;
+package com.example.hoversprite.user;
 
 
 import com.example.hoversprite.oauthAPI.AuthenticationProvider;

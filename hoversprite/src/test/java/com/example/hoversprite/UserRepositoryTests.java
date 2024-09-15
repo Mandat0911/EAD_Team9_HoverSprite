@@ -1,8 +1,8 @@
 package com.example.hoversprite;
 
 import com.example.hoversprite.Role.RoleRepository;
-import com.example.hoversprite.User.User;
-import com.example.hoversprite.User.UserRepository;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.user.UserRepository;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

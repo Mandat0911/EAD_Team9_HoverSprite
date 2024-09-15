@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 
 import com.example.hoversprite.Timeslot.Timeslot;
-import com.example.hoversprite.User.User;
+import com.example.hoversprite.user.User;
 
 @Setter
 @Getter

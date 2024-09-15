@@ -1,7 +1,7 @@
 package com.example.hoversprite.security.jwt;
 
 import com.example.hoversprite.Role.Role;
-import com.example.hoversprite.User.User;
+import com.example.hoversprite.user.User;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
