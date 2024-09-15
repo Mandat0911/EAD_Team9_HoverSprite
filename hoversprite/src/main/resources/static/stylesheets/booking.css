@@ -240,7 +240,7 @@
 }
 
 /* Calendar styling */
-.calendar-container {
+#week-calendar-container {
     width: 100%;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -262,6 +262,10 @@
     padding: 10px;
     border: 0.5px solid #ddd;
     text-align: center;
+}
+.calendar-cell.highlight {
+    background-color: rgba(111, 150, 209, 0.2);
+    font-weight: bold;
 }
 
 /* Header Cells */
@@ -307,6 +311,8 @@
     color: #777;
 }
 
+/* Week calendar button styling */
+
 .select-btn {
     padding: 5px 15px;
     border-radius: 5px;
@@ -332,6 +338,10 @@
     box-shadow: inset 0px 3px 5px var(--primary-color);
 }
 
+.select-btn.available:hover {
+    background-color: var(--primary-color);
+    transform: translateY(2px);
+}
 
 /* date picker style */
 .datepicker-container {
@@ -456,4 +466,20 @@
     font-size: 1rem;
     font-weight: 500;
     color: #333;
+}
+
+/* Fade-in Animation */
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

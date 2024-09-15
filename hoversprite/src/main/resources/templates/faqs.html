@@ -1,9 +1,9 @@
 <div th:fragment="content" class="faq-container">
     <!-- FAQ Header -->
-    <section class="py-5 bg-light">
+    <section class="pt-5">
         <div class="container">
-            <h1 class="text-center">Frequently Asked Questions</h1>
-            <p class="text-center">Find answers to the most commonly asked questions about our services and drones.</p>
+            <h1 class="text-center" style="color: var(--primary-color);">Frequently Asked Questions</h1>
+            <h5 class="text-center" style="color: var(--primary-color);">Find answers to the most commonly asked questions about our services and drones.</h5>
         </div>
     </section>
 
@@ -35,7 +35,7 @@
                     </h2>
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
                         <div class="accordion-body">
-                            You can easily book a spraying service by visiting our <a href="/booking">booking page</a>. Once registered, you can select your crop type, choose the appropriate spraying service, and schedule a convenient time. You will also receive updates on your booking status.
+                            You can easily book a spraying service by visiting our <a th:href="@{/booking}">booking page</a>. Once registered, you can select your crop type, choose the appropriate spraying service, and schedule a convenient time. You will also receive updates on your booking status.
                         </div>
                     </div>
                 </div>

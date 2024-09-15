@@ -1,23 +1,30 @@
 package com.example.hoversprite.controllers;
 
-import com.example.hoversprite.user.UserDetailService;
-import com.example.hoversprite.user.User;
 import com.example.hoversprite.Role.RoleRepository;
+import com.example.hoversprite.service.PasswordValidationService;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.user.UserDetailService;
 import com.example.hoversprite.user.UserRepository;
 
-import com.example.hoversprite.service.PasswordValidationService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.Role.RoleRepository;
+import com.example.hoversprite.user.UserRepository;
+import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
-public class PageController {
+public class PageController implements ErrorController {
 
     @Autowired
     private UserRepository userRepository;
@@ -33,6 +40,7 @@ public class PageController {
         model.addAttribute("title", "Home");
         model.addAttribute("content", "home");
         model.addAttribute("css", "/stylesheets/home.css");
+        //model.addAttribute("js", "/js/home.js");
         return "layout";
     }
 
@@ -168,5 +176,34 @@ public class PageController {
         return "layout";
     }
 
+    @GetMapping("/copyright")
+    public String copyright(Model model) {
+        model.addAttribute("title", "Copyright");
+        model.addAttribute("content", "copyright");
+        model.addAttribute("css", "/stylesheets/copyright.css");
+        return "layout";
+    }
 
+    @GetMapping("/terms")
+    public String terms(Model model) {
+        model.addAttribute("title", "Terms Of Service");
+        model.addAttribute("content", "terms-of-service");
+        model.addAttribute("css", "/stylesheets/terms-of-service.css");
+        return "layout";
+    }
+
+    @GetMapping("/policy")
+    public String policy(Model model) {
+        model.addAttribute("title", "Privacy Policy");
+        model.addAttribute("content", "privacy-policy");
+        model.addAttribute("css", "/stylesheets/privacy-policy.css");
+        return "layout";
+    }
+
+    @GetMapping("/error")
+    public String handleError(Model model) {
+        model.addAttribute("title", "404 Not Found");
+        model.addAttribute("content", "404");
+        return "layout";
+    }
 }

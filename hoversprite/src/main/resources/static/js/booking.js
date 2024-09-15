@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const paymentOptions = document.getElementsByName('payment');
     const creditCardForm = document.querySelector('.credit-card-form-wrapper');
+    const creditCardInputs = creditCardForm.querySelectorAll('input');
 
     paymentOptions.forEach(option => {
         option.addEventListener('change', function () {
@@ -76,6 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 creditCardForm.classList.remove('slide-out-left');
                 creditCardForm.classList.add('slide-in-left');
                 creditCardForm.style.display = 'block'; 
+                requireCreditCardInputs(true);
             } else {
                 // Hide the credit card form 
                 creditCardForm.classList.remove('slide-in-left');
@@ -84,9 +86,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     creditCardForm.style.display = 'none';
                 }, 500);
+                requireCreditCardInputs(false);
             }
         });
     });
+
+    // Function to toggle the "required" attribute for credit card inputs
+    function requireCreditCardInputs(require) {
+        creditCardInputs.forEach(input => {
+            if (require) {
+                input.setAttribute('required', 'required');
+            } else {
+                input.removeAttribute('required');
+            }
+        });
+    }
 });
 
 /* FORM VALIDATION */
@@ -99,7 +113,14 @@ const inputsStep1 = {
 };
 
 const inputsStep2 = {
-    datePicker: document.getElementById('datePicker'),
+    datePicker: document.getElementById('datePicker')
+};
+
+const inputsStep3 = {
+    cardName: document.getElementById('card_name'),
+    cardNumber: document.getElementById('card_number'),
+    expiryDate: document.getElementById('expiry_date'),
+    cvv: document.getElementById('cvv')
 };
 
 function validateStep1() {
@@ -117,8 +138,18 @@ function validateStep1() {
 function validateStep2() {
     let isValid = true;
 
-    // Validate date picker in Step 2
     isValid = validateField(inputsStep2.datePicker, isValidDatePicker) && isValid;
+
+    return isValid;
+}
+
+function validateStep3() {
+    let isValid = true;
+
+    isValid = validateField(inputsStep3.cardName, isValidName) && isValid;
+    isValid = validateField(inputsStep3.cardNumber, isValidCardNumber) && isValid;
+    isValid = validateField(inputsStep3.expiryDate, isValidExpiryDate) && isValid;
+    isValid = validateField(inputsStep3.cvv, isValidCVV) && isValid;
 
     return isValid;
 }
@@ -231,7 +262,7 @@ areaInput.addEventListener('input', updateDetailsSummary);
 // Call updateDetailsSummary on page load to set the initial values
 updateDetailsSummary();
 
-/* DATE PICKER */
+/* DATE PICKER (MONTH CALENDAR) */
 const datepicker = document.querySelector(".datepicker");
 const dateInput = document.querySelector(".date-input");
 const yearInput = datepicker.querySelector(".year-input");
@@ -301,15 +332,12 @@ applyBtn.addEventListener("click", () => {
   validateDateInput();
 
   if (!dateInput.classList.contains("invalid")) {
-    // dateInput.value = selectedDate.toLocaleDateString("en-GB", {
-    //   year: "numeric",
-    //   month: "2-digit",
-    //   day: "2-digit",
-    // });
     updateDateInput();
 
     datepicker.hidden = true;
     // updateDateSummary();
+    updateWeekCalendar(selectedDate);
+    highlightSelectedDay(selectedDate);
   }
 });
 
@@ -413,25 +441,28 @@ const displayDates = () => {
 
 // Create a button for each date
 const createButton = (text, isDisabled = false, type = 0) => {
-  const currentDate = new Date();
-  let comparisonDate = new Date(year, month + type, text);
+    const currentDate = new Date();
+    let comparisonDate = new Date(year, month + type, text);
 
-  // Check if the current button is the date today
-  const isToday =
-    currentDate.getDate() === text &&
-    currentDate.getFullYear() === year &&
-    currentDate.getMonth() === month;
+    // Check if the current button is the date today
+    const isToday =
+        currentDate.getDate() === text &&
+        currentDate.getFullYear() === year &&
+        currentDate.getMonth() === month;
 
-  // Check if the current button is selected
-  const selected = selectedDate.getTime() === comparisonDate.getTime();
+    // Check if the date is in the past or is today
+    const isPastOrToday = comparisonDate <= currentDate;
 
-  const button = document.createElement("button");
-  button.textContent = text;
-  button.disabled = isDisabled;
-  button.type = "button";
-  button.classList.toggle("today", isToday);
-  button.classList.toggle("selected", selected);
-  return button;
+    // Check if the current button is selected
+    const selected = selectedDate.getTime() === comparisonDate.getTime();
+
+    const button = document.createElement("button");
+    button.textContent = text;
+    button.disabled = isDisabled || isPastOrToday;
+    button.type = "button";
+    button.classList.toggle("today", isToday);
+    button.classList.toggle("selected", selected);
+    return button;
 };
 const convertBtn = datepicker.querySelector(".convert-to-lunar");
 
@@ -460,20 +491,214 @@ convertBtn.addEventListener("click", () => {
 
 displayDates();
 
+/* TIME SLOT PICKER (WEEK CALENDAR) */
+const weekCalendar = document.getElementById('week-calendar-container');
+const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+// Helper function to get the Monday of the week based on the selected date
+function getMonday(date) {
+    const day = date.getDay();
+    const diff = date.getDate() - day + (day === 0 ? -6 : 1); // Adjust when day is Sunday (0)
+    return new Date(date.setDate(diff));
+}
+
+// Function to update the week calendar
+function updateWeekCalendar(selectedDate) {
+    if (weekCalendar.classList.contains('d-none')) {
+        weekCalendar.classList.remove('d-none');
+        weekCalendar.classList.add('fade-in'); // Add animation
+    }
+
+    const weekStart = getMonday(new Date(selectedDate)); // Get the Monday of the selected week
+
+    days.forEach((dayId, index) => {
+        const currentDate = new Date(weekStart);
+        currentDate.setDate(weekStart.getDate() + index);
+
+        // Update Gregorian date
+        const gregorianDateEl = document.getElementById(dayId).querySelector('.gregorian-date');
+        gregorianDateEl.textContent = `${currentDate.getDate()}/${currentDate.getMonth() + 1}`;
+
+        // Convert to Lunar date (you already have Lunar.js or similar)
+        const lunar = Lunar.fromDate(currentDate);
+        const lunarDateEl = document.getElementById(dayId).querySelector('.lunar-date');
+        lunarDateEl.textContent = `${lunar.getDay()}/${lunar.getMonth()}`;
+
+    });
+}
+
+// Example backend data for available slots per time slot (fetch this dynamically from your API)
+const availableSlots = {
+    'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
+    'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+    'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+    'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
+    'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
+    'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
+    'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
+};
+
+// Function to render available slots in week calendar cell
+function renderWeekCalendarCells() {
+    const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00']; 
+
+    timeSlots.forEach(timeSlot => {
+        // Create a new row for each time slot
+        const row = document.createElement('div');
+        row.classList.add('calendar-row');
+
+        // Create and append the time cell (leftmost column)
+        const timeCell = document.createElement('div');
+        timeCell.classList.add('calendar-cell', 'time-cell');
+        timeCell.textContent = timeSlot; // Set the time slot text (e.g., '4:00')
+        row.appendChild(timeCell); // Append the time cell to the row
+
+        // For each day of the week
+        days.forEach(dayId => {
+            // Create a cell for each day (Monday to Sunday)
+            const cell = document.createElement('div');
+            cell.classList.add('calendar-cell');
+
+            // Get the number of available slots for the given day and time slot
+            const available = availableSlots[dayId][timeSlot];
+
+            // Create the button element inside the cell
+            const button = createSlotButton(available, dayId, timeSlot);
+
+            // Append the button to the cell
+            cell.appendChild(button);
+
+            // Append the day cell to the row
+            row.appendChild(cell);
+        });
+
+        // Append the entire row (with time cell + 7 day cells) to the week calendar container
+        document.getElementById('week-calendar-container').appendChild(row);
+
+        // Add a separation row after morning sessions
+        if (timeSlot === '7:00') {
+            const separationRow = document.createElement('div');
+            separationRow.classList.add('calendar-row', 'separation-row');
+
+            // Create the separation cells (empty row)
+            const timeSeparator = document.createElement('div');
+            timeSeparator.classList.add('calendar-cell', 'time-cell');
+            timeSeparator.textContent = '--';
+            separationRow.appendChild(timeSeparator); // Append separator for time cell
+
+            days.forEach(() => {
+                const emptyCell = document.createElement('div');
+                emptyCell.classList.add('calendar-cell');
+                separationRow.appendChild(emptyCell); // Append empty cells for each day
+            });
+
+            document.getElementById('week-calendar-container').appendChild(separationRow);
+        }
+    });
+}
+
+const createSlotButton = (availableSlots, dayId, timeSlot) => {
+    const button = document.createElement('button');
+    button.classList.add('select-btn');
+    button.type = 'button';
+    
+    if (availableSlots > 0) {
+        button.textContent = `${availableSlots} slot${availableSlots > 1 ? 's' : ''}`;
+        button.classList.add('available');
+    } else {
+        button.textContent = '0 slot';
+        button.classList.add('unavailable');
+        button.disabled = true;
+    }
+
+    // Store the available slots in a data attribute for resetting later
+    button.dataset.available = availableSlots;
+
+    // Add the click handler for the slot selection
+    button.addEventListener('click', () => handleSlotSelection(button, dayId, timeSlot));
+
+    return button;
+};
+
+// Function to highlight the selected day's column in the week calendar
+function highlightSelectedDay(selectedDate) {
+    let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+
+    // Since our calendar starts on Monday, we need to remap the days
+    const dayMapping = [6, 0, 1, 2, 3, 4, 5]; // Mapping Sunday to index 6, Monday to index 0, etc.
+    selectedDayIndex = dayMapping[selectedDayIndex];
+
+    // Clear previous highlights
+    document.querySelectorAll('.highlight').forEach(cell => {
+        cell.classList.remove('highlight');
+    });
+
+    // Highlight the column for the selected day
+    days.forEach((dayId, index) => {
+        if (index === selectedDayIndex) {
+            // Highlight time slot cells
+            const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
+            cells.forEach(cell => cell.classList.add('highlight'));
+        }
+    });
+}
+
+let previouslySelectedButton = null;
+let selectedTimeSlot = null;
+
+// Function to handle the "Select" button click
+function handleSlotSelection(button, dayId, timeSlot) {
+
+    // If there was a previously selected button, reset it
+    if (previouslySelectedButton) {
+        previouslySelectedButton.classList.add('available');
+        previouslySelectedButton.classList.remove('selected');
+        previouslySelectedButton.textContent = `${previouslySelectedButton.dataset.available} slot${previouslySelectedButton.dataset.available > 1 ? 's' : ''}`;
+        previouslySelectedButton.disabled = false; // Re-enable the button
+    }
+
+    // Update the current button to selected state
+    button.classList.remove('available');
+    button.classList.add('selected');
+    button.textContent = "Selected";
+    button.disabled = true; // Disable the selected button
+
+    // Store the current button as the newly selected button
+    previouslySelectedButton = button;
+
+    // Update the selectedTimeSlot
+    selectedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;  // Example format: "4:00 - 5:00"
+
+    // Get the day index for the selected day (starting from Monday)
+    const dayIndex = days.indexOf(dayId);
+
+    // Calculate the new date based on the clicked day
+    const weekStart = getMonday(selectedDate); // Get the Monday of the selected week
+    selectedDate = new Date(weekStart); // Reset selectedDate to Monday of the week
+    selectedDate.setDate(weekStart.getDate() + dayIndex); // Adjust it to the clicked day
+
+    // Now that selectedDate is updated, reflect the change
+    updateDateInput(); // Update the input field
+    highlightSelectedDay(selectedDate); // Highlight the selected day in the week calendar
+    displayDates(); // Update the calendar popup with the selected date highlighted
+    updateTimeSummary();  
+}
+
+renderWeekCalendarCells();
 
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
-const timeSlots = document.querySelectorAll('input[name="timePicker"]');
+// const timeSlots = document.querySelectorAll('input[name="timePicker"]');
 
 // Summary elements
 const summaryGregDate = document.getElementById('summary-greg-date');
 const summaryLunarDate = document.getElementById('summary-lunar-date');
 const summaryTime = document.getElementById('summary-time');
 
-let selectedTimeSlot;
 
 function updateTimeSummary() {
-    selectedTimeSlot = document.querySelector('input[name="timePicker"]:checked').value;
-    summaryTime.textContent = selectedTimeSlot;
+    if (selectedTimeSlot) {
+        summaryTime.textContent = selectedTimeSlot; 
+    }
 };
 
 let gregorianDate;
@@ -510,9 +735,9 @@ function updateDateSummary() {
 };
 
 // Event listeners for time slot changes
-timeSlots.forEach(timeSlot => {
-    timeSlot.addEventListener('change', updateTimeSummary);
-});
+// timeSlots.forEach(timeSlot => {
+//     timeSlot.addEventListener('change', updateTimeSummary);
+// });
 
 updateTimeSummary();
 updateDateSummary();

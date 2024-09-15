@@ -1,5 +1,4 @@
-
-<div th:fragment="content" class="booking-container">
+<div th:fragment="content" class="booking-container" xmlns:sec="http://www.w3.org/1999/xhtml">
     <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Book A Spraying Service</h1>
     <div class="d-flex justify-content-center align-items-center">
         <div class="box-container">
@@ -174,168 +173,52 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="timePicker" class="form-label">Time Slot *</label>
-                                <h6>Morning</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot1" value="04:00 - 05:00 AM" checked>
-                                    <label class="form-check-label" for="timeslot1">04:00 – 05:00 (2 sessions)</label>
+                    </div>
+
+                    <div class="form-group w-100 mt-5">
+                        <label class="form-label">Time Slot *</label>
+                        <div id="week-calendar-container" class="mt-1 d-none">
+                            <!-- Date Header -->
+                            <div class="calendar-row header-row">
+                                <div class="calendar-cell time-cell"></div>
+                                <div class="calendar-cell header-cell" id="mon">
+                                    <div class="day-name">MON</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot2" value="05:00 - 06:00 AM">
-                                    <label class="form-check-label" for="timeslot2">05:00 – 06:00 (2 sessions)</label>
+                                <div class="calendar-cell header-cell" id="tue">
+                                    <div class="day-name">TUE</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot3" value="06:00 - 07:00 AM">
-                                    <label class="form-check-label" for="timeslot3">06:00 – 07:00 (1 session)</label>
+                                <div class="calendar-cell header-cell" id="wed">
+                                    <div class="day-name">WED</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot4" value="07:00 - 08:00 AM">
-                                    <label class="form-check-label" for="timeslot4">07:00 – 08:00 (2 sessions)</label>
+                                <div class="calendar-cell header-cell" id="thu">
+                                    <div class="day-name">THU</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
-                                <h6 class="mt-4">Afternoon</h6>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot5" value="16:00 - 17:00 PM">
-                                    <label class="form-check-label" for="timeslot5">16:00 – 17:00 (2 sessions)</label>
+                                <div class="calendar-cell header-cell" id="fri">
+                                    <div class="day-name">FRI</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot6" value="17:00 - 18:00 PM">
-                                    <label class="form-check-label" for="timeslot6">17:00 – 18:00 (2 sessions)</label>
+                                <div class="calendar-cell header-cell" id="sat">
+                                    <div class="day-name">SAT</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
+                                </div>
+                                <div class="calendar-cell header-cell" id="sun">
+                                    <div class="day-name">SUN</div>
+                                    <div class="gregorian-date"></div>
+                                    <div class="lunar-date"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- <div class="calendar-container mt-5"> -->
-                        <!-- Date Header -->
-                        <!-- <div class="calendar-row header-row">
-                            <div class="calendar-cell time-cell"></div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">MON</div>
-                                <div class="gregorian-date">22</div>
-                                <div class="lunar-date">1</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">TUE</div>
-                                <div class="gregorian-date">23</div>
-                                <div class="lunar-date">2</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">WED</div>
-                                <div class="gregorian-date">24</div>
-                                <div class="lunar-date">3</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">THU</div>
-                                <div class="gregorian-date">25</div>
-                                <div class="lunar-date">4</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">FRI</div>
-                                <div class="gregorian-date">26</div>
-                                <div class="lunar-date">5</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">SAT</div>
-                                <div class="gregorian-date">27</div>
-                                <div class="lunar-date">6</div>
-                            </div>
-                            <div class="calendar-cell header-cell">
-                                <div class="day-name">SUN</div>
-                                <div class="gregorian-date">28</div>
-                                <div class="lunar-date">7</div>
-                            </div>
-                            
-                        </div> -->
-                    
-                        <!-- Morning Time Slots -->
-                        <!-- <div class="calendar-row">
-                            <div class="calendar-cell time-cell">4 AM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn unavailable">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn unavailable">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
-                        <div class="calendar-row">
-                            <div class="calendar-cell time-cell">5 AM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn unavailable">Select</button></div>
-                        </div>
-                        <div class="calendar-row">
-                            <div class="calendar-cell time-cell">6 AM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
-                        <div class="calendar-row">
-                            <div class="calendar-cell time-cell">7 AM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn unavailable">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn selected">Selected</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
-                        <div class="calendar-row">
-                            <div class="calendar-cell time-cell">8 AM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div> -->
-
-                        <!-- Separation Row -->
-                        <!-- <div class="calendar-row">
-                            <div class="calendar-cell time-cell">--</div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                            <div class="calendar-cell"></div>
-                        </div> -->
-                    
-                        <!-- Afternoon Time Slots -->
-                        <!-- <div class="calendar-row">
-                            <div class="calendar-cell time-cell">4 PM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
-                        <div class="calendar-row">
-                            <div class="calendar-cell time-cell">5 PM</div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                            <div class="calendar-cell"><button class="select-btn available">Select</button></div>
-                        </div>
-                    </div> -->
                     
                     <div class="d-flex justify-content-end">
                         <button type="button" class="btn btn-secondary btn-back">Back</button>
