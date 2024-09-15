@@ -16,7 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.List;
+import com.example.hoversprite.model.User;
+import com.example.hoversprite.repository.RoleRepository;
+import com.example.hoversprite.repository.UserRepository;
+import com.example.hoversprite.service.CustomerDetailService;
+import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
 public class PageController implements ErrorController {
@@ -170,6 +174,20 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
+    @GetMapping("/copyright")
+    public String copyright() {
+        return "copyright";
+    }
+
+    @GetMapping("/terms-of-service")
+    public String terms_of_service() {
+        return "terms-of-service";
+    }
+
+    @GetMapping("/privacy-policy")
+    public String privacy_policy() {
+        return "privacy-policy";
+    }
 
     @GetMapping("/error")
     public String handleError(Model model) {

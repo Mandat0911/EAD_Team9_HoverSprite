@@ -1,0 +1,84 @@
+/* Apply styles only within the about-container */
+.about-container {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+    width: 80%;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Ensure all text inside the about-container inherits the styles */
+.about-container h1, 
+.about-container h2, 
+.about-container p {
+    margin-bottom: 20px;
+}
+
+.about-container h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.about-container h2 {
+    font-size: 1.8rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.about-container p {
+    font-size: 1rem;
+    color: #666;
+}
+
+.about-container .section {
+    margin-bottom: 40px;
+}
+
+.about-container .team-member {
+    margin-bottom: 20px;
+}
+
+/* Links styling */
+.about-container a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.about-container a:hover {
+    text-decoration: underline;
+}
+
+.section {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* Light grey background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid #dee2e6; /* Light border for separation */
+}
+
+.procedure-section {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f8f9fa; /* Light grey background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid #dee2e6; /* Light border for separation */
+}
+.procedure-section h4 {
+    color: #007bff; /* Bootstrap blue for section headings */
+    margin-bottom: 15px;
+}
+.procedure-section h5 {
+    color: #6c757d; /* Muted text color */
+}
+.procedure-img {
+    max-width: 100%; /* Ensure the image scales properly */
+    max-height: 300px; /* Control image height */
+    object-fit: cover;
+}
