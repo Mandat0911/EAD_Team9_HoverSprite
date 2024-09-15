@@ -6,6 +6,8 @@ import com.example.hoversprite.user.User;
 import com.example.hoversprite.user.UserDetailService;
 import com.example.hoversprite.user.UserRepository;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -16,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.hoversprite.model.User;
-import com.example.hoversprite.repository.RoleRepository;
-import com.example.hoversprite.repository.UserRepository;
-import com.example.hoversprite.service.CustomerDetailService;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.Role.RoleRepository;
+import com.example.hoversprite.user.UserRepository;
 import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
@@ -175,18 +176,27 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/copyright")
-    public String copyright() {
-        return "copyright";
+    public String copyright(Model model) {
+        model.addAttribute("title", "Copyright");
+        model.addAttribute("content", "copyright");
+        model.addAttribute("css", "/stylesheets/copyright.css");
+        return "layout";
     }
 
-    @GetMapping("/terms-of-service")
-    public String terms_of_service() {
-        return "terms-of-service";
+    @GetMapping("/terms")
+    public String terms(Model model) {
+        model.addAttribute("title", "Terms Of Service");
+        model.addAttribute("content", "terms-of-service");
+        model.addAttribute("css", "/stylesheets/terms-of-service.css");
+        return "layout";
     }
 
-    @GetMapping("/privacy-policy")
-    public String privacy_policy() {
-        return "privacy-policy";
+    @GetMapping("/policy")
+    public String policy(Model model) {
+        model.addAttribute("title", "Privacy Policy");
+        model.addAttribute("content", "privacy-policy");
+        model.addAttribute("css", "/stylesheets/privacy-policy.css");
+        return "layout";
     }
 
     @GetMapping("/error")
