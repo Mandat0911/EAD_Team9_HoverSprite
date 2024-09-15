@@ -134,13 +134,14 @@
     </div>
 
     <!-- Feedback Section -->
-    <div id="feedbackSection" style="display: none;">
+    <div id="feedbackSection" style="display: none;" sec:authorize="hasAuthority('FARMER')">
         <div class="container mt-5">
             <div class="card rounded-5">
                 <div class="card-body">
                     <h3 class="fw-bold m-0" style="color: var(--primary-color);">How was your experience with our
                         service?</h3>
                     <hr>
+                    <div id="feedbackErrorContainer" class="alert alert-danger d-none" role="alert"></div>
                     <form action="" id="feedbackForm">
                         <div class="form-group mb-3">
                             <div class="row">
@@ -210,6 +211,7 @@
                                         <textarea class="form-control rounded-4"
                                                   placeholder="We would love to hear your sharing..." id="feedback"
                                                   style="height: 100px"></textarea>
+                                        <small id="charCount" class="form-text text-muted">100 characters remaining</small>
                                         <label for="feedback">We would love to hear your sharing...</label>
                                     </div>
                                 </div>
@@ -224,5 +226,55 @@
             </div>
         </div>
     </div>
-</div>
+    <div id="feedbackDisplaySection" style="display: none;">
+        <div class="container mt-5">
+            <div class="card rounded-5">
+                <div class="card-body">
+                    <h3 class="fw-bold m-0" style="color: var(--primary-color);">Your Feedback</h3>
+                    <hr>
+                    <div class="row">
+                        <!-- Service Quality -->
+                        <div class="col-md-6 mb-3">
+                            <h4 class="fw-bold" style="color: var(--primary-color);">Service quality</h4>
 
+                            <!-- Attentiveness Rating -->
+                            <div class="row align-items-center mb-2">
+                                <h5 class="col-md-8 m-0">Sprayer's <strong>attentiveness</strong>:</h5>
+                                <div class="col-md-4">
+                                    <div class="rating" id="attentiveRatingDisplay"></div>
+                                </div>
+                            </div>
+
+                            <!-- Friendliness Rating -->
+                            <div class="row align-items-center mb-2">
+                                <h5 class="col-md-8 m-0">Sprayer's <strong>friendliness</strong>:</h5>
+                                <div class="col-md-4">
+                                    <div class="rating" id="friendlyRatingDisplay"></div>
+                                </div>
+                            </div>
+
+                            <!-- Professionalism Rating -->
+                            <div class="row align-items-center mb-2">
+                                <h5 class="col-md-8 m-0">Sprayer's <strong>professionalism</strong>:</h5>
+                                <div class="col-md-4">
+                                    <div class="rating" id="professionalRatingDisplay"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Additional Feedback -->
+                        <div class="col-md-6 mb-3">
+                            <h4 class="fw-bold" style="color: var(--primary-color);">Additional Feedback</h4>
+                            <p id="additionalFeedbackDisplay"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="userData"
+     th:data-user-id="${#authentication.principal.id}"
+     th:data-user-email="${#authentication.principal.email}"
+     style="display: none;">
+</div>
