@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -35,7 +32,6 @@ public class PageController implements ErrorController {
         model.addAttribute("title", "Home");
         model.addAttribute("content", "home");
         model.addAttribute("css", "/stylesheets/home.css");
-        //model.addAttribute("js", "/js/home.js");
         return "layout";
     }
 
@@ -176,5 +172,29 @@ public class PageController implements ErrorController {
         model.addAttribute("title", "404 Not Found");
         model.addAttribute("content", "404");
         return "layout";
+    }
+
+    @GetMapping("/account/users/edit/{id}")
+    public String showEditUser(@PathVariable("id") Long id, Model model) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("user", user);  // Change 'users' to 'user'
+        model.addAttribute("title", "Edit User");
+        model.addAttribute("content", "editUser");
+        model.addAttribute("css", "/stylesheets/booking.css");
+        model.addAttribute("js", "/js/booking.js");
+        return "layout";
+    }
+
+    @PostMapping("/users/save")
+    public String saveUser(User user, RedirectAttributes redirectAttributes) {
+        try {
+            userDetailService.save(user);
+            redirectAttributes.addFlashAttribute("message", "User saved successfully!");
+            return "redirect:/account";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/users/edit/" + user.getId();
+        }
     }
 }

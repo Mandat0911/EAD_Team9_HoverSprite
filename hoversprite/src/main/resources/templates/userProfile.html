@@ -28,10 +28,10 @@
                             <h6 sec:authentication="principal.authorities" class="fw-bold" style="color: var(--secondary-color);">Roles</h6>
                         </div>
                     </div>
-                    <div class="col-md-2 d-flex flex-row-reverse align-items-center ">
-                        <button class="btn btn-primary rounded-pill" onclick="updateInfo()"><i class="bi bi-pencil-square mr-5">   Update</i></button>
+                    <div class="col-md-2 d-flex flex-row-reverse align-items-center">
+                        <a th:href="@{'/account/users/edit/' + ${#authentication.principal.id}}">Edit</a>
                     </div>
-    
+
                 </div>
     
                 <div class="row">
