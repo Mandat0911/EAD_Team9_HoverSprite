@@ -18,6 +18,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/d88c69cf14.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <script src="/js/navbar.js"></script>
 
     <title th:text="${title}">HoverSprite</title>
@@ -40,6 +41,9 @@
                             </div>
                         </a>
                     </li>
+                    <!-- <li class="nav-item"></li>
+                        <a class="nav-link" th:href="@{#}"><i class="fa-solid fa-shopping-cart"></i>Store</a>
+                    </li> -->
                     <li class="nav-item">
                         <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/about}">
                             <div class="icon-text">
@@ -132,12 +136,12 @@
     
                     <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6 text-center">
                         <div class="footer-widget">
-                            <h6>Shopping</h6>
+                            <h6></h6>
                             <ul>
+                                <!-- <li><a href="#">Clothing Store</a></li>
                                 <li><a href="#">Clothing Store</a></li>
                                 <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Clothing Store</a></li>
+                                <li><a href="#">Clothing Store</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -149,7 +153,9 @@
                                 <li><a href="#">Contact Us</a></li>
                                 <li><a href="#">Payment Methods</a></li>
                                 <li><a href="#">Delivery</a></li>
-                                <li><a href="#">Policy</a></li>
+                                <li><a href="/copyright">Copyright</a></li>
+                                <li><a href="/terms-of-service">Terms Of Services</a></li>
+                                <li><a href="/privacy-policy">Privacy Policy</a></li>
                             </ul>
                         </div>
                     </div>

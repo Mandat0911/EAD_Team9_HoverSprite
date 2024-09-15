@@ -9,23 +9,23 @@
                 <div class="card rounded-5 mb-3">
                     <div class="card-body py-4">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="fw-bold m-0" style="color: var(--primary-color);">Order #1</h3>
-                            <p class="status badge bg-success m-0">Confirmed</p>
+                            <h3 id="orderNumber" class="fw-bold m-0" style="color: var(--primary-color);"></h3>
+                            <p id="orderStatus" class="status badge m-0"></p>
                         </div>
                         <hr class="my-3">
                         <div class="d-flex flex-column">
                             <h4 class="fw-bold my-2" style="color: var(--primary-color);">Farmer Details</h4>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Name</h5>
-                                <h5>Nguyen Van A</h5>
+                                <h5 id="farmerName"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Phone</h5>
-                                <h5>+84 123456789</h5>
+                                <h5 id="farmerPhone"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Address</h5>
-                                <h5>123 Street</h5>
+                                <h5 id="farmerAddress"></h5>
                             </div>
                         </div>
                         <hr class="my-3">
@@ -33,40 +33,30 @@
                             <h4 class="fw-bold my-2" style="color: var(--primary-color);">Farmland Details</h4>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Type of crop</h5>
-                                <h5>Vegetable</h5>
+                                <h5 id="cropType"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Farmland area</h5>
-                                <h5>5 decare</h5>
+                                <h5 id="farmlandArea"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Desired date</h5>
-                                <h5>15/08/2024 (Gregorian)</h5>
+                                <h5 id="desiredDate"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Time slot</h5>
-                                <h5>06:00 – 07:00 AM</h5>
-                            </div>
-                        </div>
-                        <!-- <hr class="my-3">
-                        <div class="d-flex flex-row justify-content-between align-items-center">
-                            <div class="d-flex flex-column align-items-start">
-                                <h4 class="fw-bold my-2">Unit price</h4>
-                            </div>
-                            <div class="d-flex flex-column align-items-end">
-                                <h4 class="my-2">30,000 VND</h4>
-                                <h5>/decare</h5>
+                                <h5 id="timeSlot"></h5>
                             </div>
                         </div>
                         <hr class="my-3">
                         <div class="d-flex flex-row justify-content-between align-items-center">
                             <div class="d-flex flex-column align-items-start justify-content-center">
-                                <h3 class="fw-bold m-0">Total</h3>
+                                <h3 class="fw-bold m-0" style="color: var(--primary-color);">Total</h3>
                             </div>
                             <div class="d-flex flex-column align-items-end justify-content-center badge" style="background-color: var(--secondary-color)">
                                 <h4 class="fw-bold m-0">150,000 VND</h4>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,35 +68,31 @@
                         <hr class="my-3">
                         <h6 id="noSprayerMessage" class="text-secondary m-0">No sprayer has been assigned to this order yet.</h6>
                         <!-- Assigned Sprayer Container -->
-                        <div id="assignedSprayerContainer" class="d-flex flex-column">
+                        <div id="assignedSprayerContainer" class="d-flex flex-column">                        
+                        
+                        </div>
 
+                        <!-- Only visible to RECEPTIONIST role -->
+                        <div sec:authorize="hasAuthority('RECEPTIONIST')">
                             <hr class="my-3">
+                            <h6 id="sprayerError" class="text-danger my-3"></h6>
+                            <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
+                                <i class="fa-solid fa-plus"></i> Add Sprayer
+                            </button>
 
-                            <!-- Only visible to RECEPTIONIST role -->
-                            <div sec:authorize="hasAuthority('RECEPTIONIST')">
-                                <h6 id="sprayerError" class="text-danger my-3"></h6>
-                                <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
-                                    <i class="fa-solid fa-plus"></i> Add Sprayer
-                                </button>
+                            <!-- Select another sprayer dropdown (hidden initially) -->
+                            <div id="sprayerSelectContainer" class="d-none mt-3">
+                                <label for="sprayerSelect" class="form-label">Select a sprayer:</label>
+                                <select id="sprayerSelect" class="form-select">
+                                </select>
                             </div>
                         </div>
-
-
-                        <!-- SECTION ONLY FOR RECEPTIONIST: assign sprayer(s) -->
-                        <!-- Add sprayer button/icon -->
-
-
-                        <!-- Select another sprayer dropdown (hidden initially) -->
-                        <div id="sprayerSelectContainer" class="d-none mt-3">
-                            <label for="sprayerSelect" class="form-label">Select a sprayer:</label>
-                            <select id="sprayerSelect" class="form-select">
-                            </select>
-                        </div>
+                        
                     </div>
                 </div>
 
                 <!-- SECTION ONLY FOR SPRAYER: to compute the change amount -->
-                <div class="card rounded-5 mb-3">
+                <div sec:authorize="hasAuthority('SPRAYER')" class="card rounded-5 mb-3">
                     <div class="card-body py-4">
                         <h4 class="m-0" style="color: var(--primary-color); font-weight: 600;">Order Payment</h4>
                         <hr class="my-3">

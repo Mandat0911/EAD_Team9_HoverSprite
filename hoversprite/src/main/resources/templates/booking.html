@@ -7,40 +7,41 @@
                 <div class="progress-bar">2</div>
                 <div class="progress-bar">3</div>
             </div>
-            <!-- Form item - Farm Details -->
+
             <form action="#" class="form" id="form">
+                <!-- Form item - Farm Details -->
                 <div class="form-step form-step-active px-4 py-3">
                     <h3 class="fw-bold" style="color: var(--primary-color);">Order Details</h3>
                     <h6 class="text-secondary fw-bold">We need a few details to deliver the most suitable drone to your farmland.</h6>
                     <hr class="my-3">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6" sec:authorize="hasAuthority('FARMER')">
                             <h4 class="fw-bold" style="color: var(--primary-color);">Farmer Details</h4>
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="phone" type="number" class="form-control" placeholder="">
+                                    <input id="phone" type="number" class="form-control" placeholder="Enter phone number" th:value="${#authentication.principal.phone}" required>
                                 </div>
                             </div>
         
                             <div class="form-group input-group">
                                 <label for="name" class="form-label d-block">Name *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="name" type="text" class="form-control" placeholder="">
+                                    <input id="name" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.fullName}" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="email" class="form-label d-block">Email *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="email" type="text" class="form-control" placeholder="">
+                                    <input id="email" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.email}" required>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="address" class="form-label d-block">Address *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="address" type="text" class="form-control" placeholder="">
+                                    <input id="address" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.address}" required>
                                 </div>
                             </div>
                         </div>
@@ -49,17 +50,17 @@
                             <h4 class="fw-bold" style="color: var(--primary-color);">Farmland Details</h4>
                             <div class="form-group input-group">
                                 <label for="crop_type" class="form-label d-block">Type of crop *</label>
-                                <select class="form-control" name="crop_type" id="crop_type" required="true">
-                                    <option value="fruit">Fruit</option>
-                                    <option value="cereal">Cereal</option>
-                                    <option value="vegetable">Vegetable</option>
+                                <select class="form-control" name="crop_type" id="crop-type" required>                                    
+                                    <option value="Fruit">Fruit</option>
+                                    <option value="Cereal">Cereal</option>
+                                    <option value="Vegetable">Vegetable</option>
                                 </select>
                             </div>
         
                             <div class="form-group input-group">
                                 <label for="area" class="form-label d-block">Farmland area *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="area" type="number" class="form-control" placeholder="Example: 12">
+                                    <input id="area" type="number" class="form-control" placeholder="Example: 12" required>
                                     <span class="input-group-text">decare</span>
                                 </div>
                             </div>
@@ -78,15 +79,98 @@
                     <hr class="my-3">
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="datePicker" class="form-label">Date *</label>
                                 <input type="text" id="datePicker" class="form-control" placeholder="dd/mm/yyyy">
+                            </div> -->
+                            <div class="form-group input-group datepicker-container">
+                                <label for="datePicker" class="form-label">Date *</label>
+                                <input type="text" id="datePicker" class="date-input form-control" placeholder="Select date" required/>
+                        
+                                <div class="datepicker" hidden>
+                                    <!-- .datepicker-header -->
+                                    <div class="datepicker-header">
+                                        <button class="prev">Prev</button>
+                        
+                                        <div>
+                                            <select class="month-input">
+                                                <option>January</option>
+                                                <option>February</option>
+                                                <option>March</option>
+                                                <option>April</option>
+                                                <option>May</option>
+                                                <option>June</option>
+                                                <option>July</option>
+                                                <option>August</option>
+                                                <option>September</option>
+                                                <option>October</option>
+                                                <option>November</option>
+                                                <option>December</option>
+                                            </select>
+                                            <input type="number" class="year-input" />
+                                        </div>
+                        
+                                        <button class="next">Next</button>
+                                    </div>
+                                    <!-- /.datepicker-header -->
+                                    <div class="datepicker-footer">
+                                        <button class="convert-to-lunar">Convert to Lunar</button>
+                                    </div>
+                                    <!-- .days -->
+                                    <div class="days">
+                                        <span>Sun</span>
+                                        <span>Mon</span>
+                                        <span>Tue</span>
+                                        <span>Wed</span>
+                                        <span>Thu</span>
+                                        <span>Fri</span>
+                                        <span>Sat</span>
+                                    </div>
+                                    <!-- /.days -->
+                        
+                                    <!-- .dates -->
+                                    <div class="dates"></div>
+                                    <!-- /.dates -->
+                        
+                                    <!-- .datepicker-footer -->
+                                    <div class="datepicker-footer">
+                                        <button class="cancel">Cancel</button>
+                                        <button class="apply">Apply</button>
+                                    </div>
+                                    <!-- /.datepicker-footer -->
+                                </div>
                             </div>
                         </div>
+                        
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="datePicker" class="form-label">Time Slot *</label>
-                                <input type="text" id="timePicker" class="form-control" placeholder="hh:mm">
+                                <label for="timePicker" class="form-label">Time Slot *</label>
+                                <h6>Morning</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot1" value="04:00 - 05:00 AM" checked>
+                                    <label class="form-check-label" for="timeslot1">04:00 – 05:00 (2 sessions)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot2" value="05:00 - 06:00 AM">
+                                    <label class="form-check-label" for="timeslot2">05:00 – 06:00 (2 sessions)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot3" value="06:00 - 07:00 AM">
+                                    <label class="form-check-label" for="timeslot3">06:00 – 07:00 (1 session)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot4" value="07:00 - 08:00 AM">
+                                    <label class="form-check-label" for="timeslot4">07:00 – 08:00 (2 sessions)</label>
+                                </div>
+                                <h6 class="mt-4">Afternoon</h6>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot5" value="16:00 - 17:00 PM">
+                                    <label class="form-check-label" for="timeslot5">16:00 – 17:00 (2 sessions)</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="timePicker" id="timeslot6" value="17:00 - 18:00 PM">
+                                    <label class="form-check-label" for="timeslot6">17:00 – 18:00 (2 sessions)</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -228,69 +312,77 @@
         
                 <!-- Form item - Payment -->
                 <div class="form-step px-4 py-3">
-                    <h3 class="fw-bold" style="color: var(--primary-color);">Payment</h3>
-                    <h6 class="text-secondary fw-bold">Please choose a payment method.</h6>
-                    <hr class="my-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="payment" class="form-label d-block">Payment Method *</label>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment" id="payment1" value="Credit / Debit Card" checked>
-                                    <label class="form-check-label" for="payment1">Credit / Debit Card</label>
+                    <div class="d-flex flex-column justify-content-between" style="min-height: 490px;">
+                        <div>
+                            <h3 class="fw-bold" style="color: var(--primary-color);">Payment</h3>
+                            <h6 class="text-secondary fw-bold">Please choose a payment method.</h6>
+                            <hr class="my-3">
+                            <div class="row">
+                                <div class="col-md-6 d-flex flex-row justify-content-around">
+                                    <div class="form-group">
+                                        <label for="payment" class="form-label d-block">Payment Method *</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment" id="payment2" value="Cash on Delivery" checked>
+                                            <label class="form-check-label" for="payment2">Cash on Delivery</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="payment" id="payment1" value="Credit / Debit Card">
+                                            <label class="form-check-label" for="payment1">Credit / Debit Card</label>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="payment" id="payment2" value="Cash on Delivery">
-                                    <label class="form-check-label" for="payment2">Cash on Delivery</label>
+                                <div class="col-md-6">
+                                    <div class="credit-card-form-wrapper slide-out-left">
+                                        <div class="form-group">
+                                            <label for="card_name" class="form-label d-block">Cardholder Name *</label>
+                                            <input type="text" class="form-control" id="card_name" placeholder="NGUYEN VAN A" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="card_number" class="form-label d-block">Card Number *</label>
+                                            <input type="text" class="form-control" id="card_number" placeholder="1234 **** **** 1121" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="expiry_date" class="form-label d-block">Expiration Date *</label>
+                                            <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="cvv" class="form-label d-block">CVV *</label>
+                                            <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input id="email" type="checkbox" class="form-input">
+                                            <label for="email">Send me an email</label>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="card_name" class="form-label d-block">Cardholder Name *</label>
-                                <input type="text" class="form-control" id="card_name" placeholder="NGUYEN VAN A" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="card_number" class="form-label d-block">Card Number *</label>
-                                <input type="text" class="form-control" id="card_number" placeholder="1234 **** **** 1121" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="expiry_date" class="form-label d-block">Expiration Date *</label>
-                                <input type="text" class="form-control" id="expiry_date" placeholder="MM/YY" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="cvv" class="form-label d-block">CVV *</label>
-                                <input type="text" class="form-control" id="cvv" placeholder="123" required>
-                            </div>
-                            <div class="form-group">
-                                <input id="email" type="checkbox" class="form-input">
-                                <label for="email">Send me an email</label>
-                            </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-secondary btn-back">Back</button>
+                            <button type="button" class="btn btn-primary btn-submit">Submit</button>
                         </div>
-                    </div>
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary btn-back">Back</button>
-                        <button type="button" class="btn btn-primary btn-submit">Submit</button>
                     </div>
                 </div>
             </form>
         </div>
-        <div class="d-none box-container px-4 order-summary-container">
+        <div class="d-none box-container p-4 order-summary-container">
             <h3 class="fw-bold" style="color: var(--primary-color)">Order Summary</h3>
             <h6 class="text-secondary fw-bold">Please carefully check your order below.</h6>
             <hr class="my-4">
             <div class="d-flex flex-row justify-content-between">
                 <div class="d-flex flex-column align-items-start">
-                    <h5 class="fw-bold my-2">Type of crop</h5>
+                    <h5 class="fw-bold my-2">Crop type</h5>
                     <h5 class="fw-bold my-2">Farmland area</h5>
-                    <h5 class="fw-bold my-2">Desired date</h5>
-                    <h5 class="fw-bold my-2">Time slot</h5>
+                    <h5 class="fw-bold my-2">Gregorian Date</h5>
+                    <h5 class="fw-bold my-2">Lunar Date</h5>
+                    <h5 class="fw-bold my-2">Time</h5>
                 </div>
                 <div class="d-flex flex-column align-items-end" style="color: var(--secondary-color)">
-                    <h5 class="fw-bold my-2">Vegetable</h5>
-                    <h5 class="fw-bold my-2">5 decare</h5>
-                    <h5 class="fw-bold my-2">15/08/2024 (Gregorian)</h5>
-                    <h5 class="fw-bold my-2">06:00 – 07:00 AM</h5>
+                    <h5 id="summary-crop-type" class="fw-bold my-2"></h5>
+                    <h5 id="summary-area" class="fw-bold my-2"></h5>
+                    <h5 id="summary-greg-date" class="fw-bold my-2"></h5>
+                    <h5 id="summary-lunar-date" class="fw-bold my-2"></h5>
+                    <h5 id="summary-time" class="fw-bold my-2"></h5>
                 </div>
             </div>
             <hr class="my-4">
@@ -304,12 +396,12 @@
                 </div>
             </div>
             <hr class="my-4">
-            <div class="d-flex flex-row justify-content-between mb-5">
+            <div class="d-flex flex-row justify-content-between">
                 <div class="d-flex flex-column align-items-start">
                     <h3 class="fw-bold my-2">Total</h3>
                 </div>
                 <div class="d-flex flex-column align-items-end" style="color: var(--secondary-color)">
-                    <h3 class="fw-bold my-2">150,000 VND</h3>
+                    <h3 id="summary-total" class="fw-bold my-2"></h3>
                 </div>
             </div>
         </div>
