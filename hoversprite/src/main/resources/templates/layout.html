@@ -34,34 +34,79 @@
                 <ul class="navbar-nav ml-auto">
                     <div class="hori-selector"><div class="left"></div><div class="right"></div></div>
                     <li class="nav-item active">
-                        <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house"></i>home</a>
+                        <a class="nav-link" th:href="@{/}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-house"></i>
+                                <span>HOME</span>
+                            </div>
+                        </a>
                     </li>
                     <!-- <li class="nav-item"></li>
                         <a class="nav-link" th:href="@{#}"><i class="fa-solid fa-shopping-cart"></i>Store</a>
                     </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/about}"><i class="fa-solid fa-info-circle"></i>about</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/about}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-info-circle"></i>
+                                <span>ABOUT</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/faqs}"><i class="fa-solid fa-question-circle"></i>faqs</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/faqs}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-question-circle"></i>
+                                <span>FAQS</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')"  th:href="@{/booking}"><i class="fa-solid fa-calendar"></i>booking</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/booking}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-calendar"></i>
+                                <span>BOOKING</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/orders}"><i class="fa-solid fa-file-lines"></i>orders</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/orders}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-file-lines"></i>
+                                <span>ORDERS</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST')" th:href="@{/users}"><i class="fa-solid fa-user-group"></i>users</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST')" th:href="@{/users}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-user-group"></i>
+                                <span>USERS</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/account}"><i class="fa-solid fa-user"></i>account</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/account}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-user"></i>
+                                <span>ACCOUNT</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}"><i class="fa-solid fa-user"></i>log in</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/login}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-user"></i>
+                                <span>LOG IN</span>
+                            </div>
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/register}"><i class="fa-solid fa-user"></i>register</a>
+                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/register}">
+                            <div class="icon-text">
+                                <i class="fa-solid fa-user"></i>
+                                <span>REGISTER</span>
+                            </div>
+                        </a>
                     </li>
                 </ul>
             </div>
