@@ -32,7 +32,10 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                 <ul class="navbar-nav ml-auto">
-                    <div class="hori-selector" th:if="${content != '404'}">
+                    <div class="hori-selector" th:if="${content != '404'
+                                                    and content != 'privacy-policy'
+                                                    and content != 'copyright'
+                                                    and content != 'terms-of-service'}">
                         <div class="left"></div>
                         <div class="right"></div>
                     </div>
@@ -40,13 +43,13 @@
                         <a class="nav-link" th:href="@{/}"><i class="fa-solid fa-house"></i>home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/about}"><i class="fa-solid fa-info-circle"></i>about</a>
+                        <a class="nav-link" sec:authorize="!hasAnyAuthority('RECEPTIONIST','SPRAYER')" th:href="@{/about}"><i class="fa-solid fa-info-circle"></i>about</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="!isAuthenticated()" th:href="@{/faqs}"><i class="fa-solid fa-question-circle"></i>faqs</a>
+                        <a class="nav-link" sec:authorize="!hasAnyAuthority('RECEPTIONIST','SPRAYER')" th:href="@{/faqs}"><i class="fa-solid fa-question-circle"></i>faqs</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')"  th:href="@{/booking}"><i class="fa-solid fa-calendar"></i>booking</a>
+                        <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST', 'FARMER')"  th:href="@{/booking}"><i class="fa-solid fa-calendar"></i>booking</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" sec:authorize="hasAnyAuthority('RECEPTIONIST','SPRAYER', 'FARMER')" th:href="@{/orders}"><i class="fa-solid fa-file-lines"></i>orders</a>
@@ -91,24 +94,22 @@
     
                     <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6 text-center">
                         <div class="footer-widget">
-                            <h6>Shopping</h6>
+                            <h6>Account</h6>
                             <ul>
-                                <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Clothing Store</a></li>
+                                <li><a th:href="@{/account}">Account</a></li>
+                                <li><a th:href="@{/booking}"></i>Booking</a></li>
+                                <li><a th:href="@{/orders}">Orders</a></li>
                             </ul>
                         </div>
                     </div>
     
                     <div class="col-lg-2 col-md-3 col-sm-6 text-center">
                         <div class="footer-widget">
-                            <h6>Links</h6>
+                            <h6>Quick Links</h6>
                             <ul>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Payment Methods</a></li>
-                                <li><a href="#">Delivery</a></li>
-                                <li><a href="#">Policy</a></li>
+                                <li><a th:href="@{/copyright}">Copyright</a></li>
+                                <li><a th:href="@{/terms}">Terms Of Services</a></li>
+                                <li><a th:href="@{/policy}">Privacy Policy</a></li>
                             </ul>
                         </div>
                     </div>
