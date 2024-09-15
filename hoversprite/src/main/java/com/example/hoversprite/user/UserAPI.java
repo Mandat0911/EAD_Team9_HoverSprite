@@ -1,4 +1,4 @@
-package com.example.hoversprite.User;
+package com.example.hoversprite.user;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.hoversprite.User;
+package com.example.hoversprite.user;
 
 import com.example.hoversprite.security.oauth2.CustomerOAuth2User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
