@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -104,20 +105,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/auth/login","/login").permitAll()
-                                //.requestMatchers("/list_users","/list_orders").authenticated()
-                                //.requestMatchers("/users/edit/**").hasAnyAuthority("RECEPTIONIST")
+                                .requestMatchers("/orders/**", "/account/**", "/booking/**", "/users/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(customizer ->
                         customizer
                                 .authenticationEntryPoint(authenticationEntryPoint())  // Handle unauthenticated requests
                                 .accessDeniedHandler(accessDeniedHandler())            // Handle unauthorized access
-                ).addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-                        })
                 )
+
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+
+
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .authenticationEntryPoint((request, response, authException) -> {
+//                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+//                        })
+//                )
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("username")

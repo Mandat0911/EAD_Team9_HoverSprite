@@ -19,6 +19,8 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
     @Autowired
     private UserDetailService userDetailService;
 
+
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         CustomerOAuth2User oAuth2User = (CustomerOAuth2User) authentication.getPrincipal();
@@ -27,10 +29,21 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         String email = oAuth2User.getEmail();
         User user = userDetailService.getUserByEmail(email);
 
+        // Determine which provider (Google, Facebook, etc.)
+        AuthenticationProvider authProvider;
+
+        if (clientName.equalsIgnoreCase("Google")) {
+            authProvider = AuthenticationProvider.GOOGLE;
+        } else if (clientName.equalsIgnoreCase("Facebook")) {
+            authProvider = AuthenticationProvider.FACEBOOK;
+        } else {
+            authProvider = AuthenticationProvider.LOCAL;
+        }
+
         if (user == null) {
-            userDetailService.createNewUserAfterOAuthLoginSuccess(email, name, AuthenticationProvider.GOOGLE);
+            userDetailService.createNewUserAfterOAuthLoginSuccess(email, name, authProvider);
         }else {
-            userDetailService.UpdateUserAfterOAuthLoginSuccess(user, name, AuthenticationProvider.GOOGLE);
+            userDetailService.UpdateUserAfterOAuthLoginSuccess(user, name, authProvider);
         }
 
 

@@ -55,7 +55,7 @@ public class UserDetailService implements UserDetailsService {
 
         Role roleUSer = roleRepository.findByName("Farmer");
         user.addRole(roleUSer);
-
+        user.setAuthenticationProvider(AuthenticationProvider.LOCAL);
         // Save user
         userRepository.save(user);
     }
