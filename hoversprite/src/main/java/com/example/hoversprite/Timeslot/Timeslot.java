@@ -1,76 +1,50 @@
 package com.example.hoversprite.Timeslot;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.ArrayList;
 
-import com.example.hoversprite.Order.Order;
+import lombok.Getter;
+import lombok.Setter;
 
+
+@Getter
+@Setter
 @Entity
 @Table(name = "timeslot")
-public class Timeslot {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@IdClass(TimeslotId.class)  // Composite key
+public class Timeslot implements Serializable {
 
+    @Id
     @Column(name = "gregorian_date", nullable = false)
     private Date gregorianDate;
 
+    @Id
     @Column(name = "time", nullable = false)
-    private String time; // e.g., "04:00 - 05:00 AM"
+    private String time;
 
     @Column(name = "available_sessions", nullable = false)
-    private int availableSessions = 2; // Start with 2 sessions
+    private int availableSessions;
 
-    @OneToMany(mappedBy = "timeslot", cascade = CascadeType.ALL)
-    private List<Order> orders = new ArrayList<>();
+    // Default constructor
+    public Timeslot() {}
 
-    public Timeslot() {
+    // Constructor for creating a timeslot
+    public Timeslot(Date gregorianDate, String time, int availableSessions) {
+        this.gregorianDate = gregorianDate;
+        this.time = time;
+        this.availableSessions = availableSessions; // Default value for new timeslots
     }
+
+    // Method to decrease the number of available sessions
     public void decreaseAvailableSessions() {
-        if (this.availableSessions > 0) {
-            this.availableSessions--;
+        if (availableSessions > 0) {
+            availableSessions--;
         }
     }
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public Date getGregorianDate() {
-        return gregorianDate;
-    }
-    public void setGregorianDate(Date gregorianDate) {
-        this.gregorianDate = gregorianDate;
-    }
-    public String getTime() {
-        return time;
-    }
-    public void setTime(String time) {
-        this.time = time;
-    }
-    public int getAvailableSessions() {
-        return availableSessions;
-    }
-    public void setAvailableSessions(int availableSessions) {
-        this.availableSessions = availableSessions;
-    }
-    public List<Order> getOrders() {
-        return orders;
-    }
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
     
-
+    // Utility method to check if the timeslot is full
+    public boolean isFullyBooked() {
+        return availableSessions <= 0;
+    }
 }
-

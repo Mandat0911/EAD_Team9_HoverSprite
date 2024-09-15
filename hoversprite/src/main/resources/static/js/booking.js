@@ -335,9 +335,7 @@ applyBtn.addEventListener("click", () => {
     updateDateInput();
 
     datepicker.hidden = true;
-    // updateDateSummary();
-    updateWeekCalendar(selectedDate);
-    highlightSelectedDay(selectedDate);
+    handleCalendarUpdates();
   }
 });
 
@@ -492,8 +490,16 @@ convertBtn.addEventListener("click", () => {
 displayDates();
 
 /* TIME SLOT PICKER (WEEK CALENDAR) */
-const weekCalendar = document.getElementById('week-calendar-container');
+const weekCalendarContainer = document.getElementById('week-calendar-container');
 const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00'];
+
+// Function to manage calendar updates after date selection
+function handleCalendarUpdates() {
+    updateWeekCalendar();
+    // highlightSelectedDay();
+    renderWeekCalendarCells();
+}
 
 // Helper function to get the Monday of the week based on the selected date
 function getMonday(date) {
@@ -503,10 +509,10 @@ function getMonday(date) {
 }
 
 // Function to update the week calendar
-function updateWeekCalendar(selectedDate) {
-    if (weekCalendar.classList.contains('d-none')) {
-        weekCalendar.classList.remove('d-none');
-        weekCalendar.classList.add('fade-in'); // Add animation
+function updateWeekCalendar() {
+    if (weekCalendarContainer.classList.contains('d-none')) {
+        weekCalendarContainer.classList.remove('d-none');
+        weekCalendarContainer.classList.add('fade-in'); // Add animation
     }
 
     const weekStart = getMonday(new Date(selectedDate)); // Get the Monday of the selected week
@@ -524,23 +530,77 @@ function updateWeekCalendar(selectedDate) {
         const lunarDateEl = document.getElementById(dayId).querySelector('.lunar-date');
         lunarDateEl.textContent = `${lunar.getDay()}/${lunar.getMonth()}`;
 
-    });
+    });    
 }
 
 // Example backend data for available slots per time slot (fetch this dynamically from your API)
-const availableSlots = {
-    'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
-    'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-    'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-    'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
-    'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
-    'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
-    'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
-};
+// const availableSlots = {
+//     'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
+//     'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+//     'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
+//     'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
+//     'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
+//     'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
+//     'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
+// };
+
+
+// Function to fetch available slots from the backend
+async function fetchAvailableSlotsForDate(weekStart) {
+    // Initialize the availableSlots object for the week
+    let availableSlots = {};
+
+    // Loop through each day in the week
+    for (let i = 0; i < days.length; i++) {
+        const currentDay = new Date(weekStart);
+        currentDay.setDate(weekStart.getDate() + i + 1);
+
+        const formattedDate = currentDay.toISOString().split('T')[0]; // Convert to yyyy-mm-dd format
+        availableSlots[days[i]] = {};  // Initialize day slot in availableSlots
+
+        // Fetch available slots for each time slot from the backend
+        for (const timeSlot of timeSlots) {
+            const formattedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;
+            // console.log(`Requesting availability for Date: ${formattedDate}, Time: ${formattedTimeSlot}`);
+
+            try {
+                // Using GET method for checking availability
+                const availabilityResponse = await fetch(`/api/timeslot/availability?date=${formattedDate}&time=${formattedTimeSlot}`, {
+                    method: 'GET',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    }
+                });
+
+                // Parse the response data
+                const data = await availabilityResponse.json();
+                // console.log(`Response for Date: ${formattedDate}, Time: ${formattedTimeSlot} -> Available Slots: ${data}`);
+
+                // Store the available sessions in the correct day and time slot
+                availableSlots[days[i]][timeSlot] = data;
+
+            } catch (error) {
+                console.error(`Failed to fetch timeslot for ${formattedDate} at ${timeSlot}`, error);
+                // Default to 2 sessions if there's an error
+                availableSlots[days[i]][timeSlot] = 2;
+            }
+        }
+    }
+    console.log("Final Available Slots for the Week:", availableSlots);  // Log the final availableSlots object
+    // Return the structured available slots object
+    return availableSlots;
+}
+
 
 // Function to render available slots in week calendar cell
-function renderWeekCalendarCells() {
-    const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00']; 
+async function renderWeekCalendarCells() {
+
+    const weekStart = getMonday(selectedDate); // Get the start of the week from the selected date
+    let availableSlots = await fetchAvailableSlotsForDate(weekStart); // Fetch slots from the backend
+
+    // Clear the existing calendar content
+    const calendarRows = document.querySelectorAll('.calendar-row:not(.header-row)');
+    calendarRows.forEach(row => row.remove()); // Remove each row without touching the header
 
     timeSlots.forEach(timeSlot => {
         // Create a new row for each time slot
@@ -615,13 +675,15 @@ const createSlotButton = (availableSlots, dayId, timeSlot) => {
     button.dataset.available = availableSlots;
 
     // Add the click handler for the slot selection
-    button.addEventListener('click', () => handleSlotSelection(button, dayId, timeSlot));
+    if (availableSlots > 0) {
+        button.addEventListener('click', () => handleSlotSelection(button, dayId, timeSlot));
+    }
 
     return button;
 };
 
 // Function to highlight the selected day's column in the week calendar
-function highlightSelectedDay(selectedDate) {
+function highlightSelectedDay() {
     let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
 
     // Since our calendar starts on Monday, we need to remap the days
@@ -636,6 +698,10 @@ function highlightSelectedDay(selectedDate) {
     // Highlight the column for the selected day
     days.forEach((dayId, index) => {
         if (index === selectedDayIndex) {
+            // Highlight time slot cells + header for the selected day
+            const headerCell = document.getElementById(dayId);  // This highlights the header
+            headerCell.classList.add('highlight');
+
             // Highlight time slot cells
             const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
             cells.forEach(cell => cell.classList.add('highlight'));
@@ -679,15 +745,12 @@ function handleSlotSelection(button, dayId, timeSlot) {
 
     // Now that selectedDate is updated, reflect the change
     updateDateInput(); // Update the input field
-    highlightSelectedDay(selectedDate); // Highlight the selected day in the week calendar
+    highlightSelectedDay(); // Highlight the selected day in the week calendar
     displayDates(); // Update the calendar popup with the selected date highlighted
     updateTimeSummary();  
 }
 
-renderWeekCalendarCells();
-
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
-// const timeSlots = document.querySelectorAll('input[name="timePicker"]');
 
 // Summary elements
 const summaryGregDate = document.getElementById('summary-greg-date');
@@ -712,9 +775,6 @@ function updateDateSummary() {
 
         // Convert the Gregorian date to Lunar
         const lunar = Lunar.fromDate(selectedDate);
-        // const lunarDay = String(lunar.getDay()).padStart(2, '0');
-        // const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
-        // lunarDate = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
         lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
     } else {
         gregorianDate = selectedDate;
@@ -733,11 +793,6 @@ function updateDateSummary() {
         day: "2-digit",
     });
 };
-
-// Event listeners for time slot changes
-// timeSlots.forEach(timeSlot => {
-//     timeSlot.addEventListener('change', updateTimeSummary);
-// });
 
 updateTimeSummary();
 updateDateSummary();
@@ -765,26 +820,61 @@ document.getElementById('booking-form').addEventListener('submit', async functio
 
     // Send the order to the backend
     try {
-        const response = await fetch('/api/orders', {
+        const orderResponse = await fetch('/api/orders', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(order),
+            body: JSON.stringify(order)
         });
 
-        if (response.ok) {
-            const data = await response.json();
+        if (orderResponse.ok) {
+            const data = await orderResponse.json();
             alert('Order created successfully!');
-            // Redirect or update the UI
-            window.location.href = '/orders';
+
+            // Send a request to create or update the Timeslot
+            await createOrUpdateTimeslot();
+
+            // Redirect to orders list
+            // window.location.href = '/orders';
         } else {
-            const errorData = await response.json();  // Get error response data
-            console.log('Error details:', errorData);
-            alert('Failed to create order.');
+            const errorData = await orderResponse.json();  // Get error response data
+            if (errorData.message === 'No available sessions for the selected time slot.') {
+                alert('The selected time slot is fully booked. Please choose another slot.');
+            } else {
+                alert('Failed to create order.');
+                console.log('Error details:', errorData);
+            }
         }
     } catch (error) {
         console.error('Error:', error);
         alert('An error occurred while creating the order.');
     }
 });
+
+// Function to create or update the Timeslot after the order is created
+async function createOrUpdateTimeslot() {
+    const timeslot = {
+        gregorianDate: gregorianDate,
+        time: selectedTimeSlot
+    };
+
+    try {
+        const timeslotResponse = await fetch('/api/timeslot', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(timeslot)
+        });
+
+        if (timeslotResponse.ok) {
+            console.log("Creating/Updating Timeslot for Date:", gregorianDate, "Time:", selectedTimeSlot);
+        } else {
+            console.error('Failed to create or update timeslot');
+
+        }
+    } catch (error) {
+        console.error('Error creating/updating timeslot:', error);
+    }
+}

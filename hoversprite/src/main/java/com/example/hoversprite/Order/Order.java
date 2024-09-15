@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import java.util.Date;
 
-import com.example.hoversprite.Timeslot.Timeslot;
 import com.example.hoversprite.user.User;
 
 @Setter
@@ -51,10 +50,6 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private OrderStatus status;
-
-    @ManyToOne
-    @JoinColumn(name = "timeslot_id")
-    private Timeslot timeslot;
 
     // Constructors, getters, and setters
 
