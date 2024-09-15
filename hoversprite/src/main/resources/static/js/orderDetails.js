@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('timeSlot').textContent = order.time;
 
             // Update total cost in the payment section
-            document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
+            document.querySelector('.totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
             console.log(order)
         })
         .catch(error => console.error('Error fetching order details:', error));

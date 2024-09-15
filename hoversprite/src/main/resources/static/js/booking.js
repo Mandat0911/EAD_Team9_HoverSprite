@@ -538,30 +538,6 @@ const availableSlots = {
     'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
 };
 
-const createSlotButton = (availableSlots, dayId, timeSlot) => {
-    const button = document.createElement('button');
-    button.classList.add('select-btn');
-    button.type = 'button';
-    
-    if (availableSlots > 0) {
-        button.textContent = `${availableSlots} slot${availableSlots > 1 ? 's' : ''}`;
-        button.classList.add('available');
-    } else {
-        button.textContent = '0 slot';
-        button.classList.add('unavailable');
-        button.disabled = true;
-    }
-
-    // Store the available slots in a data attribute for resetting later
-    button.dataset.available = availableSlots;
-
-    // Add the click handler for the slot selection
-    button.addEventListener('click', () => handleSlotSelection(button, dayId));
-
-    return button;
-};
-
-
 // Function to render available slots in week calendar cell
 function renderWeekCalendarCells() {
     const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00']; 
@@ -574,7 +550,7 @@ function renderWeekCalendarCells() {
         // Create and append the time cell (leftmost column)
         const timeCell = document.createElement('div');
         timeCell.classList.add('calendar-cell', 'time-cell');
-        timeCell.textContent = timeSlot; // Set the time slot text (e.g., '4:00 AM')
+        timeCell.textContent = timeSlot; // Set the time slot text (e.g., '4:00')
         row.appendChild(timeCell); // Append the time cell to the row
 
         // For each day of the week
@@ -621,6 +597,29 @@ function renderWeekCalendarCells() {
     });
 }
 
+const createSlotButton = (availableSlots, dayId, timeSlot) => {
+    const button = document.createElement('button');
+    button.classList.add('select-btn');
+    button.type = 'button';
+    
+    if (availableSlots > 0) {
+        button.textContent = `${availableSlots} slot${availableSlots > 1 ? 's' : ''}`;
+        button.classList.add('available');
+    } else {
+        button.textContent = '0 slot';
+        button.classList.add('unavailable');
+        button.disabled = true;
+    }
+
+    // Store the available slots in a data attribute for resetting later
+    button.dataset.available = availableSlots;
+
+    // Add the click handler for the slot selection
+    button.addEventListener('click', () => handleSlotSelection(button, dayId, timeSlot));
+
+    return button;
+};
+
 // Function to highlight the selected day's column in the week calendar
 function highlightSelectedDay(selectedDate) {
     let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
@@ -645,9 +644,10 @@ function highlightSelectedDay(selectedDate) {
 }
 
 let previouslySelectedButton = null;
+let selectedTimeSlot = null;
 
 // Function to handle the "Select" button click
-function handleSlotSelection(button, dayId) {
+function handleSlotSelection(button, dayId, timeSlot) {
 
     // If there was a previously selected button, reset it
     if (previouslySelectedButton) {
@@ -666,6 +666,9 @@ function handleSlotSelection(button, dayId) {
     // Store the current button as the newly selected button
     previouslySelectedButton = button;
 
+    // Update the selectedTimeSlot
+    selectedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;  // Example format: "4:00 - 5:00"
+
     // Get the day index for the selected day (starting from Monday)
     const dayIndex = days.indexOf(dayId);
 
@@ -678,23 +681,24 @@ function handleSlotSelection(button, dayId) {
     updateDateInput(); // Update the input field
     highlightSelectedDay(selectedDate); // Highlight the selected day in the week calendar
     displayDates(); // Update the calendar popup with the selected date highlighted
+    updateTimeSummary();  
 }
 
 renderWeekCalendarCells();
 
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
-const timeSlots = document.querySelectorAll('input[name="timePicker"]');
+// const timeSlots = document.querySelectorAll('input[name="timePicker"]');
 
 // Summary elements
 const summaryGregDate = document.getElementById('summary-greg-date');
 const summaryLunarDate = document.getElementById('summary-lunar-date');
 const summaryTime = document.getElementById('summary-time');
 
-let selectedTimeSlot;
 
 function updateTimeSummary() {
-    selectedTimeSlot = document.querySelector('input[name="timePicker"]:checked').value;
-    summaryTime.textContent = selectedTimeSlot;
+    if (selectedTimeSlot) {
+        summaryTime.textContent = selectedTimeSlot; 
+    }
 };
 
 let gregorianDate;
@@ -731,9 +735,9 @@ function updateDateSummary() {
 };
 
 // Event listeners for time slot changes
-timeSlots.forEach(timeSlot => {
-    timeSlot.addEventListener('change', updateTimeSummary);
-});
+// timeSlots.forEach(timeSlot => {
+//     timeSlot.addEventListener('change', updateTimeSummary);
+// });
 
 updateTimeSummary();
 updateDateSummary();
