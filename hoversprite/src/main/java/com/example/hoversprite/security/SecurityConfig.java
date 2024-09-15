@@ -1,9 +1,10 @@
 package com.example.hoversprite.security;
 
+import com.example.hoversprite.User.UserDetailService;
+import com.example.hoversprite.User.UserOAuth2UserService;
 import com.example.hoversprite.security.jwt.JwtTokenFilter;
 import com.example.hoversprite.security.oauth2.OAuth2LoginSuccessHandler;
-import com.example.hoversprite.user.UserDetailService;
-import com.example.hoversprite.user.UserOAuth2UserService;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

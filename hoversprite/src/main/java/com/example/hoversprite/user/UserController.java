@@ -1,4 +1,4 @@
-package com.example.hoversprite.user;
+package com.example.hoversprite.User;
 
 class UserController {
     
