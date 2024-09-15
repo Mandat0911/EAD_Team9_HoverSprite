@@ -104,7 +104,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/auth/login","/login").permitAll()
-                                .requestMatchers("/orders/**", "/account/**", "/booking/**", "/users/**").authenticated()
+                                .requestMatchers("/orders/**", "/booking/**", "/users/**").authenticated()
                                 .anyRequest().permitAll()
                 )
                 .exceptionHandling(customizer ->
@@ -116,11 +116,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
 
 
-//                .exceptionHandling(exceptionHandling -> exceptionHandling
-//                        .authenticationEntryPoint((request, response, authException) -> {
-//                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
-//                        })
-//                )
+
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("username")

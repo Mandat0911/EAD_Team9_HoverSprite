@@ -2,13 +2,12 @@ package com.example.hoversprite.Order;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -29,13 +28,20 @@ public class OrderController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @GetMapping("/user/{userId}")
     public ResponseEntity<Page<Order>> getOrdersByUserId(
             @PathVariable Long userId,
-            Pageable pageable) {
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sortBy,
+            @RequestParam Sort.Direction direction) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<Order> orders = orderService.getOrdersByUserId(userId, pageable);
         return ResponseEntity.ok(orders);
     }
+
     @GetMapping
     public ResponseEntity<Page<Order>> getAllOrders(
             @RequestParam int page,
@@ -43,7 +49,8 @@ public class OrderController {
             @RequestParam String sortBy,
             @RequestParam Sort.Direction direction) {
 
-        Page<Order> orders = orderService.getAllOrders(page, size, sortBy, direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Order> orders = orderService.getAllOrders(pageable);
         return ResponseEntity.ok(orders);
     }
 
@@ -67,12 +74,6 @@ public class OrderController {
         }
     }
 
-//    @GetMapping("/status/{status}")
-//    public ResponseEntity<List<Order>> getOrdersByStatus(@PathVariable String status) {
-//        List<Order> orders = orderService.findOrdersByStatus(status);
-//        return ResponseEntity.ok(orders);
-//    }
-
     @GetMapping("/{id}/cost")
     public ResponseEntity<Double> calculateOrderCost(@PathVariable Long id) {
         try {
@@ -83,4 +84,5 @@ public class OrderController {
         }
     }
 }
+
 

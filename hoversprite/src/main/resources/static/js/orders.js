@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageSize = 10; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
+    const userId = window.userId || 9; // Replace with actual user ID retrieval logic
 
     // Initial fetch
     fetchOrders(currentPage, currentSortField, currentSortDirection);
@@ -19,8 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchOrders(page, sortBy, direction) {
+        console.log(`Fetching orders with userId=${userId}, page=${page}, sortBy=${sortBy}, direction=${direction}`);
         showMessage('Loading...', 'info');
-        fetch(`/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`)
+
+        fetch(`/api/orders?userId=${userId}&page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -28,7 +31,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
+                console.log('Response data:', data);
+
                 const tableBody = document.getElementById('ordersTableBody');
+                if (!tableBody) {
+                    console.error('Table body element not found.');
+                    return;
+                }
+
                 tableBody.innerHTML = ''; // Clear existing rows
 
                 if (data.content.length === 0) {
@@ -53,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showMessage('Error loading orders. Please try again.', 'danger');
             });
     }
+
 
     function groupAndSortOrdersByStatus(orders) {
         // Group orders by status

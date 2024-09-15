@@ -214,4 +214,19 @@ public class PageController implements ErrorController {
         model.addAttribute("js", "/js/booking.js");
         return "layout";
     }
+
+    @PostMapping("/account/update")
+    public String saveUser(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+//        System.out.println("User details: " + user.toString());
+        try {
+            userDetailService.save(user);
+            redirectAttributes.addFlashAttribute("message", "User saved successfully!");
+            return "redirect:/account";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/account/users/edit/" + user.getId();
+        }
+    }
+
+
 }

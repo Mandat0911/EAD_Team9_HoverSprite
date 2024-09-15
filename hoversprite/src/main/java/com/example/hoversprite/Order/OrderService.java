@@ -1,5 +1,6 @@
 package com.example.hoversprite.Order;
 
+import com.example.hoversprite.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,8 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * Create a new order
@@ -92,5 +95,4 @@ public class OrderService {
         // You would replace this with your specific business logic
         return order.getFarmlandArea() * 10; // Assuming $10 per unit of farmland area
     }
-
 }

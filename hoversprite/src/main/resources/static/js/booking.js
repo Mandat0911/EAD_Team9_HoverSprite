@@ -788,3 +788,4 @@ document.getElementById('booking-form').addEventListener('submit', async functio
         alert('An error occurred while creating the order.');
     }
 });
+
