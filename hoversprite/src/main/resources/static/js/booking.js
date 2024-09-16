@@ -139,6 +139,7 @@ function validateStep2() {
     let isValid = true;
 
     isValid = validateField(inputsStep2.datePicker, isValidDatePicker) && isValid;
+    isValid = validateTimeSlot() && isValid;
 
     return isValid;
 }
@@ -166,6 +167,21 @@ function validateField(field, validationFunction) {
     }
 
     return isValid;
+}
+
+let previouslySelectedTimeSlotButton = null;
+
+function validateTimeSlot() {
+    const errorMessage = document.getElementById('invalid-time-slot');
+    if (!previouslySelectedTimeSlotButton) {
+        errorMessage.classList.remove('d-none');
+        errorMessage.classList.add('d-block');
+        return false;
+    } else {
+        errorMessage.classList.add('d-none');
+        errorMessage.classList.remove('d-block');
+        return true;
+    }
 }
 
 function showError(field) {
@@ -709,19 +725,19 @@ function highlightSelectedDay() {
     });
 }
 
-let previouslySelectedButton = null;
+// let previouslySelectedTimeSlotButton = null;
 let selectedTimeSlot = null;
 
 // Function to handle the "Select" button click
 function handleSlotSelection(button, dayId, timeSlot) {
 
     // If there was a previously selected button, reset it
-    if (previouslySelectedButton) {
-        previouslySelectedButton.classList.add('available');
-        previouslySelectedButton.classList.remove('selected');
-        previouslySelectedButton.textContent = `${previouslySelectedButton.dataset.available} slot${previouslySelectedButton.dataset.available > 1 ? 's' : ''}`;
-        previouslySelectedButton.disabled = false; // Re-enable the button
-    }
+    if (previouslySelectedTimeSlotButton) {
+        previouslySelectedTimeSlotButton.classList.add('available');
+        previouslySelectedTimeSlotButton.classList.remove('selected');
+        previouslySelectedTimeSlotButton.textContent = `${previouslySelectedTimeSlotButton.dataset.available} slot${previouslySelectedTimeSlotButton.dataset.available > 1 ? 's' : ''}`;
+        previouslySelectedTimeSlotButton.disabled = false; // Re-enable the button
+    } 
 
     // Update the current button to selected state
     button.classList.remove('available');
@@ -730,7 +746,7 @@ function handleSlotSelection(button, dayId, timeSlot) {
     button.disabled = true; // Disable the selected button
 
     // Store the current button as the newly selected button
-    previouslySelectedButton = button;
+    previouslySelectedTimeSlotButton = button;
 
     // Update the selectedTimeSlot
     selectedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;  // Example format: "4:00 - 5:00"
@@ -836,7 +852,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
             await createOrUpdateTimeslot();
 
             // Redirect to orders list
-            // window.location.href = '/orders';
+            window.location.href = '/orders';
         } else {
             const errorData = await orderResponse.json();  // Get error response data
             if (errorData.message === 'No available sessions for the selected time slot.') {
