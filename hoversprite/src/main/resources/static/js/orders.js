@@ -3,10 +3,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageSize = 10; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
-    const userId = window.userId || 9; // Replace with actual user ID retrieval logic
+    const userId = document.getElementById('userIdInput').value; // Fetch userId from hidden input or similar source
 
     // Initial fetch
-    fetchOrders(currentPage, currentSortField, currentSortDirection);
+    fetchOrders(currentPage, currentSortField, currentSortDirection, userId);
 
     // Add event listeners to sort dropdown items
     document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -14,16 +14,19 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             currentSortField = item.getAttribute('data-sort-field');
             currentSortDirection = item.getAttribute('data-sort-direction');
-            fetchOrders(0, currentSortField, currentSortDirection); // Reset to first page when sorting
+            fetchOrders(0, currentSortField, currentSortDirection, userId); // Reset to first page when sorting
             updateSortDropdownText(item.textContent);
         });
     });
 
-    function fetchOrders(page, sortBy, direction) {
-        console.log(`Fetching orders with userId=${userId}, page=${page}, sortBy=${sortBy}, direction=${direction}`);
+    function fetchOrders(page, sortBy, direction, userId) {
         showMessage('Loading...', 'info');
 
-        fetch(`/api/orders?userId=${userId}&page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`)
+        // Ensure the userId is being sent in the request
+        const url = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}${userId ? `&userId=${userId}` : ''}`;
+        console.log(`Request URL: ${url}`);  // Log the URL to confirm correct parameters
+
+        fetch(url)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -31,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                console.log('Response data:', data);
+                console.log('Response data:', data); // Log the entire response for debugging
 
                 const tableBody = document.getElementById('ordersTableBody');
                 if (!tableBody) {
@@ -63,6 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 showMessage('Error loading orders. Please try again.', 'danger');
             });
     }
+
 
 
     function groupAndSortOrdersByStatus(orders) {

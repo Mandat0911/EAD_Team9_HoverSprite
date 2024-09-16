@@ -69,15 +69,12 @@ public class SecurityConfig {
     }
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
-        System.out.println("return login");
         return (request, response, authException) -> {
             response.sendRedirect("/login");  // Redirect to login page
         };
     }
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
-        System.out.println("return a");
-
         return (request, response, accessDeniedException) -> {
             response.sendRedirect("/error");  // Redirect to error page for unauthorized access
         };
