@@ -121,7 +121,14 @@
     font-weight: 600;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+.rating .star {
+    font-size: 24px;
+    color: #ccc;
+}
 
+.rating .star.filled {
+    color: #ffc107;
+}
 .order-details-container .btn-sm {
     margin: 0;
     padding: 10px;

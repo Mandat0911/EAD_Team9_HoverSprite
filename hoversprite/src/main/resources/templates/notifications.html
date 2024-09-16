@@ -32,61 +32,12 @@
                                                 <tr>
                                                     <th scope="col">No.</th>
                                                     <th scope="col">Date</th>
-                                                    <th scope="col">Total</th>
-                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Message</th>
                                                     <th scope="col"></th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                <tr>
-                                                    <td>7</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-pending">Pending</td>
-                                                    <td><button class="btn btn-link"><a href="/account/order_details">→</a></button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>6</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-confirmed">Confirmed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-assigned">Assigned</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-inprogress">In Progress</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-completed">Completed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td>27-10-2023</td>
-                                                    <td>100,000 VND</td>
-                                                    <td class="status-canceled">Canceled</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>12-10-2023</td>
-                                                    <td>450,000 VND</td>
-                                                    <td class="status-completed">Completed</td>
-                                                    <td><button class="btn btn-link">→</button></td>
-                                                </tr>
+                                                <tbody id="notificationTableBody">
+                                                <!-- Notifications will be dynamically inserted here -->
                                                 </tbody>
                                             </table>
                                         </div>
@@ -94,9 +45,23 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <nav aria-label="Notification pagination">
+                                    <ul class="pagination justify-content-center" id="paginationContainer">
+                                        <!-- Pagination will be dynamically inserted here -->
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+    <div id="userData"
+         th:data-user-id="${#authentication.principal.id}"
+         th:data-user-email="${#authentication.principal.email}"
+         style="display: none;">
     </div>
 </div>
