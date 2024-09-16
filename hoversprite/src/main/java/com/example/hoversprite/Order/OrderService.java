@@ -1,6 +1,9 @@
 package com.example.hoversprite.Order;
 
+import com.example.hoversprite.Sprayer.Sprayer;
+import com.example.hoversprite.Sprayer.SprayerRepository;
 import com.example.hoversprite.user.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,18 +18,62 @@ import com.example.hoversprite.Timeslot.TimeslotService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    private SprayerRepository sprayerRepository;
 
     @Autowired
     private TimeslotService timeslotService;
 
+    @Transactional
+    public boolean assignSprayerToOrder(Long orderId, Long sprayerId) {
+        Optional<Order> orderOptional = getOrderById(orderId);
+        Optional<Sprayer> sprayerOptional = sprayerRepository.findById(sprayerId);
+
+        if (orderOptional.isPresent() && sprayerOptional.isPresent()) {
+            Order order = orderOptional.get();
+            Sprayer sprayer = sprayerOptional.get();
+
+            if (order.addSprayer(sprayer)) {
+                orderRepository.save(order);
+                sprayerRepository.save(sprayer);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Transactional
+    public boolean removeSprayerFromOrder(Long orderId, Long sprayerId) {
+        Optional<Order> orderOptional = getOrderById(orderId);
+        Optional<Sprayer> sprayerOptional = sprayerRepository.findById(sprayerId);
+
+        if (orderOptional.isPresent() && sprayerOptional.isPresent()) {
+            Order order = orderOptional.get();
+            Sprayer sprayer = sprayerOptional.get();
+
+            if (order.removeSprayer(sprayer)) {
+                orderRepository.save(order);
+                sprayerRepository.save(sprayer);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Sprayer> getSprayersForOrder(Order order) {
+        return order.getSprayerIds().stream()
+                .map(id -> sprayerRepository.findById(id)
+                        .orElseThrow(() -> new EntityNotFoundException("Sprayer not found")))
+                .collect(Collectors.toList());
+    }
     /**
      * Create a new order
      */
@@ -48,6 +95,7 @@ public class OrderService {
     public Optional<Order> getOrderById(Long id) {
         return orderRepository.findById(id);
     }
+
 
     /**
      * Retrieve all orders
@@ -80,8 +128,6 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
 
         // Update the order details
-        order.setCropType(orderDetails.getCropType());
-        order.setFarmlandArea(orderDetails.getFarmlandArea());
         order.setStatus(orderDetails.getStatus());
         // ... update other fields as necessary
 
@@ -111,36 +157,10 @@ public class OrderService {
     public double calculateTotalCost(Long id) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
-
-        // This is a placeholder for your actual cost calculation logic
-        // You would replace this with your specific business logic
         return order.getFarmlandArea() * 10; // Assuming $10 per unit of farmland area
     }
 
 
-//    public Page<Order> getOrders(Long userId, int page, int size, String sortBy, String direction) {
-//        // Get the current authentication object
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        // Check if the user has the RECEPTIONIST role
-//        boolean isReceptionist = authentication.getAuthorities().stream()
-//                .anyMatch(authority -> authority.getAuthority().equals("RECEPTIONIST"));
-//
-//        // Define Pageable with sorting options
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
-//
-//        // Fetch orders based on role
-//        if (isReceptionist) {
-//            // If the user is a RECEPTIONIST, return all orders
-//            return orderRepository.findAll(pageable);
-//        } else {
-//            // If the user is not a RECEPTIONIST, filter by userId
-//            // Ensure userId is not null and properly handle it
-//            if (userId == null) {
-//                throw new IllegalArgumentException("User ID must be provided for non-receptionists");
-//            }
-//            return orderRepository.findByUserId(userId, pageable);
-//        }
-//    }
+
 
 }

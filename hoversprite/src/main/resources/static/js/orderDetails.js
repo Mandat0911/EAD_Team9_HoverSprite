@@ -1,11 +1,5 @@
-// mock data for list of all sprayers (fetch all sprayers from backend here)
-const allSprayers = [
-    { name: 'Nguyen Van B', type: 'Adept', available: true },
-    { name: 'Tran Van C', type: 'Expert', available: false },
-    { name: 'Le Van D', type: 'Expert', available: true },
-    { name: 'Nguyen Van A', type: 'Apprentice', available: true },
-    { name: 'Phan Van E', type: 'Apprentice', available: false }
-];
+let allSprayers = [];
+let apprenticeAdded = false;
 
 function safeGetElement(id) {
     const element = document.getElementById(id);
@@ -14,27 +8,24 @@ function safeGetElement(id) {
     }
     return element;
 }
+
 const addSprayerButton = safeGetElement('addSprayerButton');
 const sprayerSelectContainer = safeGetElement('sprayerSelectContainer');
 const sprayerSelect = safeGetElement('sprayerSelect');
 const sprayerError = safeGetElement('sprayerError');
-const noSprayerMessage = document.getElementById('noSprayerMessage');
-const assignedSprayerContainer = document.getElementById('assignedSprayerContainer');
+const noSprayerMessage = safeGetElement('noSprayerMessage');
+const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
 
-// Initial flag to check if an apprentice is already added
-let apprenticeAdded = false;
-
-// Function to update the sprayer select dropdown
 function updateSprayerDropdown() {
     if(sprayerSelect){
-        sprayerSelect.innerHTML = ''; // Clear current options
+        sprayerSelect.innerHTML = '<option value="">Select a sprayer</option>';
         allSprayers.forEach(sprayer => {
             const option = document.createElement('option');
-            option.value = `${sprayer.name} (${sprayer.type})`;
-            option.textContent = `${sprayer.name} (${sprayer.type})`;
+            option.value = JSON.stringify(sprayer);
+            const fullName = sprayer.user.lastName + " " + sprayer.user.middleName + " " + sprayer.user.firstName;
+            option.textContent = `${fullName} (${sprayer.level})`;
 
-            // If the sprayer is unavailable or if an apprentice is already added, disable apprentice options
-            if (!sprayer.available || (apprenticeAdded && sprayer.type === 'Apprentice')) {
+            if (!sprayer.available || (apprenticeAdded && sprayer.level === 'Apprentice')) {
                 option.disabled = true;
             }
 
@@ -42,71 +33,49 @@ function updateSprayerDropdown() {
         });
     }
 }
-
-// Function to handle Add Sprayer Button Click
-if(addSprayerButton) {
-    addSprayerButton.addEventListener('click', function() {
-        // If the select container is hidden, show it with animation
-        if (sprayerSelectContainer.classList.contains('d-none')) {
-            sprayerSelectContainer.classList.remove('d-none');
-            sprayerSelectContainer.classList.add('fade-in'); // Add animation
-        }
-        // If the select container is visible, and a sprayer is selected, add the sprayer
-        else {
-            const selectedSprayerText = sprayerSelect.options[sprayerSelect.selectedIndex].text;
-            const selectedSprayerValue = sprayerSelect.value;
-
-            if (selectedSprayerValue !== "") {
-                // Extract the type of the sprayer (Adept, Expert, Apprentice)
-                const sprayerType = selectedSprayerText.split('(')[1].replace(')', '').trim();
-
-                // Add the selected sprayer to the assigned list
-                const newSprayerDiv = document.createElement('div');
-                newSprayerDiv.classList.add('d-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
-                newSprayerDiv.innerHTML = `
-                <h5 class="m-0">${selectedSprayerText.split('(')[0]}</h5>
-                <div class="badge bg-secondary">
-                    <h6 class="m-0">${selectedSprayerText.split('(')[1].replace(')', '')}</h6>
-                </div>
-            `;
-                assignedSprayerContainer.appendChild(newSprayerDiv);
-
-                // Hide the select container and reset it
-                sprayerSelectContainer.classList.add('d-none');
-                sprayerSelectContainer.classList.remove('fade-in');
-                sprayerSelect.value = ""; // Reset select box
-
-                // Logic after adding the first sprayer
-                if (sprayerType === 'Apprentice') {
-                    // If the first sprayer is an apprentice, show the error message and keep button enabled
-                    sprayerError.classList.remove('d-none');
-                    sprayerError.textContent = 'An Adept or Expert sprayer is required when assigning an Apprentice.'
-                    apprenticeAdded = true;
-                    updateSprayerDropdown(); // Update dropdown to disable apprentice sprayers
-                } else {
-                    // If the first sprayer is adept or expert, hide the button and error message
-                    sprayerError.classList.add('d-none');
-                    addSprayerButton.disabled = true;
-                }
-                noSprayerMessage.classList.add('d-none');
+function assignSprayerToOrder(orderId, sprayerId) {
+    fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to assign sprayer to order');
             }
-        }
-    });
+            return response.text();
+        })
+        .then(data => {
+            console.log(data); // Log success message
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            sprayerError.textContent = 'Failed to assign sprayer to order. Please try again.';
+            sprayerError.classList.remove('d-none');
+        });
+}
+
+function fetchSprayers() {
+    fetch('/api/sprayers')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            allSprayers = data;
+            updateSprayerDropdown();
+        })
+        .catch(error => {
+            console.error('Error fetching sprayers:', error);
+            sprayerError.textContent = 'Error loading sprayers. Please try again later.';
+            sprayerError.classList.remove('d-none');
+        });
 }
 
 
-// Initial check: if no sprayers assigned, show the error message
-if (assignedSprayerContainer.childElementCount === 0) {
-    if(sprayerError){
-        sprayerError.textContent = 'Please assign at least one sprayer to this order.';
-        sprayerError.classList.remove('d-none');
-    }
-
-    noSprayerMessage.classList.remove('d-none');
-}
-
-// Update the dropdown initially
-updateSprayerDropdown();
 
 
 const totalCost = 150000; // example total cost
@@ -151,7 +120,7 @@ function updateFeedbackSection(status, hasFeedback) {
             feedbackDisplaySection.style.display = 'none';
         }
     } else {
-        if(feedBackSection){
+        if(feedbackSection){
             feedbackSection.style.display = 'none';
         }
         feedbackDisplaySection.style.display = 'none';
@@ -187,14 +156,70 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id');
     let currentUserId;
+    const cancelOrderButton = document.getElementById('cancelOrderButton');
+    const confirmOrderButton = document.getElementById('confirmOrderButton');
+    const statusUpdateButtons = document.getElementById('statusUpdateButtons');
 
+    function updateOrderStatus(newStatus) {
+        // Fetch the current order details first
+        fetch(`/api/orders/${orderId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch order details');
+                }
+                return response.json();
+            })
+            .then(currentOrder => {
+                // Update the status in the order object
+                currentOrder.status = newStatus;
+                console.log(currentOrder);
+                // Send the updated order object to the server
+                return fetch(`/api/orders/${orderId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(currentOrder)
+                });
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update order status');
+                }
+                return response.json();
+            })
+            .then(updatedOrder => {
+                // Immediately reload the page after successful update
+                location.reload();
+            })
+            .catch(error => {
+                console.error('Error updating order status:', error);
+                alert('Failed to update order status. Please try again.');
+            });
+    }
+
+
+
+    if (cancelOrderButton) {
+        cancelOrderButton.addEventListener('click', function() {
+            if (confirm('Are you sure you want to cancel this order?')) {
+                updateOrderStatus('CANCELLED');
+            }
+        });
+    }
+
+    if (confirmOrderButton) {
+        confirmOrderButton.addEventListener('click', function() {
+            updateOrderStatus('CONFIRMED');
+        });
+    }
     // Fetch order details
     fetch(`/api/orders/${orderId}`)
         .then(response => response.json())
         .then(order => {
             // Populate order details
             displayOrderDetails(order);
-
+            handleSprayer(order.status);
             // Check if the order status is 'completed' before proceeding with feedback
             if (order.status.toLowerCase() === 'completed') {
                 return fetchExistingFeedback(orderId).then(existingFeedback => {
@@ -215,6 +240,81 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error fetching order details:', error));
+    function handleAddSprayer() {
+        if (sprayerSelectContainer.classList.contains('d-none')) {
+            sprayerSelectContainer.classList.remove('d-none');
+            sprayerSelectContainer.classList.add('fade-in');
+        } else {
+            const selectedSprayerValue = sprayerSelect.value;
+
+            if (selectedSprayerValue !== "") {
+                const selectedSprayer = JSON.parse(selectedSprayerValue);
+                // console.log(selectedSprayer);
+                // Call the API to assign the sprayer to the order
+                assignSprayerToOrder(orderId, selectedSprayer.user.id);
+
+                const newSprayerDiv = document.createElement('div');
+                newSprayerDiv.classList.add('d-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
+                const fullName = selectedSprayer.user.lastName + " " + selectedSprayer.user.middleName + " " + selectedSprayer.user.firstName;
+                newSprayerDiv.innerHTML = `
+                <h5 class="m-0">${fullName}</h5>
+                <div class="badge bg-secondary">
+                    <h6 class="m-0">${selectedSprayer.level}</h6>
+                </div>
+            `;
+                assignedSprayerContainer.appendChild(newSprayerDiv);
+
+                sprayerSelectContainer.classList.add('d-none');
+                sprayerSelectContainer.classList.remove('fade-in');
+                sprayerSelect.value = "";
+
+                if (selectedSprayer.level === 'Apprentice') {
+                    sprayerError.classList.remove('d-none');
+                    sprayerError.textContent = 'An Adept or Expert sprayer is required when assigning an Apprentice.';
+                    apprenticeAdded = true;
+                    updateSprayerDropdown();
+                } else {
+                    sprayerError.classList.add('d-none');
+                    addSprayerButton.disabled = true;
+                }
+                noSprayerMessage.classList.add('d-none');
+
+                // Update the allSprayers array to mark this sprayer as unavailable
+                const sprayerIndex = allSprayers.findIndex(s => s.id === selectedSprayer.id);
+                if (sprayerIndex !== -1) {
+                    allSprayers[sprayerIndex].available = false;
+                }
+                updateSprayerDropdown();
+            }
+        }
+    }
+
+
+    function handleSprayer(orderStatus) {
+        const sprayerSection = document.getElementById('sprayerSection');
+
+        if (orderStatus.toLowerCase() === 'confirmed') {
+            sprayerSection.classList.remove('d-none');
+
+            if(addSprayerButton) {
+                addSprayerButton.addEventListener('click', handleAddSprayer);
+            }
+
+            if (assignedSprayerContainer.childElementCount === 0) {
+                if(sprayerError){
+                    sprayerError.textContent = 'Please assign at least one sprayer to this order.';
+                    sprayerError.classList.remove('d-none');
+                }
+                noSprayerMessage.classList.remove('d-none');
+            }
+
+            fetchSprayers();
+        } else {
+            sprayerSection.classList.add('d-none');
+        }
+    }
+
+    //Function to display detail of order
     function displayOrderDetails(order) {
         document.getElementById('orderNumber').textContent = `Order #${order.orderId}`;
         document.getElementById('orderStatus').textContent = order.status;
@@ -232,7 +332,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update total cost in the payment section
         document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
+        if (order.status.toLowerCase() === 'pending') {
+            statusUpdateButtons.style.display = 'block';
+        } else {
+            statusUpdateButtons.style.display = 'none';
+        }
+        // Show/hide sprayer section based on order status
+        const sprayerSection = document.getElementById('sprayerSection');
+        if (order.status.toLowerCase() === 'confirmed') {
+            sprayerSection.classList.remove('d-none');
+        } else {
+            sprayerSection.classList.add('d-none');
+        }
     }
+
+    //Feedback section
     const feedbackForm = safeGetElement('feedbackSection');
     const feedbackErrorContainer = safeGetElement('feedbackErrorContainer');
     const additionalFeedbackField = safeGetElement('feedback');

@@ -2,6 +2,8 @@ package com.example.hoversprite.user;
 
 import com.example.hoversprite.oauthAPI.AuthenticationProvider;
 import com.example.hoversprite.Role.Role;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.Entity;
 // import jakarta.persistence.GeneratedValue;
 // import jakarta.persistence.GenerationType;
@@ -22,6 +24,8 @@ import java.util.*;
 @Setter(AccessLevel.PUBLIC)
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonSerialize(using = CustomUserSerializer.class)
+@JsonDeserialize(using = CustomUserDeserializer.class)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -77,6 +81,10 @@ public class User implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         return authorities;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

@@ -64,6 +64,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-4">
@@ -80,20 +81,24 @@
                         </div>
 
                         <!-- Only visible to RECEPTIONIST role -->
-                        <div sec:authorize="hasAuthority('RECEPTIONIST')">
-                            <hr class="my-3">
-                            <h6 id="sprayerError" class="text-danger my-3"></h6>
-                            <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
-                                <i class="fa-solid fa-plus"></i> Add Sprayer
-                            </button>
+                        <div id="sprayerSection" class="d-none">
+                            <div  sec:authorize="hasAuthority('RECEPTIONIST')">
+                                <hr class="my-3">
+                                <h6 id="sprayerError" class="text-danger my-3"></h6>
+                                <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
+                                    <i class="fa-solid fa-plus"></i> Add Sprayer
+                                </button>
 
-                            <!-- Select another sprayer dropdown (hidden initially) -->
-                            <div id="sprayerSelectContainer" class="d-none mt-3">
-                                <label for="sprayerSelect" class="form-label">Select a sprayer:</label>
-                                <select id="sprayerSelect" class="form-select">
-                                </select>
+                                <!-- Select another sprayer dropdown (hidden initially) -->
+                                <div id="sprayerSelectContainer" class="d-none mt-3">
+                                    <label for="sprayerSelect" class="form-label">Select a sprayer:</label>
+                                    <select id="sprayerSelect" class="form-select mb-3">
+                                    </select>
+
+                                </div>
                             </div>
                         </div>
+
 
                     </div>
                 </div>
@@ -129,7 +134,10 @@
                 </div>
             </div>
         </div>
-
+        <div id="statusUpdateButtons" class="mt-3" sec:authorize="hasAuthority('RECEPTIONIST')">
+            <button id="cancelOrderButton" class="btn btn-danger me-2">Cancel Order</button>
+            <button id="confirmOrderButton" class="btn btn-success">Confirm Order</button>
+        </div>
 
     </div>
 
