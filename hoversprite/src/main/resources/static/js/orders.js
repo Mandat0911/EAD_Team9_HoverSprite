@@ -3,10 +3,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageSize = 10; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
-    const userId = document.getElementById('userIdInput').value; // Fetch userId from hidden input or similar source
-
+    let currentUserId;
+    let currentUserEmail;
+    let currentRole;
+    let apiUrl;
     // Initial fetch
-    fetchOrders(currentPage, currentSortField, currentSortDirection, userId);
+    getUserData();
+    fetchOrders(currentPage, currentSortField, currentSortDirection);
 
     // Add event listeners to sort dropdown items
     document.querySelectorAll('.dropdown-item').forEach(item => {
@@ -19,14 +22,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    function fetchOrders(page, sortBy, direction, userId) {
+
+// Function to get user data from the HTML
+    function getUserData() {
+        const userDataElement = document.getElementById('userData');
+        if (userDataElement) {
+            currentUserId = userDataElement.getAttribute('data-user-id');
+            currentUserEmail = userDataElement.getAttribute('data-user-email');
+            currentRole = userDataElement.getAttribute('data-user-role');
+            console.log(currentRole);
+        }
+    }
+
+    function fetchOrders(page, sortBy, direction) {
+        if (!currentUserId) {
+            console.error('User ID not available. Please ensure you are logged in.');
+            return;
+        }
+        if (currentRole === '[RECEPTIONIST]') {
+            console.log('User is an receptionist');
+            // Show admin-specific elements
+            apiUrl = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
+        }
+
+        if (currentRole === '[FARMER]') {
+            console.log('User is a regular user');
+            // Show user-specific elements
+             apiUrl = `/api/orders/user/${currentUserId}?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
+        }
+
         showMessage('Loading...', 'info');
-
-        // Ensure the userId is being sent in the request
-        const url = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}${userId ? `&userId=${userId}` : ''}`;
-        console.log(`Request URL: ${url}`);  // Log the URL to confirm correct parameters
-
-        fetch(url)
+        fetch(apiUrl)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
