@@ -1,5 +1,7 @@
 <div th:fragment="content" class="container orders-container">
     <h1 class="text-center my-3 fw-bold" style="color: var(--primary-color);">Orders Management</h1>
+    <input type="hidden" id="userIdInput" th:value="${#authentication.principal.id}">
+
 
     <div class="d-flex justify-content-end mb-3">
         <div class="dropdown">

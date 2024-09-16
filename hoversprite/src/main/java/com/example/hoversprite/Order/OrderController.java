@@ -29,30 +29,33 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<Page<Order>> getOrdersByUserId(
-            @PathVariable Long userId,
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam String sortBy,
-            @RequestParam Sort.Direction direction) {
+//    @GetMapping("/user/{userId}")
+//    public ResponseEntity<Page<Order>> getOrders(
+//            @RequestParam Long userId, // Ensure userId is being passed in
+//            @RequestParam int page,
+//            @RequestParam int size,
+//            @RequestParam String sortBy,
+//            @RequestParam String direction) {
+//        System.out.println("Service layer: Fetching orders for userId: " + userId);
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
+//
+//        // Filter orders by userId
+//        Page<Order> orders = orderService.getOrdersByUserId(userId, pageable);
+//
+//        return ResponseEntity.ok(orders);
+//    }
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-        Page<Order> orders = orderService.getOrdersByUserId(userId, pageable);
-        return ResponseEntity.ok(orders);
-    }
-
-    @GetMapping
-    public ResponseEntity<Page<Order>> getAllOrders(
-            @RequestParam int page,
-            @RequestParam int size,
-            @RequestParam String sortBy,
-            @RequestParam Sort.Direction direction) {
-
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-        Page<Order> orders = orderService.getAllOrders(pageable);
-        return ResponseEntity.ok(orders);
-    }
+//    @GetMapping
+//    public ResponseEntity<Page<Order>> getAllOrders(
+//            @RequestParam int page,
+//            @RequestParam int size,
+//            @RequestParam String sortBy,
+//            @RequestParam Sort.Direction direction) {
+//
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+//        Page<Order> orders = orderService.getAllOrders(pageable);
+//        return ResponseEntity.ok(orders);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
@@ -82,6 +85,18 @@ public class OrderController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Order>> getOrders(
+            @RequestParam(value = "userId", required = false) Long userId,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "10") int size,
+            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
+
+        Page<Order> orders = orderService.getOrders(userId, page, size, sortBy, direction);
+        return ResponseEntity.ok(orders);
     }
 }
 

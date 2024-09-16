@@ -100,13 +100,15 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/orders")
-    public String orders(Model model) {
+    public String orders(@ModelAttribute("user") User user,Model model) {
         model.addAttribute("title", "Orders Management");
         model.addAttribute("content", "orders");
         model.addAttribute("css", "/stylesheets/orders.css");
         model.addAttribute("js", "/js/orders.js");
         return "layout";
     }
+
+
 
     @GetMapping("/orders/order_details")
     public String orderDetail(Model model) {
