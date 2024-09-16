@@ -1,11 +1,11 @@
-<div th:fragment="content" class="profile-container" xmlns:sec="http://www.w3.org/1999/xhtml">
+<div th:fragment="content" class="profile-container pb-3" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="container account-section my-5">
         <div class="row">
             <div class="col-md-3 sidebar">
                 <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">My Account</h1>
                 <ul class="nav flex-column">
-                    <li class="nav-item align-items-center">
-                        <a class="nav-link active" th:href="@{/account/user_profile}"><i class="fa-solid fa-circle-user mx-2"></i>Personal Info</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/account}"><i class="fa-solid fa-circle-user mx-2"></i>Personal Info</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/account/notifications}"><i class="fa-solid fa-bell mx-2"></i>Notifications</a>
@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <div class="col-md-2 d-flex flex-row-reverse align-items-center ">
-                        <form th:action="@{'account/users/edit/' + ${#authentication.principal.id}}" method="get" class="d-flex flex-column align-items-center">
+                        <form th:action="@{'account/edit/user/' + ${#authentication.principal.id}}" method="get" class="d-flex flex-column align-items-center">
                             <button class="btn btn-primary rounded-pill"><i class="bi bi-pencil-square mr-5">Update</i></button>
                         </form>
                     </div>

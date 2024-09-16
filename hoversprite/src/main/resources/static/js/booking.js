@@ -139,6 +139,7 @@ function validateStep2() {
     let isValid = true;
 
     isValid = validateField(inputsStep2.datePicker, isValidDatePicker) && isValid;
+    isValid = validateTimeSlot() && isValid;
 
     return isValid;
 }
@@ -166,6 +167,21 @@ function validateField(field, validationFunction) {
     }
 
     return isValid;
+}
+
+let previouslySelectedTimeSlotButton = null;
+
+function validateTimeSlot() {
+    const errorMessage = document.getElementById('invalid-time-slot');
+    if (!previouslySelectedTimeSlotButton) {
+        errorMessage.classList.remove('d-none');
+        errorMessage.classList.add('d-block');
+        return false;
+    } else {
+        errorMessage.classList.add('d-none');
+        errorMessage.classList.remove('d-block');
+        return true;
+    }
 }
 
 function showError(field) {
@@ -276,11 +292,11 @@ const dates = datepicker.querySelector(".dates");
 let selectedDate = new Date();
 let year = selectedDate.getFullYear();
 let month = selectedDate.getMonth();
-let isLunar = false;
+// let isLunar = false;
 
 // Show datepicker
 dateInput.addEventListener("click", () => {
-    isLunar = false;
+    // isLunar = false;
     datepicker.hidden = false;
 });
 
@@ -462,30 +478,30 @@ const createButton = (text, isDisabled = false, type = 0) => {
     button.classList.toggle("selected", selected);
     return button;
 };
-const convertBtn = datepicker.querySelector(".convert-to-lunar");
+// const convertBtn = datepicker.querySelector(".convert-to-lunar");
 
 // Convert solar date to lunar date
-const convertToLunar = () => {
-  const solarDate = selectedDate;
+// const convertToLunar = () => {
+//   const solarDate = selectedDate;
   
-  // Convert to lunar using the Lunar object from lunar-javascript
-  const lunar = Lunar.fromDate(solarDate);
-  const lunarDay = String(lunar.getDay()).padStart(2, '0');
-  const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
+//   // Convert to lunar using the Lunar object from lunar-javascript
+//   const lunar = Lunar.fromDate(solarDate);
+//   const lunarDay = String(lunar.getDay()).padStart(2, '0');
+//   const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
 
-  // Format the lunar date
-  const lunarDateStr = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
+//   // Format the lunar date
+//   const lunarDateStr = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
   
-  // Display the lunar date in the input field
-  dateInput.value = lunarDateStr;
-  datepicker.hidden = true;
-};
+//   // Display the lunar date in the input field
+//   dateInput.value = lunarDateStr;
+//   datepicker.hidden = true;
+// };
 
-convertBtn.addEventListener("click", () => {
-    convertToLunar();
-    isLunar = true;
-    updateDateSummary(); // Update the order summary after lunar conversion
-});
+// convertBtn.addEventListener("click", () => {
+//     convertToLunar();
+//     isLunar = true;
+//     updateDateSummary(); // Update the order summary after lunar conversion
+// });
 
 displayDates();
 
@@ -698,9 +714,9 @@ function highlightSelectedDay() {
     // Highlight the column for the selected day
     days.forEach((dayId, index) => {
         if (index === selectedDayIndex) {
-            // Highlight time slot cells + header for the selected day
-            const headerCell = document.getElementById(dayId);  // This highlights the header
-            headerCell.classList.add('highlight');
+            // // Highlight time slot cells + header for the selected day
+            // const headerCell = document.getElementById(dayId);  // This highlights the header
+            // headerCell.classList.add('highlight');
 
             // Highlight time slot cells
             const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
@@ -709,19 +725,19 @@ function highlightSelectedDay() {
     });
 }
 
-let previouslySelectedButton = null;
+// let previouslySelectedTimeSlotButton = null;
 let selectedTimeSlot = null;
 
 // Function to handle the "Select" button click
 function handleSlotSelection(button, dayId, timeSlot) {
 
     // If there was a previously selected button, reset it
-    if (previouslySelectedButton) {
-        previouslySelectedButton.classList.add('available');
-        previouslySelectedButton.classList.remove('selected');
-        previouslySelectedButton.textContent = `${previouslySelectedButton.dataset.available} slot${previouslySelectedButton.dataset.available > 1 ? 's' : ''}`;
-        previouslySelectedButton.disabled = false; // Re-enable the button
-    }
+    if (previouslySelectedTimeSlotButton) {
+        previouslySelectedTimeSlotButton.classList.add('available');
+        previouslySelectedTimeSlotButton.classList.remove('selected');
+        previouslySelectedTimeSlotButton.textContent = `${previouslySelectedTimeSlotButton.dataset.available} slot${previouslySelectedTimeSlotButton.dataset.available > 1 ? 's' : ''}`;
+        previouslySelectedTimeSlotButton.disabled = false; // Re-enable the button
+    } 
 
     // Update the current button to selected state
     button.classList.remove('available');
@@ -730,7 +746,7 @@ function handleSlotSelection(button, dayId, timeSlot) {
     button.disabled = true; // Disable the selected button
 
     // Store the current button as the newly selected button
-    previouslySelectedButton = button;
+    previouslySelectedTimeSlotButton = button;
 
     // Update the selectedTimeSlot
     selectedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;  // Example format: "4:00 - 5:00"
@@ -768,7 +784,7 @@ let gregorianDate;
 let lunarDate;
 
 function updateDateSummary() {
-    if (!isLunar) {
+    // if (!isLunar) {
         // gregorianDate = dateInput.value;
         const [day, month, year] = dateInput.value.split('/').map(Number);
         gregorianDate = new Date(year, month - 1, day);
@@ -776,12 +792,12 @@ function updateDateSummary() {
         // Convert the Gregorian date to Lunar
         const lunar = Lunar.fromDate(selectedDate);
         lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
-    } else {
-        gregorianDate = selectedDate;
-        // lunarDate = dateInput.value;
-        const [day, month, year] = dateInput.value.split('/').map(Number);
-        lunarDate = new Date(year, month - 1, day);
-    }
+    // } else {
+    //     gregorianDate = selectedDate;
+    //     // lunarDate = dateInput.value;
+    //     const [day, month, year] = dateInput.value.split('/').map(Number);
+    //     lunarDate = new Date(year, month - 1, day);
+    // }
     summaryGregDate.textContent = gregorianDate.toLocaleDateString("en-GB", {
         year: "numeric",
         month: "2-digit",
@@ -836,7 +852,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
             await createOrUpdateTimeslot();
 
             // Redirect to orders list
-            // window.location.href = '/orders';
+            window.location.href = '/orders';
         } else {
             const errorData = await orderResponse.json();  // Get error response data
             if (errorData.message === 'No available sessions for the selected time slot.') {

@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         row.setAttribute('data-order-id', order.orderId);
 
         row.innerHTML = `
-    <td>${rowNumber}</td>
+    <td>${order.orderId}</td>
     <td>${formatDate(order.createdAt)}</td>
     <td>${order.cropType}</td>
     <td>${formatCurrency(order.totalCost)} VND</td>

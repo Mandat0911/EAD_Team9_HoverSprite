@@ -1,7 +1,8 @@
-<div th:fragment="content" class="booking-container" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Update Personal Information</h1>
+<div th:fragment="content" class="booking-container py-5" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="d-flex justify-content-center align-items-center">
         <div class="box-container">
+            <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Update Personal Information</h1>
+
             <form th:action="@{/account/update}" method="post" id="booking-form">
                 <div th:if="${error}">
                     <p class="text-danger" th:text="${error}"></p>
@@ -9,10 +10,9 @@
                 <input type="hidden" id="user-id" name="id" th:value="${#authentication.principal.id}">
 
                 <!-- Farmer Details -->
-                <div class="form-step form-step-active px-4 py-3">
+                <div class="form-step form-step-active px-4 py-2">
                     <div class="row">
                         <div class="col-md-6" sec:authorize="hasAuthority('FARMER')">
-                            <h4 class="fw-bold" style="color: var(--primary-color);">Farmer Details</h4>
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
@@ -58,6 +58,9 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
+                        <a th:href="@{/account}">
+                            <button type="button" class="btn btn-secondary btn-next">Cancel</button>
+                        </a>
                         <button type="submit" class="btn btn-primary btn-next">Update</button>
                     </div>
                 </div>
