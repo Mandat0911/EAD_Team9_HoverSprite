@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.hoversprite.Timeslot.TimeslotService;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +24,21 @@ public class OrderService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private TimeslotService timeslotService;
+
     /**
      * Create a new order
      */
     @Transactional
     public Order createOrder(Order order) {
-        // You might want to add some validation or business logic here
+        // Check availability of the selected timeslot before creating the order
+        int availableSessions = timeslotService.checkAvailability(order.getGregorianDate(), order.getTime());
+
+        if (availableSessions <= 0) {
+            throw new IllegalStateException("No available sessions for the selected time slot.");
+        }
+        
         return orderRepository.save(order);
     }
 
