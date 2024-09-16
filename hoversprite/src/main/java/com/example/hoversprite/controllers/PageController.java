@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.hoversprite.user.User;
@@ -40,7 +37,6 @@ public class PageController implements ErrorController {
         model.addAttribute("title", "Home");
         model.addAttribute("content", "home");
         model.addAttribute("css", "/stylesheets/home.css");
-        //model.addAttribute("js", "/js/home.js");
         return "layout";
     }
 
@@ -52,20 +48,6 @@ public class PageController implements ErrorController {
         model.addAttribute("js", "/js/login.js");
         return "layout";
     }
-
-//    @GetMapping("/register")
-//    public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error) {
-//        model.addAttribute("title", "Register");
-//        model.addAttribute("content", "register");
-//        model.addAttribute("css", "/stylesheets/login.css");
-//        model.addAttribute("js", "/js/login.js");
-//
-//        model.addAttribute("user", new User());
-//         if (error != null) {
-//             model.addAttribute("error", error);
-//         }
-//        return "layout";
-//    }
 
     @GetMapping("/register")
     public String showSignUpForm(Model model, @RequestParam(value = "error", required = false) String error) {
@@ -104,13 +86,15 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/orders")
-    public String orders(Model model) {
+    public String orders(@ModelAttribute("user") User user,Model model) {
         model.addAttribute("title", "Orders Management");
         model.addAttribute("content", "orders");
         model.addAttribute("css", "/stylesheets/orders.css");
         model.addAttribute("js", "/js/orders.js");
         return "layout";
     }
+
+
 
     @GetMapping("/orders/order_details")
     public String orderDetail(Model model) {
@@ -205,4 +189,31 @@ public class PageController implements ErrorController {
         model.addAttribute("content", "404");
         return "layout";
     }
+
+    @GetMapping("/account/users/edit/{id}")
+    public String showEditUserForm(@PathVariable Long id, Model model) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("user", user);
+        model.addAttribute("title", "Edit User");
+        model.addAttribute("content", "editUser");
+        model.addAttribute("css", "/stylesheets/booking.css");
+        model.addAttribute("js", "/js/booking.js");
+        return "layout";
+    }
+
+    @PostMapping("/account/update")
+    public String saveUser(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+//        System.out.println("User details: " + user.toString());
+        try {
+            userDetailService.save(user);
+            redirectAttributes.addFlashAttribute("message", "User saved successfully!");
+            return "redirect:/account";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/account/users/edit/" + user.getId();
+        }
+    }
+
+
 }

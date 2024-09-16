@@ -55,7 +55,7 @@ public class UserDetailService implements UserDetailsService {
 
         Role roleUSer = roleRepository.findByName("Farmer");
         user.addRole(roleUSer);
-
+        user.setAuthenticationProvider(AuthenticationProvider.LOCAL);
         // Save user
         userRepository.save(user);
     }
@@ -73,19 +73,34 @@ public class UserDetailService implements UserDetailsService {
 
 
     public void save(User user) throws Exception {
-        // Validate the email domain
+        // Validate the email domain if necessary
         if (!isValidEmail(user.getEmail())) {
             throw new Exception("Email must be from domain @hoversprite.com or @hoversprite.com.vn");
         }
 
-        // Encode the password before saving
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
+        // Fetch existing user from the database
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new Exception("User not found"));
 
-        // Save the user to the repository
-        userRepository.save(user);
+        // Update user details
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setMiddleName(user.getMiddleName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setPhone(user.getPhone());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setAddress(user.getAddress());
+
+        // Update the password only if it's not empty (i.e., the user changed it)
+        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            existingUser.setPassword(encodedPassword);
+        }
+
+        // Save the updated user to the repository
+        userRepository.save(existingUser);
     }
+
 
     @Transactional
     public void createNewUserAfterOAuthLoginSuccess(String email, String name, AuthenticationProvider authenticationProvider) {

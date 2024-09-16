@@ -4,7 +4,6 @@ import com.example.hoversprite.security.jwt.JwtTokenFilter;
 import com.example.hoversprite.security.oauth2.OAuth2LoginSuccessHandler;
 import com.example.hoversprite.user.UserDetailService;
 import com.example.hoversprite.user.UserOAuth2UserService;
-
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -71,10 +70,9 @@ public class SecurityConfig {
     @Bean
     public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
-            response.sendRedirect("/login");
+            response.sendRedirect("/login");  // Redirect to login page
         };
     }
-
     @Bean
     public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
@@ -103,20 +101,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/auth/login","/login").permitAll()
-                                .requestMatchers("/account/**", "/users/**", "/process_register","/orders/**", "/booking/**").authenticated()
+                                .requestMatchers("/orders/**", "/booking/**", "/users/**").authenticated()
                                 .anyRequest().permitAll()
                 )
-
                 .exceptionHandling(customizer ->
                         customizer
                                 .authenticationEntryPoint(authenticationEntryPoint())  // Handle unauthenticated requests
-                                .accessDeniedHandler(accessDeniedHandler())// Handle unauthorized access
+                                .accessDeniedHandler(accessDeniedHandler())            // Handle unauthorized access
                 )
 
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(authenticationEntryPoint())
-                )
+
+
+
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("username")
@@ -138,8 +135,9 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .permitAll()
                 );
+
+
+
         return http.build();
     }
-
-
 }
