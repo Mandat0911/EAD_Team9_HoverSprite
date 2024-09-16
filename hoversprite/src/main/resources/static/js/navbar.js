@@ -76,7 +76,7 @@ function setActiveLink() {
     var path = window.location.pathname.split("/").pop();
 
     // If the path is any of the subpages related to account, highlight the Account on navbar
-    if (path === 'user_profile' || path === 'notifications') {
+    if (path === 'notifications') {
         path = 'account';
     }
 

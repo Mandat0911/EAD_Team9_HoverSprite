@@ -1,14 +1,6 @@
-/* General Styles Consistent with Login */
-body {
-    font-family: 'Poppins', sans-serif !important;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.container {
+.terms-container .container {
     width: 100%;
-    padding: 30px;
+    padding: 30px 30px;
     min-width: 100vw;
     display: flex;
     justify-content: center;
@@ -16,75 +8,12 @@ body {
 }
 
 /* Terms of Service Page Specific Styles */
-.terms-content {
-    width: 930px;
+.terms-container .terms-content {
+    width: 60%;
     margin: auto;
     padding: 30px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: left;
-}
-
-h1 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-    color: var(--primary-color);
-    text-align: center;
-}
-
-h2 {
-    font-size: 1.5rem;
-    color: var(--secondary-color);
-    margin-bottom: 15px;
-}
-
-p {
-    font-size: 1.1rem;
-    color: #666;
-    margin: 10px 0;
-    line-height: 1.6;
-}
-
-a {
-    color: #2196F3;
-    text-decoration: none;
-}
-
-/* Icon Adjustments */
-h1 i, h2 i {
-    margin-right: 10px;
-    color: var(--primary-color);
-}
-
-/* Button Styles Consistent with Login */
-.back-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .terms-content {
-        padding: 20px;
-    }
-
-    h1 {
-        font-size: 2rem;
-    }
-
-    h2 {
-        font-size: 1.2rem;
-    }
-
-    p {
-        font-size: 1rem;
-    }
 }

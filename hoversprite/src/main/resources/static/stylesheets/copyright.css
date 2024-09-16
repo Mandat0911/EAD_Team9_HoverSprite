@@ -1,11 +1,3 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
 .copyright-container .container {
     width: 100%;
     padding: 30px 30px;
@@ -16,31 +8,12 @@ body {
 }
 
 .copyright-container .box-area {
-    width: 930px;
+    width: 60%;
     margin: auto;
     padding: 30px;
     background-color: #fff;
     border-radius: 5px;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-p {
-    font-size: 1.2em;
-    color: #666;
-    margin: 10px 0;
-    line-height: 1.6;
-    text-align: center;
-}
-
-a {
-    color: #2196F3;
-    text-decoration: none;
 }
 
 
@@ -49,7 +22,7 @@ img {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 100%;
+    width: 30%;
 }
 
 

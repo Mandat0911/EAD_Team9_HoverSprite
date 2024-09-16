@@ -126,14 +126,14 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-    @GetMapping("/account/user_profile")
-    public String userProfile(Model model) {
-        model.addAttribute("title", "User Profile");
-        model.addAttribute("content", "userProfile");
-        model.addAttribute("css", "/stylesheets/account.css");
-        model.addAttribute("js", "/js/userProfile.js");
-        return "layout";
-    }
+    // @GetMapping("/account/user_profile")
+    // public String userProfile(Model model) {
+    //     model.addAttribute("title", "User Profile");
+    //     model.addAttribute("content", "userProfile");
+    //     model.addAttribute("css", "/stylesheets/account.css");
+    //     model.addAttribute("js", "/js/userProfile.js");
+    //     return "layout";
+    // }
 
     @GetMapping("/account/notifications")
     public String notifications(Model model) {
@@ -191,7 +191,7 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-    @GetMapping("/account/users/edit/{id}")
+    @GetMapping("/account/edit/user/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
