@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 0;
-    const pageSize = 10; // Number of items per page
+    const pageSize = 3; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
     let currentUserId;

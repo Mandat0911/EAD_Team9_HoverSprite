@@ -55,6 +55,9 @@ public class OrderService {
     public Page<Order> getAllOrders(Pageable pageable) {
         return orderRepository.findAll(pageable);
     }
+    public Page<Order> getOrdersByUserId(Long userId, Pageable pageable) {
+        return orderRepository.findOrdersByUserId(userId, pageable);
+    }
 
 //
 //    public Page<Order> getOrdersByUserId(Long userId, Pageable pageable) {
@@ -115,29 +118,29 @@ public class OrderService {
     }
 
 
-    public Page<Order> getOrders(Long userId, int page, int size, String sortBy, String direction) {
-        // Get the current authentication object
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // Check if the user has the RECEPTIONIST role
-        boolean isReceptionist = authentication.getAuthorities().stream()
-                .anyMatch(authority -> authority.getAuthority().equals("RECEPTIONIST"));
-
-        // Define Pageable with sorting options
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
-
-        // Fetch orders based on role
-        if (isReceptionist) {
-            // If the user is a RECEPTIONIST, return all orders
-            return orderRepository.findAll(pageable);
-        } else {
-            // If the user is not a RECEPTIONIST, filter by userId
-            // Ensure userId is not null and properly handle it
-            if (userId == null) {
-                throw new IllegalArgumentException("User ID must be provided for non-receptionists");
-            }
-            return orderRepository.findByUserId(userId, pageable);
-        }
-    }
+//    public Page<Order> getOrders(Long userId, int page, int size, String sortBy, String direction) {
+//        // Get the current authentication object
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//
+//        // Check if the user has the RECEPTIONIST role
+//        boolean isReceptionist = authentication.getAuthorities().stream()
+//                .anyMatch(authority -> authority.getAuthority().equals("RECEPTIONIST"));
+//
+//        // Define Pageable with sorting options
+//        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sortBy));
+//
+//        // Fetch orders based on role
+//        if (isReceptionist) {
+//            // If the user is a RECEPTIONIST, return all orders
+//            return orderRepository.findAll(pageable);
+//        } else {
+//            // If the user is not a RECEPTIONIST, filter by userId
+//            // Ensure userId is not null and properly handle it
+//            if (userId == null) {
+//                throw new IllegalArgumentException("User ID must be provided for non-receptionists");
+//            }
+//            return orderRepository.findByUserId(userId, pageable);
+//        }
+//    }
 
 }

@@ -45,17 +45,24 @@ public class OrderController {
 //        return ResponseEntity.ok(orders);
 //    }
 
-//    @GetMapping
-//    public ResponseEntity<Page<Order>> getAllOrders(
-//            @RequestParam int page,
-//            @RequestParam int size,
-//            @RequestParam String sortBy,
-//            @RequestParam Sort.Direction direction) {
-//
-//        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
-//        Page<Order> orders = orderService.getAllOrders(pageable);
-//        return ResponseEntity.ok(orders);
-//    }
+    @GetMapping
+    public ResponseEntity<Page<Order>> getAllOrders(
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sortBy,
+            @RequestParam Sort.Direction direction) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
+        Page<Order> orders = orderService.getAllOrders(pageable);
+        return ResponseEntity.ok(orders);
+    }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<Order>> getOrdersByUserId(
+            @PathVariable Long userId,
+            Pageable pageable) {
+        Page<Order> orders = orderService.getOrdersByUserId(userId, pageable);
+        return ResponseEntity.ok(orders);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
@@ -87,17 +94,17 @@ public class OrderController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<Page<Order>> getOrders(
-            @RequestParam(value = "userId", required = false) Long userId,
-            @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "10") int size,
-            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
-
-        Page<Order> orders = orderService.getOrders(userId, page, size, sortBy, direction);
-        return ResponseEntity.ok(orders);
-    }
+//    @GetMapping
+//    public ResponseEntity<Page<Order>> getOrders(
+//            @RequestParam(value = "userId", required = false) Long userId,
+//            @RequestParam(value = "page", defaultValue = "0") int page,
+//            @RequestParam(value = "size", defaultValue = "10") int size,
+//            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
+//            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
+//
+//        Page<Order> orders = orderService.getOrders(userId, page, size, sortBy, direction);
+//        return ResponseEntity.ok(orders);
+//    }
 }
 
 
