@@ -1,13 +1,35 @@
-<div th:fragment="content">
-    <h1 class="text-center">Copyright Information</h1>
-    <p class="text-center">&copy; 2024 HoverSprite. All rights reserved.</p>
-    <p class="text-center">The HoverSprite website and its content are owned and created by Group 9 of EEET2580 -
-        Enterprise Application Development and may not be copied, distributed, or reproduced in any way without
-        prior written consent.</p>
-    <p class="text-center">Last updated: September 2024</p>
-    <div class="d-flex justify-content-center">
-        <div class="col-md-6 text-center">
-            <img src="/images/RMIT_logo.png" class="img-fluid bounce d-block">
+<div th:fragment="content" class="copyright-container">
+    <div class="container copyright__form active">
+        <div class="row d-flex border rounded-5 p-3 bg-white shadow box-area">
+            <div class="row vh-50 w-100 align-self-center">
+                <div class="col-12 px-3">
+                    <div class="row vh-50">
+                        <div class="col align-items-center p-3 p-lg-5 w-100">
+                            <!-- Copyright Header -->
+                            <section class="text-center pt-5">
+                                <h1 class="fw-bolder">Copyright Information</h1>
+                                <p class="fw-lighter fs-6">&copy; 2024 HoverSprite. All rights reserved.</p>
+                            </section>
+
+                            <!-- Copyright Details -->
+                            <section class="py-3">
+                                <p class="text-center">
+                                    The HoverSprite website and its content are owned and created by Group 9 of EEET2580 -
+                                    Enterprise Application Development and may not be copied, distributed, or reproduced in any way without prior written consent.
+                                </p>
+                                <p class="text-center">Last updated: September 2024</p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Image Section -->
+                <div class="d-flex align-items-center justify-content-center col-md-6 col-lg-6 col-xl-6 p-5 vh-50">
+                    <div class="col-12 text-center">
+                        <img src="/images/RMIT_logo.png" class="img-fluid d-block" alt="RMIT Logo">
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
