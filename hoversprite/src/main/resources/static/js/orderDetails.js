@@ -34,7 +34,7 @@ function updateSprayerDropdown() {
     }
 }
 
-function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
+function assignSprayerToOrder(orderId, sprayerId) {
     fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
         method: 'POST',
         headers: {
@@ -293,7 +293,6 @@ document.addEventListener('DOMContentLoaded', function () {
             sprayerSelectContainer.classList.add('fade-in');
         } else {
             const selectedSprayerValue = sprayerSelect.value;
-            console.log("Selected sprayer value:", selectedSprayerValue);
             if (selectedSprayerValue !== "") {
                 const selectedSprayer = JSON.parse(selectedSprayerValue);
                 // console.log(selectedSprayer);
@@ -352,9 +351,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if ((!order.sprayerIds || order.sprayerIds.length === 0) && order.status.toLowerCase() === 'confirmed') {
             if (noSprayerMessage) {
                 noSprayerMessage.classList.remove('d-none');
-            }
-            if (assignedSprayerContainer) {
-                assignedSprayerContainer.classList.add('d-none');
             }
             // Show add sprayer section when sprayer list is empty
             if (sprayerSection) {
