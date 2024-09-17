@@ -6,14 +6,19 @@
                     <div class="row vh-50">
                         <div class="col align-items-center p-3 p-lg-5 w-100"> -->
                             <!-- FAQ Header -->
-                        <section class="pt-5">
-                            <div class="container text-center">
-                                <h1 class="fw-bold" style="color: var(--primary-color); font-size: 2.5rem;">Farmer Registration Successful</h1>
-                                <p class="fs-5 text-muted" style="color: var(--primary-color);">Thank you for registering as a farmer on our platform.</p>
-                                <p class="fs-6">An email has been sent to you. Please check your inbox to verify your account and complete the registration process.</p>
-                                <p class="fs-6 text-muted">If you haven't received the email, kindly check your spam folder or contact our support team.</p>
-                            </div>
-                        </section>
+        <section class="pt-5">
+            <div class="container text-center">
+                <h1 class="fw-bold" style="color: var(--primary-color); font-size: 2.5rem;">Farmer Registration Successful</h1>
+                <p class="fs-5 text-muted" style="color: var(--primary-color);">Thank you for registering as a farmer on our platform.</p>
+                <p class="fs-6">
+                    An email has been sent to your account
+<!--                    <span th:value="${#authentication.principal.email}"></span>.-->
+                    Please check your inbox to verify your account and complete the registration process.
+                </p>
+                <p class="fs-6 text-muted">If you haven't received the email, kindly check your spam folder or contact our support team.</p>
+            </div>
+        </section>
+
         <!-- </div>
     </div>
 </div>

@@ -1,10 +1,10 @@
 package com.example.hoversprite.Order;
 
-import com.example.hoversprite.Sprayer.Sprayer;
 import com.example.hoversprite.user.User;
 import com.example.hoversprite.user.UserDetailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import com.example.hoversprite.Sprayer.Sprayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +54,7 @@ public class OrderController {
                     .body(Collections.singletonMap("message", "Failed to create order or send email."));
         }
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long id) {
@@ -191,9 +192,9 @@ public class OrderController {
                 + "    <p>Thank you for placing an order with HoverSprite. Here are the details of your order:</p>"
                 + "    <div class='order-details'>"
                 + "      <p><strong>Crop Type:</strong> " + order.getCropType() + "</p>"
-                + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " acres</p>"
+                + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " decare</p>"
                 + "      <p><strong>Time Slot:</strong> " + order.getTime() + "</p>"
-                + "      <p><strong>Total Cost:</strong> $" + order.getTotalCost() + "</p>"
+                + "      <p><strong>Total Cost:</strong>" + order.getTotalCost() + " VND</p>"
                 + "      <p><strong>Order Status:</strong> " + order.getStatus() + "</p>"
                 + "    </div>"
                 + "    <p>If you have any questions, feel free to contact us at support@hoversprite.com.</p>"

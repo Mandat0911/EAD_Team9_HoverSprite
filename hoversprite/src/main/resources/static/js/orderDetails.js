@@ -1,5 +1,7 @@
 let allSprayers = [];
 let apprenticeAdded = false;
+let sprayerToRemove = null;
+
 let sprayersToAssign = [];
 function safeGetElement(id) {
     const element = document.getElementById(id);
@@ -16,6 +18,7 @@ const sprayerError = safeGetElement('sprayerError');
 const noSprayerMessage = safeGetElement('noSprayerMessage');
 const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
 
+// Function to update the sprayer select dropdown
 function updateSprayerDropdown() {
     if (sprayerSelect) {
         sprayerSelect.innerHTML = '<option value="">Select a sprayer</option>';
@@ -35,6 +38,135 @@ function updateSprayerDropdown() {
 }
 
 function assignSprayerToOrder(orderId, sprayerId) {
+// Function to handle Add Sprayer Button Click
+if(addSprayerButton) {
+    addSprayerButton.addEventListener('click', function() {
+        // If the select container is hidden, show it with animation
+        if (sprayerSelectContainer.classList.contains('d-none')) {
+            sprayerSelectContainer.classList.remove('d-none');
+            sprayerSelectContainer.classList.add('fade-in'); // Add animation
+        }
+        // If the select container is visible, and a sprayer is selected, add the sprayer
+        else {
+            // const selectedSprayerText = sprayerSelect.options[sprayerSelect.selectedIndex].text;
+            const selectedSprayerValue = sprayerSelect.value;
+
+            if (selectedSprayerValue !== "") {
+                // Show confirmation modal before adding sprayer
+                const addSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('addSprayerConfirmationModal'));
+                addSprayerConfirmationModal.show();
+            }
+        }
+    });
+}
+
+// Function to handle showing or hiding the 'no sprayer assigned' message, and other UI changes
+function handleSprayerState() {
+    if(sprayerError && addSprayerButton && noSprayerMessage) {
+        // If there are no sprayers assigned, show the "no sprayer" message and reset apprentice state
+        if (assignedSprayerContainer.childElementCount === 0) {
+            noSprayerMessage.classList.remove('d-none');
+            sprayerError.textContent = 'Please assign at least one sprayer to this order.';
+            sprayerError.classList.remove('d-none');
+            addSprayerButton.disabled = false;
+            apprenticeAdded = false;
+        } else {
+            // Hide "no sprayer" message
+            noSprayerMessage.classList.add('d-none');
+
+            // Check if there's an apprentice in the assigned sprayers
+            const hasApprentice = Array.from(assignedSprayerContainer.children).some(sprayerDiv => {
+                return sprayerDiv.querySelector('h6').textContent === 'Apprentice';
+            });
+
+            // Check if there's an Adept or Expert in the assigned sprayers
+            const hasAdeptOrExpert = Array.from(assignedSprayerContainer.children).some(sprayerDiv => {
+                const type = sprayerDiv.querySelector('h6').textContent;
+                return type === 'Adept' || type === 'Expert';
+            });
+
+            if (hasApprentice && !hasAdeptOrExpert) {
+                sprayerError.classList.remove('d-none');
+                sprayerError.textContent = 'An Adept or Expert sprayer is required when assigning an Apprentice.';
+                apprenticeAdded = true;
+                updateSprayerDropdown(); // Disable apprentice options
+                addSprayerButton.disabled = false;
+            } else {
+                sprayerError.classList.add('d-none');
+                addSprayerButton.disabled = true; // Disable adding more sprayers
+            }
+        }
+    }
+}
+
+// Function to add a sprayer and handle the removal
+function addSprayerToContainer(sprayerText) {
+
+    // Add the selected sprayer to the assigned list
+    const newSprayerDiv = document.createElement('div');
+    newSprayerDiv.classList.add('new-sprayer-div', 'd-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
+    newSprayerDiv.innerHTML = `
+    <div class="d-flex flex-row align-items-center">
+        <button class="btn btn-danger btn-sm remove-sprayer-btn">
+            <i class="fa-solid fa-minus"></i>
+        </button>
+        <h5 class="m-0">${sprayerText.split('(')[0]}</h5>
+    </div>
+    <div class="badge bg-secondary">
+        <h6 class="m-0">${sprayerText.split('(')[1].replace(')', '')}</h6>
+    </div>
+    `;
+    assignedSprayerContainer.appendChild(newSprayerDiv);
+
+    // Attach event listener to the remove button (minus icon)
+    newSprayerDiv.querySelector('.remove-sprayer-btn').addEventListener('click', function () {
+        sprayerToRemove = newSprayerDiv; // Store the sprayer to remove
+        const removeSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('removeSprayerConfirmationModal'));
+        removeSprayerConfirmationModal.show(); // Show the remove confirmation modal
+    });
+
+    // Hide the select container and reset it
+    sprayerSelectContainer.classList.add('d-none');
+    sprayerSelectContainer.classList.remove('fade-in');
+    sprayerSelect.value = ""; // Reset select box
+
+    // Update the state after adding the sprayer
+    handleSprayerState();
+}
+
+ // Handle the confirmation button click inside the modal
+ document.getElementById('confirmAddSprayer').addEventListener('click', function () {
+    const selectedSprayerText = sprayerSelect.options[sprayerSelect.selectedIndex].text;
+    const selectedSprayerValue = sprayerSelect.value;
+
+    if (selectedSprayerValue !== "") {
+        addSprayerToContainer(selectedSprayerText);
+
+        // Hide the confirmation modal for adding sprayer
+        const addSprayerConfirmationModal = bootstrap.Modal.getInstance(document.getElementById('addSprayerConfirmationModal'));
+        addSprayerConfirmationModal.hide();
+    }
+});
+
+// Handle the confirmation button click inside the modal for removing sprayer
+document.getElementById('confirmRemoveSprayer').addEventListener('click', function () {
+    if (sprayerToRemove) {
+        assignedSprayerContainer.removeChild(sprayerToRemove);
+        sprayerToRemove = null; // Reset after removing
+
+        // Recheck and update UI after removing a sprayer
+        handleSprayerState();
+
+        // Hide the remove confirmation modal
+        const removeSprayerConfirmationModal = bootstrap.Modal.getInstance(document.getElementById('removeSprayerConfirmationModal'));
+        removeSprayerConfirmationModal.hide();
+    }
+});
+
+handleSprayerState();
+updateSprayerDropdown();
+
+function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
     fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
         method: 'POST',
         headers: {

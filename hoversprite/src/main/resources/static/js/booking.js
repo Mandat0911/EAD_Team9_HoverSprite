@@ -105,10 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* FORM VALIDATION */
 const inputsStep1 = {
-    name: document.getElementById('name'),
-    email: document.getElementById('email'),
-    phone: document.getElementById('phone'),
-    address: document.getElementById('address'),
+    // name: document.getElementById('name'),
+    // email: document.getElementById('email'),
+    // phone: document.getElementById('phone'),
+    // address: document.getElementById('address'),
     area: document.getElementById('area'),
 };
 
@@ -127,10 +127,10 @@ function validateStep1() {
     let isValid = true;
 
     // Validate each field
-    isValid = validateField(inputsStep1.name, isValidName) && isValid;
-    isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
-    isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
-    isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
+    // isValid = validateField(inputsStep1.name, isValidName) && isValid;
+    // isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
+    // isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
+    // isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
     isValid = validateField(inputsStep1.area, isValidArea) && isValid;
     return isValid;
 }
@@ -849,25 +849,26 @@ document.getElementById('booking-form').addEventListener('submit', async functio
 
         if (orderResponse.ok) {
             const data = await orderResponse.json();
-            alert('Order created successfully!');
+            // alert('Order created successfully!');
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
 
             // Send a request to create or update the Timeslot
             await createOrUpdateTimeslot();
 
             // Redirect to orders list
-            window.location.href = '/orders';
+            // window.location.href = '/orders';
         } else {
             const errorData = await orderResponse.json();  // Get error response data
-            if (errorData.message === 'No available sessions for the selected time slot.') {
-                alert('The selected time slot is fully booked. Please choose another slot.');
-            } else {
-                alert('Failed to create order.');
-                console.log('Error details:', errorData);
-            }
+            const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+            failureModal.show();
+            console.log('Error details:', errorData);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while creating the order.');
+        // alert('An error occurred while creating the order.');
+        const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+        failureModal.show();
     }
 });
 
@@ -897,3 +898,38 @@ async function createOrUpdateTimeslot() {
         console.error('Error creating/updating timeslot:', error);
     }
 }
+
+async function fetchFarmerDetails() {
+    const phone = document.getElementById('recep_phone').value;
+
+    // Check if phone number is entered
+    if (phone.trim() === '') {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/users/by-phone/${phone}`);
+
+        if (response.ok) {
+            const user = await response.json();
+            document.getElementById('user-id').value = user.id;
+            // Concatenate first name, middle name, and last name to create full name
+            const fullName = `${user.firstName || ''} ${user.middleName || ''} ${user.lastName || ''}`.trim();
+
+            // Autofill the form fields with the farmer's data
+            document.getElementById('recep_name').value = fullName;
+            document.getElementById('recep_email').value = user.email;
+            document.getElementById('recep_address').value = user.address;
+        } else {
+            // Clear the fields if no farmer is found
+            document.getElementById('recep_name').value = '';
+            document.getElementById('recep_email').value = '';
+            document.getElementById('recep_address').value = '';
+            alert('No user found with this phone number.');
+        }
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        alert('An error occurred while fetching user details.');
+    }
+}
+

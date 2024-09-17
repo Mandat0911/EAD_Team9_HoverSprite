@@ -25,7 +25,8 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th scope="col">ID</th>
+                <th scope="col">Order ID</th>
+                <th sec:authorize="hasAnyAuthority('RECEPTIONIST')" scope="col">Farmer ID</th>
                 <th scope="col">Created Date</th>
                 <th scope="col">Crop Type</th>
                 <th scope="col">Total</th>

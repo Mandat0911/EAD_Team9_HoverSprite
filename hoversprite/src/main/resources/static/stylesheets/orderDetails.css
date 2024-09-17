@@ -133,3 +133,20 @@
     margin: 0;
     padding: 10px;
 }
+
+/* Initially hide the remove button */
+.new-sprayer-div .remove-sprayer-btn {
+    display: none;
+}
+
+/* Show the remove button when hovering over the sprayer div */
+.new-sprayer-div:hover .remove-sprayer-btn {
+    display: inline-block;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}

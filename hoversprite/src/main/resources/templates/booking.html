@@ -9,7 +9,7 @@
             </div>
 
             <form action="#" class="form" id="booking-form">
-                <input type="hidden" id="user-id" th:value="${#authentication.principal.id}">
+                <input type="hidden" id="user-id">
 
                 <!-- Form item - Farm Details -->
                 <div class="form-step form-step-active px-4 py-3">
@@ -22,28 +22,28 @@
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="phone" type="number" class="form-control" placeholder="Enter phone number" th:value="${#authentication.principal.phone}" required>
+                                    <input id="phone" type="number" class="form-control" placeholder="Enter phone number" th:value="${#authentication.principal.phone}" disabled>
                                 </div>
                             </div>
         
                             <div class="form-group input-group">
                                 <label for="name" class="form-label d-block">Name *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="name" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.fullName}" required>
+                                    <input id="name" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.fullName}" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="email" class="form-label d-block">Email *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="email" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.email}" required>
+                                    <input id="email" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.email}" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="address" class="form-label d-block">Address *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="address" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.address}" required>
+                                    <input id="address" type="text" class="form-control" placeholder="" th:value="${#authentication.principal.address}" disabled>
                                 </div>
                             </div>
                         </div>
@@ -52,28 +52,28 @@
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="phone" type="number" class="form-control" placeholder="Enter phone number" required>
+                                    <input id="recep_phone" type="number" onblur="fetchFarmerDetails()" class="form-control" placeholder="Enter phone number" required>
                                 </div>
                             </div>
         
                             <div class="form-group input-group">
                                 <label for="name" class="form-label d-block">Name *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="name" type="text" class="form-control" placeholder="" required>
+                                    <input id="recep_name" type="text" class="form-control" placeholder="" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="email" class="form-label d-block">Email *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="email" type="text" class="form-control" placeholder="" required>
+                                    <input id="recep_email" type="text" class="form-control" placeholder="" disabled>
                                 </div>
                             </div>
 
                             <div class="form-group input-group">
                                 <label for="address" class="form-label d-block">Address *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="address" type="text" class="form-control" placeholder="" required>
+                                    <input id="recep_address" type="text" class="form-control" placeholder="" disabled>
                                 </div>
                             </div>
                         </div>
@@ -324,23 +324,40 @@
         </div>
     </div> 
 
-    <!-- TODO: modal pop up when click submit order
-     - create success: button to navigate to orders page
-     - create fail: button to try again (refresh booking page) -->
-    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+    <!-- Success Modal for Order Creation -->
+    <div class="modal fade" id="successModal" aria-hidden="true" aria-labelledby="successModalLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="successModalLabel">Order Created</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Your order has been requested successfully!
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="window.location.href='/orders'">Go to Orders</button>
+                </div>
             </div>
-            <div class="modal-body">
-              Order created successfully!
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button>
-            </div>
-          </div>
         </div>
     </div>
+
+    <!-- Failure Modal for Order Creation -->
+    <div class="modal fade" id="failureModal" aria-hidden="true" aria-labelledby="failureModalLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="failureModalLabel">Order Failed</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sorry, there was a problem creating your order. Please try again.
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" onclick="window.location.reload()">Try Again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
