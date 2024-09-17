@@ -14,7 +14,6 @@ public class Sprayer {
     @Column(name = "user_id")
     private Long userId;
 
-
     @OneToOne
     @JoinColumn(name = "user_id", unique = true)
     private User user;

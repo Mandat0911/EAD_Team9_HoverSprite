@@ -1,6 +1,6 @@
 let allSprayers = [];
 let apprenticeAdded = false;
-
+let sprayersToAssign = [];
 function safeGetElement(id) {
     const element = document.getElementById(id);
     if (!element) {
@@ -17,7 +17,7 @@ const noSprayerMessage = safeGetElement('noSprayerMessage');
 const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
 
 function updateSprayerDropdown() {
-    if(sprayerSelect){
+    if (sprayerSelect) {
         sprayerSelect.innerHTML = '<option value="">Select a sprayer</option>';
         allSprayers.forEach(sprayer => {
             const option = document.createElement('option');
@@ -33,7 +33,8 @@ function updateSprayerDropdown() {
         });
     }
 }
-function assignSprayerToOrder(orderId, sprayerId) {
+
+function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
     fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
         method: 'POST',
         headers: {
@@ -48,13 +49,26 @@ function assignSprayerToOrder(orderId, sprayerId) {
         })
         .then(data => {
             console.log(data); // Log success message
+
+            // Create notification for the sprayer
+            const notificationData = {
+                userId: sprayerId,
+                message: `New order assigned: Order #${orderId}`,
+                orderId: orderId
+            };
+
+            return createNotification(notificationData);
+        })
+        .then(createdNotification => {
+            console.log('Notification sent to sprayer:', createdNotification);
         })
         .catch(error => {
             console.error('Error:', error);
-            sprayerError.textContent = 'Failed to assign sprayer to order. Please try again.';
+            sprayerError.textContent = 'Failed to assign sprayer to order or send notification. Please try again.';
             sprayerError.classList.remove('d-none');
         });
 }
+
 
 function fetchSprayers() {
     fetch('/api/sprayers')
@@ -75,7 +89,30 @@ function fetchSprayers() {
         });
 }
 
-
+//function to create notifications
+function createNotification(notificationData) {
+    return fetch('/api/notifications', {  // Adjust the URL if needed
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(notificationData)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to create notification');
+            }
+            return response.json();
+        })
+        .then(createdNotification => {
+            console.log('Notification created successfully:', createdNotification);
+            return createdNotification;
+        })
+        .catch(error => {
+            console.error('Error creating notification:', error);
+            throw error;
+        });
+}
 
 
 const totalCost = 150000; // example total cost
@@ -84,8 +121,8 @@ const changeContainer = safeGetElement('changeContainer');
 const changeAmount = safeGetElement('changeAmount');
 
 // Listen for input changes in the received amount
-if(receiveAmountInput) {
-    receiveAmountInput.addEventListener('input', function() {
+if (receiveAmountInput) {
+    receiveAmountInput.addEventListener('input', function () {
         const receiveAmount = parseInt(receiveAmountInput.value);
 
         if (isNaN(receiveAmount) || receiveAmount < 0) {
@@ -110,7 +147,7 @@ function updateFeedbackSection(status, hasFeedback) {
 
     if (status.toLowerCase() === 'completed') {
         if (hasFeedback) {
-            if(feedbackSection){
+            if (feedbackSection) {
                 feedbackSection.style.display = 'none';
             }
 
@@ -120,7 +157,7 @@ function updateFeedbackSection(status, hasFeedback) {
             feedbackDisplaySection.style.display = 'none';
         }
     } else {
-        if(feedbackSection){
+        if (feedbackSection) {
             feedbackSection.style.display = 'none';
         }
         feedbackDisplaySection.style.display = 'none';
@@ -151,14 +188,15 @@ function fetchExistingFeedback(orderId) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Get the order ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id');
     let currentUserId;
-    const cancelOrderButton = document.getElementById('cancelOrderButton');
-    const confirmOrderButton = document.getElementById('confirmOrderButton');
-    const statusUpdateButtons = document.getElementById('statusUpdateButtons');
+    const cancelOrderButton = safeGetElement('cancelOrderButton');
+    const confirmOrderButton = safeGetElement('confirmOrderButton');
+    const statusUpdateButtons = safeGetElement('statusUpdateButtons');
+    fetchSprayers();
 
     function updateOrderStatus(newStatus) {
         // Fetch the current order details first
@@ -189,19 +227,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(updatedOrder => {
-                // Immediately reload the page after successful update
+                // Create a notification for the status update
+                const notificationData = {
+                    message: `Order #${orderId} status updated to ${newStatus}`,
+                    userId: updatedOrder.user.id, // Assuming the order has a userId field
+                    orderId: orderId
+                };
+
+                return createNotification(notificationData)
+                    .then(() => updatedOrder);
+            })
+            .then(() => {
+                // Immediately reload the page after successful update and notification creation
                 location.reload();
             })
             .catch(error => {
-                console.error('Error updating order status:', error);
+                console.error('Error updating order status or creating notification:', error);
                 alert('Failed to update order status. Please try again.');
             });
     }
 
-
-
     if (cancelOrderButton) {
-        cancelOrderButton.addEventListener('click', function() {
+        cancelOrderButton.addEventListener('click', function () {
             if (confirm('Are you sure you want to cancel this order?')) {
                 updateOrderStatus('CANCELLED');
             }
@@ -209,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (confirmOrderButton) {
-        confirmOrderButton.addEventListener('click', function() {
+        confirmOrderButton.addEventListener('click', function () {
             updateOrderStatus('CONFIRMED');
         });
     }
@@ -219,18 +266,17 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(order => {
             // Populate order details
             displayOrderDetails(order);
-            handleSprayer(order.status);
             // Check if the order status is 'completed' before proceeding with feedback
             if (order.status.toLowerCase() === 'completed') {
                 return fetchExistingFeedback(orderId).then(existingFeedback => {
-                    return { order, existingFeedback };
+                    return {order, existingFeedback};
                 });
             } else {
                 updateFeedbackSection(order.status, false);
-                return { order, existingFeedback: null };
+                return {order, existingFeedback: null};
             }
         })
-        .then(({ order, existingFeedback }) => {
+        .then(({order, existingFeedback}) => {
             if (existingFeedback) {
                 // Feedback exists, display it
                 displayFeedback(existingFeedback);
@@ -240,19 +286,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         })
         .catch(error => console.error('Error fetching order details:', error));
+
     function handleAddSprayer() {
         if (sprayerSelectContainer.classList.contains('d-none')) {
             sprayerSelectContainer.classList.remove('d-none');
             sprayerSelectContainer.classList.add('fade-in');
         } else {
             const selectedSprayerValue = sprayerSelect.value;
-
+            console.log("Selected sprayer value:", selectedSprayerValue);
             if (selectedSprayerValue !== "") {
                 const selectedSprayer = JSON.parse(selectedSprayerValue);
                 // console.log(selectedSprayer);
                 // Call the API to assign the sprayer to the order
-                assignSprayerToOrder(orderId, selectedSprayer.user.id);
-
+                // assignSprayerToOrder(orderId, selectedSprayer.user.id);
+                // updateOrderStatus('ASSIGNED');
                 const newSprayerDiv = document.createElement('div');
                 newSprayerDiv.classList.add('d-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
                 const fullName = selectedSprayer.user.lastName + " " + selectedSprayer.user.middleName + " " + selectedSprayer.user.firstName;
@@ -290,29 +337,93 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
 
-    function handleSprayer(orderStatus) {
-        const sprayerSection = document.getElementById('sprayerSection');
+    function updateSprayerDisplay(order) {
+        const noSprayerMessage = safeGetElement('noSprayerMessage');
+        const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
+        const sprayerSection = safeGetElement('sprayerSection');
+        const addSprayerButton = safeGetElement('addSprayerButton');
+        const sprayerSelectContainer = safeGetElement('sprayerSelectContainer');
 
-        if (orderStatus.toLowerCase() === 'confirmed') {
-            sprayerSection.classList.remove('d-none');
+        // Clear previous content
+        if (assignedSprayerContainer) {
+            assignedSprayerContainer.innerHTML = '';
+        }
 
-            if(addSprayerButton) {
-                addSprayerButton.addEventListener('click', handleAddSprayer);
-            }
-
-            if (assignedSprayerContainer.childElementCount === 0) {
-                if(sprayerError){
-                    sprayerError.textContent = 'Please assign at least one sprayer to this order.';
-                    sprayerError.classList.remove('d-none');
-                }
+        if ((!order.sprayerIds || order.sprayerIds.length === 0) && order.status.toLowerCase() === 'confirmed') {
+            if (noSprayerMessage) {
                 noSprayerMessage.classList.remove('d-none');
             }
-
-            fetchSprayers();
+            if (assignedSprayerContainer) {
+                assignedSprayerContainer.classList.add('d-none');
+            }
+            // Show add sprayer section when sprayer list is empty
+            if (sprayerSection) {
+                sprayerSection.classList.remove('d-none');
+            }
+            if (addSprayerButton) {
+                addSprayerButton.onclick = () => {
+                    console.log('clicked');
+                    if (sprayerSelectContainer) {
+                        sprayerSelectContainer.classList.remove('d-none');
+                    }
+                    handleAddSprayer();
+                };
+            }
         } else {
-            sprayerSection.classList.add('d-none');
+            if (noSprayerMessage) {
+                noSprayerMessage.classList.add('d-none');
+            }
+            if (assignedSprayerContainer) {
+                assignedSprayerContainer.classList.remove('d-none');
+            }
+            // Hide add sprayer section when sprayers are assigned
+            if (sprayerSection) {
+                sprayerSection.classList.add('d-none');
+            }
+
+            // Fetch and display assigned sprayers
+            const sprayerPromises = order.sprayerIds.map(sprayerId =>
+                fetch(`/api/sprayers/${sprayerId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Sprayer not found');
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error(`Error fetching sprayer ${sprayerId}:`, error);
+                        return null;
+                    })
+            );
+
+            Promise.all(sprayerPromises).then(sprayers => {
+                sprayers.forEach((sprayer, index) => {
+                    if (sprayer && assignedSprayerContainer) {
+                        console.log(sprayer)
+                        const sprayerElement = document.createElement('div');
+                        sprayerElement.className = 'd-flex flex-row justify-content-between align-items-center my-2';
+                        const fullName = `${sprayer.user.lastName} ${sprayer.user.middleName} ${sprayer.user.firstName}`;
+                        sprayerElement.innerHTML = `
+                    <h5 class="m-0">${fullName}</h5>
+                    <div class="badge bg-secondary">
+                        <h6 class="m-0">${sprayer.level}</h6>
+                    </div>
+                `;
+                        assignedSprayerContainer.appendChild(sprayerElement);
+                    } else if (assignedSprayerContainer) {
+                        const errorElement = document.createElement('div');
+                        errorElement.className = 'mb-2 text-danger';
+                        errorElement.textContent = `Error loading Sprayer ${index + 1}`;
+                        assignedSprayerContainer.appendChild(errorElement);
+                    }
+                });
+            });
         }
+
+        // Return a promise to satisfy the warning
+        return Promise.resolve();
     }
+
 
     //Function to display detail of order
     function displayOrderDetails(order) {
@@ -333,17 +444,25 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update total cost in the payment section
         document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
         if (order.status.toLowerCase() === 'pending') {
-            statusUpdateButtons.style.display = 'block';
+            if (statusUpdateButtons) {
+                statusUpdateButtons.style.display = 'block';
+            }
         } else {
-            statusUpdateButtons.style.display = 'none';
+            if (statusUpdateButtons) {
+                statusUpdateButtons.style.display = 'none';
+            }
         }
         // Show/hide sprayer section based on order status
         const sprayerSection = document.getElementById('sprayerSection');
-        if (order.status.toLowerCase() === 'confirmed') {
-            sprayerSection.classList.remove('d-none');
-        } else {
-            sprayerSection.classList.add('d-none');
-        }
+        // if (order.status.toLowerCase() === 'confirmed') {
+        //     sprayerSection.classList.remove('d-none');
+        // } else {
+        //     sprayerSection.classList.add('d-none');
+        // }
+        updateSprayerDisplay(order).then(() => {
+            console.log('Sprayer display updated');
+        });
+
     }
 
     //Feedback section
@@ -389,7 +508,7 @@ document.addEventListener('DOMContentLoaded', function() {
             errorMessages.push('Additional feedback field is missing.');
         }
 
-        return { isValid, errorMessages };
+        return {isValid, errorMessages};
     }
 
     function displayErrorMessages(messages) {
@@ -403,11 +522,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (feedbackForm) {
-        feedbackForm.addEventListener('submit', function(event) {
+        feedbackForm.addEventListener('submit', function (event) {
             event.preventDefault();
             clearErrorMessages();
 
-            const { isValid, errorMessages } = validateFeedbackForm();
+            const {isValid, errorMessages} = validateFeedbackForm();
 
             if (!isValid) {
                 displayErrorMessages(errorMessages);
@@ -429,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     if (additionalFeedbackField) {
-        additionalFeedbackField.addEventListener('input', function() {
+        additionalFeedbackField.addEventListener('input', function () {
             const remainingChars = MAX_FEEDBACK_LENGTH - this.value.length;
             const charCountElement = document.getElementById('charCount');
             if (charCountElement) {
@@ -493,7 +612,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const feedbackSection = safeGetElement('feedbackSection');
 
         // Hide both the feedback form and the display section initially
-        if(feedbackSection){
+        if (feedbackSection) {
             feedbackSection.style.display = 'none';
         }
         feedbackDisplaySection.style.display = 'none';
@@ -534,16 +653,21 @@ document.addEventListener('DOMContentLoaded', function() {
 // Helper function to format date
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return date.toLocaleDateString('en-GB', {day: '2-digit', month: '2-digit', year: 'numeric'});
 }
 
 // Helper function to get status color
 function getStatusColor(status) {
-    switch(status.toLowerCase()) {
-        case 'completed': return 'success';
-        case 'pending': return 'warning';
-        case 'cancelled': return 'danger';
-        case 'confirmed': return 'primary';
-        default: return 'secondary';
+    switch (status.toLowerCase()) {
+        case 'completed':
+            return 'success';
+        case 'pending':
+            return 'warning';
+        case 'cancelled':
+            return 'danger';
+        case 'confirmed':
+            return 'primary';
+        default:
+            return 'secondary';
     }
 }
