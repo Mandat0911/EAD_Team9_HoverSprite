@@ -15,8 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (index === 1 && !validateStep2()) {
                 e.preventDefault();  // Prevent going to the next step if Step 2 is invalid
             } else {
-            // if (formStepNum < formSteps.length - 1 && validateForm()) {
-            // if (formStepNum < formSteps.length) {
+                // if (formStepNum < formSteps.length - 1 && validateForm()) {
+                // if (formStepNum < formSteps.length) {
                 formStepNum++;
                 updateFormSteps();
                 updateProgressBar();
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     }
-    
+
     const paymentOptions = document.getElementsByName('payment');
     const creditCardForm = document.querySelector('.credit-card-form-wrapper');
     const creditCardInputs = creditCardForm.querySelectorAll('input');
@@ -76,10 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 // Show the credit card form
                 creditCardForm.classList.remove('slide-out-left');
                 creditCardForm.classList.add('slide-in-left');
-                creditCardForm.style.display = 'block'; 
+                creditCardForm.style.display = 'block';
                 requireCreditCardInputs(true);
             } else {
-                // Hide the credit card form 
+                // Hide the credit card form
                 creditCardForm.classList.remove('slide-in-left');
                 creditCardForm.classList.add('slide-out-left');
 
@@ -237,7 +237,7 @@ function isValidArea(area) {
 
 function isValidDatePicker(date) {
     const dateRegex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-    return dateRegex.test(date);  
+    return dateRegex.test(date);
 }
 // Add real-time validation
 Object.values(inputsStep1).forEach(input => {
@@ -302,31 +302,31 @@ dateInput.addEventListener("click", () => {
 
 // Hide datepicker
 cancelBtn.addEventListener("click", () => {
-  datepicker.hidden = true;
+    datepicker.hidden = true;
 });
 
 // Function to validate and update datepicker based on manual input
 const validateDateInput = () => {
-  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-  const inputValue = dateInput.value;
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    const inputValue = dateInput.value;
 
-  if (regex.test(inputValue)) {
-    const [day, month, year] = inputValue.split("/").map(Number);
+    if (regex.test(inputValue)) {
+        const [day, month, year] = inputValue.split("/").map(Number);
 
-    // Set the selected date based on the user input
-    selectedDate = new Date(year, month - 1, day);
-    updateDatepicker(); // Update the datepicker UI
-    dateInput.classList.remove("invalid");
-  } else {
-    dateInput.classList.add("invalid");
-  }
+        // Set the selected date based on the user input
+        selectedDate = new Date(year, month - 1, day);
+        updateDatepicker(); // Update the datepicker UI
+        dateInput.classList.remove("invalid");
+    } else {
+        dateInput.classList.add("invalid");
+    }
 };
 
 // Event listener for manual date input
 // (automatically add slashes '/' when typing)
 dateInput.addEventListener('input', function(e) {
     let input = dateInput.value;
-    
+
     input = input.replace(/\D/g, '');
 
     // Format the value into dd/mm/yyyy as the user types
@@ -344,113 +344,113 @@ dateInput.addEventListener('input', function(e) {
 
 // Handle apply button click event
 applyBtn.addEventListener("click", () => {
-  // Check if the input is valid before applying
-  validateDateInput();
+    // Check if the input is valid before applying
+    validateDateInput();
 
-  if (!dateInput.classList.contains("invalid")) {
-    updateDateInput();
+    if (!dateInput.classList.contains("invalid")) {
+        updateDateInput();
 
-    datepicker.hidden = true;
-    handleCalendarUpdates();
-  }
+        datepicker.hidden = true;
+        handleCalendarUpdates();
+    }
 });
 
 // Handle next month navigation
 nextBtn.addEventListener("click", () => {
-  if (month === 11) year++;
-  month = (month + 1) % 12;
-  displayDates();
+    if (month === 11) year++;
+    month = (month + 1) % 12;
+    displayDates();
 });
 
 // Handle previous month navigation
 prevBtn.addEventListener("click", () => {
-  if (month === 0) year--;
-  month = (month - 1 + 12) % 12;
-  displayDates();
+    if (month === 0) year--;
+    month = (month - 1 + 12) % 12;
+    displayDates();
 });
 
 // Handle month input change event
 monthInput.addEventListener("change", () => {
-  month = monthInput.selectedIndex;
-  displayDates();
+    month = monthInput.selectedIndex;
+    displayDates();
 });
 
 // Handle year input change event
 yearInput.addEventListener("change", () => {
-  year = yearInput.value;
-  displayDates();
+    year = yearInput.value;
+    displayDates();
 });
 
 // Update year and month inputs
 const updateYearMonth = () => {
-  monthInput.selectedIndex = month;
-  yearInput.value = year;
+    monthInput.selectedIndex = month;
+    yearInput.value = year;
 };
 
 // Update the datepicker UI to reflect the selected date
 const updateDatepicker = () => {
-  year = selectedDate.getFullYear();
-  month = selectedDate.getMonth();
-  displayDates();
+    year = selectedDate.getFullYear();
+    month = selectedDate.getMonth();
+    displayDates();
 };
 
 // Handle date click event
 const handleDateClick = (e) => {
-  const button = e.target;
+    const button = e.target;
 
-  // Remove the 'selected' class from other buttons
-  const selected = dates.querySelector(".selected");
-  selected && selected.classList.remove("selected");
+    // Remove the 'selected' class from other buttons
+    const selected = dates.querySelector(".selected");
+    selected && selected.classList.remove("selected");
 
-  // Add the 'selected' class to the current button
-  button.classList.add("selected");
+    // Add the 'selected' class to the current button
+    button.classList.add("selected");
 
-  // Set the selected date
-  selectedDate = new Date(year, month, parseInt(button.textContent));
-  updateDateInput(); // Update the input field with the selected date
+    // Set the selected date
+    selectedDate = new Date(year, month, parseInt(button.textContent));
+    updateDateInput(); // Update the input field with the selected date
 };
 
 // Update the input field to reflect the selected date
 const updateDateInput = () => {
-  dateInput.value = selectedDate.toLocaleDateString("en-GB", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
-  updateDateSummary();
+    dateInput.value = selectedDate.toLocaleDateString("en-GB", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+    });
+    updateDateSummary();
 };
 
 // Render the dates in the calendar interface
 const displayDates = () => {
-  // Update year & month whenever the dates are updated
-  updateYearMonth();
+    // Update year & month whenever the dates are updated
+    updateYearMonth();
 
-  // Clear the dates
-  dates.innerHTML = "";
+    // Clear the dates
+    dates.innerHTML = "";
 
-  // Display the last week of the previous month
-  const lastOfPrevMonth = new Date(year, month, 0);
-  for (let i = 0; i <= lastOfPrevMonth.getDay(); i++) {
-    const text = lastOfPrevMonth.getDate() - lastOfPrevMonth.getDay() + i;
-    const button = createButton(text, true, -1);
-    dates.appendChild(button);
-  }
+    // Display the last week of the previous month
+    const lastOfPrevMonth = new Date(year, month, 0);
+    for (let i = 0; i <= lastOfPrevMonth.getDay(); i++) {
+        const text = lastOfPrevMonth.getDate() - lastOfPrevMonth.getDay() + i;
+        const button = createButton(text, true, -1);
+        dates.appendChild(button);
+    }
 
-  // Display the current month
-  const lastOfMonth = new Date(year, month + 1, 0);
-  for (let i = 1; i <= lastOfMonth.getDate(); i++) {
-    const button = createButton(i, false);
-    button.addEventListener("click", handleDateClick);
-    dates.appendChild(button);
-  }
+    // Display the current month
+    const lastOfMonth = new Date(year, month + 1, 0);
+    for (let i = 1; i <= lastOfMonth.getDate(); i++) {
+        const button = createButton(i, false);
+        button.addEventListener("click", handleDateClick);
+        dates.appendChild(button);
+    }
 
-  // Display the first week of the next month
-  const firstOfNextMonth = new Date(year, month + 1, 1);
-  for (let i = firstOfNextMonth.getDay(); i < 7; i++) {
-    const text = firstOfNextMonth.getDate() - firstOfNextMonth.getDay() + i;
-    const button = createButton(text, true, 1);
-    dates.appendChild(button);
-  }
+    // Display the first week of the next month
+    const firstOfNextMonth = new Date(year, month + 1, 1);
+    for (let i = firstOfNextMonth.getDay(); i < 7; i++) {
+        const text = firstOfNextMonth.getDate() - firstOfNextMonth.getDay() + i;
+        const button = createButton(text, true, 1);
+        dates.appendChild(button);
+    }
 };
 
 // Create a button for each date
@@ -483,7 +483,7 @@ const createButton = (text, isDisabled = false, type = 0) => {
 // Convert solar date to lunar date
 // const convertToLunar = () => {
 //   const solarDate = selectedDate;
-  
+
 //   // Convert to lunar using the Lunar object from lunar-javascript
 //   const lunar = Lunar.fromDate(solarDate);
 //   const lunarDay = String(lunar.getDay()).padStart(2, '0');
@@ -491,7 +491,7 @@ const createButton = (text, isDisabled = false, type = 0) => {
 
 //   // Format the lunar date
 //   const lunarDateStr = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
-  
+
 //   // Display the lunar date in the input field
 //   dateInput.value = lunarDateStr;
 //   datepicker.hidden = true;
@@ -546,7 +546,7 @@ function updateWeekCalendar() {
         const lunarDateEl = document.getElementById(dayId).querySelector('.lunar-date');
         lunarDateEl.textContent = `${lunar.getDay()}/${lunar.getMonth()}`;
 
-    });    
+    });
 }
 
 // Example backend data for available slots per time slot (fetch this dynamically from your API)
@@ -584,7 +584,7 @@ async function fetchAvailableSlotsForDate(weekStart) {
                 const availabilityResponse = await fetch(`/api/timeslot/availability?date=${formattedDate}&time=${formattedTimeSlot}`, {
                     method: 'GET',
                     headers: {
-                      'Content-Type': 'application/json',
+                        'Content-Type': 'application/json',
                     }
                 });
 
@@ -677,7 +677,7 @@ const createSlotButton = (availableSlots, dayId, timeSlot) => {
     const button = document.createElement('button');
     button.classList.add('select-btn');
     button.type = 'button';
-    
+
     if (availableSlots > 0) {
         button.textContent = `${availableSlots} slot${availableSlots > 1 ? 's' : ''}`;
         button.classList.add('available');
@@ -737,7 +737,7 @@ function handleSlotSelection(button, dayId, timeSlot) {
         previouslySelectedTimeSlotButton.classList.remove('selected');
         previouslySelectedTimeSlotButton.textContent = `${previouslySelectedTimeSlotButton.dataset.available} slot${previouslySelectedTimeSlotButton.dataset.available > 1 ? 's' : ''}`;
         previouslySelectedTimeSlotButton.disabled = false; // Re-enable the button
-    } 
+    }
 
     // Update the current button to selected state
     button.classList.remove('available');
@@ -763,7 +763,7 @@ function handleSlotSelection(button, dayId, timeSlot) {
     updateDateInput(); // Update the input field
     highlightSelectedDay(); // Highlight the selected day in the week calendar
     displayDates(); // Update the calendar popup with the selected date highlighted
-    updateTimeSummary();  
+    updateTimeSummary();
 }
 
 /* UPDATE DATE & TIME IN ORDER SUMMARY */
@@ -776,7 +776,7 @@ const summaryTime = document.getElementById('summary-time');
 
 function updateTimeSummary() {
     if (selectedTimeSlot) {
-        summaryTime.textContent = selectedTimeSlot; 
+        summaryTime.textContent = selectedTimeSlot;
     }
 };
 
@@ -785,13 +785,13 @@ let lunarDate;
 
 function updateDateSummary() {
     // if (!isLunar) {
-        // gregorianDate = dateInput.value;
-        const [day, month, year] = dateInput.value.split('/').map(Number);
-        gregorianDate = new Date(year, month - 1, day);
+    // gregorianDate = dateInput.value;
+    const [day, month, year] = dateInput.value.split('/').map(Number);
+    gregorianDate = new Date(year, month - 1, day);
 
-        // Convert the Gregorian date to Lunar
-        const lunar = Lunar.fromDate(selectedDate);
-        lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
+    // Convert the Gregorian date to Lunar
+    const lunar = Lunar.fromDate(selectedDate);
+    lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
     // } else {
     //     gregorianDate = selectedDate;
     //     // lunarDate = dateInput.value;
@@ -815,16 +815,13 @@ updateDateSummary();
 
 document.getElementById('booking-form').addEventListener('submit', async function (e) {
     e.preventDefault();  // Prevent default form submission
-    // Disable the submit button to prevent multiple submissions
-    const submitButton = document.querySelector('#submit-button');  // Make sure the button has this ID in your HTML
-    submitButton.disabled = true;
-    submitButton.textContent = "Processing...";
+
     // Fetch user ID from session
     const userId = document.getElementById('user-id').value;
 
     const order = {
         user: {
-            id: parseInt(userId), 
+            id: parseInt(userId),
         },
         cropType: cropType,
         farmlandArea: parseInt(area),
@@ -832,7 +829,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
         gregorianDate: gregorianDate,
         lunarDate: lunarDate,
         totalCost: total,
-        status: 'PENDING', 
+        status: 'PENDING',
         createdAt: new Date(),
         updatedAt: new Date()
     };
