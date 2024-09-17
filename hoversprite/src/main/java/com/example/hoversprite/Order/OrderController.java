@@ -171,7 +171,7 @@ public class OrderController {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("nguyenmandat0744@gmail.com", senderName);
+        helper.setFrom("nguyenmandat000@gmail.com", senderName);
         helper.setTo(user.getEmail());
 
         System.out.println(user.getEmail());
