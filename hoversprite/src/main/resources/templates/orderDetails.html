@@ -15,9 +15,7 @@
                             <div sec:authorize="hasAnyAuthority('RECEPTIONIST')" class="dropdown">
                                 <button id="orderStatus" class="btn dropdown-toggle status badge m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                </ul>
+                                <ul class="dropdown-menu" id="orderStatusOptions"></ul>
                             </div>
                         </div>
                         <hr class="my-3">

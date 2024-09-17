@@ -107,6 +107,7 @@ function handleSprayerState() {
 
 // Function to add a sprayer and handle the removal
 function addSprayerToContainer(sprayerText) {
+
     // Add the selected sprayer to the assigned list
     const newSprayerDiv = document.createElement('div');
     newSprayerDiv.classList.add('new-sprayer-div', 'd-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');

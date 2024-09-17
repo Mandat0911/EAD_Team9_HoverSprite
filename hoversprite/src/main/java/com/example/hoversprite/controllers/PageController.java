@@ -222,7 +222,7 @@ public class PageController implements ErrorController {
             return "redirect:/account";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/account/users/edit/" + user.getId();
+            return "redirect:/account/edit/user/" + user.getId();
         }
     }
 
