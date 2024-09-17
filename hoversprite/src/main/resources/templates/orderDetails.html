@@ -11,7 +11,14 @@
                     <div class="card-body py-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 id="orderNumber" class="fw-bold m-0" style="color: var(--primary-color);"></h3>
-                            <p id="orderStatus" class="status badge m-0"></p>
+                            <p sec:authorize="hasAnyAuthority('SPRAYER', 'FARMER')" id="orderStatus" class="status badge m-0"></p>
+                            <div sec:authorize="hasAnyAuthority('RECEPTIONIST')" class="dropdown">
+                                <button id="orderStatus" class="btn dropdown-toggle status badge m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                </ul>
+                            </div>
                         </div>
                         <hr class="my-3">
                         <div class="d-flex flex-column">
@@ -97,6 +104,44 @@
 
                     </div>
                 </div>
+                <!-- Confirmation Modal for Adding Sprayer -->
+                <div class="modal fade" id="addSprayerConfirmationModal" aria-hidden="true" aria-labelledby="addSprayerConfirmationLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addSprayerConfirmationLabel">Confirm Sprayer Assignment</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to assign this sprayer to the order?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" id="confirmAddSprayer">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Confirmation Modal for Removing Sprayer -->
+                <div class="modal fade" id="removeSprayerConfirmationModal" aria-hidden="true" aria-labelledby="removeSprayerConfirmationLabel" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="removeSprayerConfirmationLabel">Confirm Sprayer Removal</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Are you sure you want to remove this sprayer from the order?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-danger" id="confirmRemoveSprayer">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
 
                 <!-- SECTION ONLY FOR SPRAYER: to compute the change amount -->
                 <div sec:authorize="hasAuthority('SPRAYER')" class="card rounded-5 mb-3">

@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         row.innerHTML = `
     <td>${order.orderId}</td>
+    <td sec:authorize="hasAnyAuthority('RECEPTIONIST')">${order.user.id}</td>
     <td>${formatDate(order.createdAt)}</td>
     <td>${order.cropType}</td>
     <td>${formatCurrency(order.totalCost)} VND</td>

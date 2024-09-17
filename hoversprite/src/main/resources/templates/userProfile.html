@@ -30,7 +30,7 @@
                     </div>
                     <div class="col-md-2 d-flex flex-row-reverse align-items-center ">
                         <form th:action="@{'account/edit/user/' + ${#authentication.principal.id}}" method="get" class="d-flex flex-column align-items-center">
-                            <button class="btn btn-primary rounded-pill"><i class="bi bi-pencil-square mr-5">Update</i></button>
+                            <button sec:authorize="hasAuthority('FARMER')" class="btn btn-primary rounded-pill"><i class="bi bi-pencil-square mr-5">Update</i></button>
                         </form>
                     </div>
     
