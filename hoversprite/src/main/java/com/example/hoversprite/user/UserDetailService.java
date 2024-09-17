@@ -141,9 +141,9 @@ public class UserDetailService implements UserDetailsService {
 
     public void save(User user) throws Exception {
         // Validate the email domain if necessary
-        // if (!isValidEmail(user.getEmail())) {
-        //     throw new Exception("Email must be from domain @hoversprite.com or @hoversprite.com.vn");
-        // }
+//        if (!isValidEmail(user.getEmail())) {
+//            throw new Exception("Email must be from domain @hoversprite.com or @hoversprite.com.vn");
+//        }
 
         // Fetch existing user from the database
         User existingUser = userRepository.findById(user.getId())
@@ -248,4 +248,7 @@ public class UserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + id));
     }
 
+    public User findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
+    }
 }

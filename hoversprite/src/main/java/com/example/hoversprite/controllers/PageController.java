@@ -4,6 +4,7 @@ import com.example.hoversprite.Role.RoleRepository;
 import com.example.hoversprite.service.PasswordValidationService;
 import com.example.hoversprite.user.*;
 
+import java.security.Principal;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -79,12 +80,17 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/announceUser")
-    public String announceVerifyUser(Model model) {
+    public String announceVerifyUser(Model model, User user) {
         model.addAttribute("title", "Check Your Email");
         model.addAttribute("content", "announceVerifyUser");
         model.addAttribute("css", "/stylesheets/login.css");
+
+        // Add authenticated user's email to the model, if applicable
+//        model.addAttribute("user", user.getEmail()); // Assuming the principal's name is the email
+
         return "layout";
     }
+
 
     @GetMapping("/booking")
     public String booking(Model model) {
