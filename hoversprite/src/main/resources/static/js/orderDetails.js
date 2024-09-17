@@ -1,5 +1,7 @@
 let allSprayers = [];
 let apprenticeAdded = false;
+let sprayerToRemove = null;
+
 let sprayersToAssign = [];
 function safeGetElement(id) {
     const element = document.getElementById(id);
@@ -15,10 +17,6 @@ const sprayerSelect = safeGetElement('sprayerSelect');
 const sprayerError = safeGetElement('sprayerError');
 const noSprayerMessage = safeGetElement('noSprayerMessage');
 const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
-
-// Initial flag to check if an apprentice is already added
-let apprenticeAdded = false;
-let sprayerToRemove = null;
 
 // Function to update the sprayer select dropdown
 function updateSprayerDropdown() {
@@ -166,6 +164,7 @@ document.getElementById('confirmRemoveSprayer').addEventListener('click', functi
 
 handleSprayerState();
 updateSprayerDropdown();
+
 function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
     fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
         method: 'POST',
