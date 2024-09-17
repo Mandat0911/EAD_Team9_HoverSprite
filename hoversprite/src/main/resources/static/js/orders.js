@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 0;
-    const pageSize = 3; // Number of items per page
+    const pageSize = 10; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
     let currentUserId;
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             currentSortField = item.getAttribute('data-sort-field');
             currentSortDirection = item.getAttribute('data-sort-direction');
-            fetchOrders(0, currentSortField, currentSortDirection, userId); // Reset to first page when sorting
+            fetchOrders(0, currentSortField, currentSortDirection, currentUserId); // Reset to first page when sorting
             updateSortDropdownText(item.textContent);
         });
     });
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('User ID not available. Please ensure you are logged in.');
             return;
         }
-        if (currentRole === '[RECEPTIONIST]') {
+        if (currentRole === '[RECEPTIONIST]' || currentRole === '[SPRAYER]') {
             console.log('User is an receptionist');
             // Show admin-specific elements
             apiUrl = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error fetching orders:', error);
-                showMessage('Error loading orders. Please try again.', 'danger');
+                showMessage('There are no orders. Please try again.', 'danger');
             });
     }
 
@@ -118,21 +118,78 @@ document.addEventListener('DOMContentLoaded', function () {
         );
     }
 
+    // function createOrderRow(order, rowNumber) {
+    //     const row = document.createElement('tr');
+    //     row.setAttribute('data-order-id', order.orderId);
+
+    //     // Create the HTML structure for the row
+    //     row.innerHTML += `
+    //     <td>${order.orderId}</td>`;
+
+    //     // Conditionally render the Farmer ID column based on user role
+    //     if (currentRole === '[RECEPTIONIST]') {
+    //         row.innerHTML += `<td>${order.user.id}</td>`;
+    //     }
+
+    //     row.innerHTML += `
+    //     <td>${formatDate(order.createdAt)}</td>
+    //     <td>${order.cropType}</td>
+    //     <td>${formatCurrency(order.totalCost)} VND</td>
+    //     <td class="status-${order.status.toLowerCase()}">${order.status}</td>
+    //     <td><a href="/orders/order_details?id=${order.orderId}" class="detail-link"><i class="fa-solid fa-angle-right"></i></a></td>
+    // `;
+
+    //     return row;
+    // }
     function createOrderRow(order, rowNumber) {
         const row = document.createElement('tr');
         row.setAttribute('data-order-id', order.orderId);
-
-        row.innerHTML = `
-    <td>${order.orderId}</td>
-    <td>${formatDate(order.createdAt)}</td>
-    <td>${order.cropType}</td>
-    <td>${formatCurrency(order.totalCost)} VND</td>
-    <td class="status-${order.status.toLowerCase()}">${order.status}</td>
-    <td><a href="/orders/order_details?id=${order.orderId}" class="detail-link"><i class="fa-solid fa-angle-right"></i></a></td>
-  `;
-
+    
+        // Order ID column
+        const orderIdCell = document.createElement('td');
+        orderIdCell.textContent = order.orderId;
+        row.appendChild(orderIdCell);
+    
+        // Conditionally render the Farmer ID column based on user role
+        if (currentRole === '[RECEPTIONIST]') {
+            const farmerIdCell = document.createElement('td');
+            farmerIdCell.textContent = order.user.id;
+            row.appendChild(farmerIdCell);
+        }
+    
+        // Created Date column
+        const createdAtCell = document.createElement('td');
+        createdAtCell.textContent = formatDate(order.createdAt);
+        row.appendChild(createdAtCell);
+    
+        // Crop Type column
+        const cropTypeCell = document.createElement('td');
+        cropTypeCell.textContent = order.cropType;
+        row.appendChild(cropTypeCell);
+    
+        // Total Cost column
+        const totalCostCell = document.createElement('td');
+        totalCostCell.textContent = `${formatCurrency(order.totalCost)} VND`;
+        row.appendChild(totalCostCell);
+    
+        // Status column
+        const statusCell = document.createElement('td');
+        statusCell.classList.add(`status-${order.status.toLowerCase()}`);
+        statusCell.textContent = order.status;
+        row.appendChild(statusCell);
+    
+        // Details Link column
+        const detailsCell = document.createElement('td');
+        const detailsLink = document.createElement('a');
+        detailsLink.href = `/orders/order_details?id=${order.orderId}`;
+        detailsLink.classList.add('detail-link');
+        detailsLink.innerHTML = `<i class="fa-solid fa-angle-right"></i>`;
+        detailsCell.appendChild(detailsLink);
+        row.appendChild(detailsCell);
+    
         return row;
     }
+    
 
     function updatePagination(pageData) {
         const paginationContainer = document.getElementById('paginationContainer');

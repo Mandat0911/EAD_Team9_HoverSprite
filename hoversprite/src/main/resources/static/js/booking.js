@@ -849,25 +849,26 @@ document.getElementById('booking-form').addEventListener('submit', async functio
 
         if (orderResponse.ok) {
             const data = await orderResponse.json();
-            alert('Order created successfully!');
+            // alert('Order created successfully!');
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
 
             // Send a request to create or update the Timeslot
             await createOrUpdateTimeslot();
 
             // Redirect to orders list
-            window.location.href = '/orders';
+            // window.location.href = '/orders';
         } else {
             const errorData = await orderResponse.json();  // Get error response data
-            if (errorData.message === 'No available sessions for the selected time slot.') {
-                alert('The selected time slot is fully booked. Please choose another slot.');
-            } else {
-                alert('Failed to create order.');
-                console.log('Error details:', errorData);
-            }
+            const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+            failureModal.show();
+            console.log('Error details:', errorData);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while creating the order.');
+        // alert('An error occurred while creating the order.');
+        const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+        failureModal.show();
     }
 });
 

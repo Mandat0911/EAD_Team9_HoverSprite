@@ -118,6 +118,7 @@ public class PageController implements ErrorController {
         model.addAttribute("content", "orderDetails");
         model.addAttribute("css", "/stylesheets/orderDetails.css");
         model.addAttribute("js", "/js/orderDetails.js");
+
         return "layout";
     }
 

@@ -4,6 +4,7 @@ import com.example.hoversprite.user.User;
 import com.example.hoversprite.user.UserDetailService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import com.example.hoversprite.Sprayer.Sprayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
@@ -59,6 +63,38 @@ public class OrderController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @PostMapping("/{orderId}/assign-sprayer/{sprayerId}")
+    public ResponseEntity<String> assignSprayerToOrder(@PathVariable Long orderId, @PathVariable Long sprayerId) {
+        boolean assigned = orderService.assignSprayerToOrder(orderId, sprayerId);
+        if (assigned) {
+            return ResponseEntity.ok("Sprayer successfully assigned to order");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to assign sprayer to order");
+        }
+    }
+
+    @PostMapping("/{orderId}/remove-sprayer/{sprayerId}")
+    public ResponseEntity<String> removeSprayerFromOrder(@PathVariable Long orderId, @PathVariable Long sprayerId) {
+        boolean removed = orderService.removeSprayerFromOrder(orderId, sprayerId);
+        if (removed) {
+            return ResponseEntity.ok("Sprayer successfully removed from order");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to remove sprayer from order");
+        }
+    }
+
+
+
+    @GetMapping("/{orderId}/sprayers")
+    public ResponseEntity<List<Sprayer>> getSprayersForOrder(@PathVariable Long orderId) {
+        Optional<Order> orderOptional = orderService.getOrderById(orderId);
+        if (orderOptional.isPresent()) {
+            List<Sprayer> sprayers = orderService.getSprayersForOrder(orderOptional.get());
+            return ResponseEntity.ok(sprayers);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 //    @GetMapping("/user/{userId}")
 //    public ResponseEntity<Page<Order>> getOrders(
 //            @RequestParam Long userId, // Ensure userId is being passed in
@@ -89,7 +125,11 @@ public class OrderController {
     @GetMapping("/user/{userId}")
     public ResponseEntity<Page<Order>> getOrdersByUserId(
             @PathVariable Long userId,
-            Pageable pageable) {
+            @RequestParam int page,
+            @RequestParam int size,
+            @RequestParam String sortBy,
+            @RequestParam Sort.Direction direction) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortBy));
         Page<Order> orders = orderService.getOrdersByUserId(userId, pageable);
         return ResponseEntity.ok(orders);
     }
@@ -152,9 +192,9 @@ public class OrderController {
                 + "    <p>Thank you for placing an order with HoverSprite. Here are the details of your order:</p>"
                 + "    <div class='order-details'>"
                 + "      <p><strong>Crop Type:</strong> " + order.getCropType() + "</p>"
-                + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " acres</p>"
+                + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " decare</p>"
                 + "      <p><strong>Time Slot:</strong> " + order.getTime() + "</p>"
-                + "      <p><strong>Total Cost:</strong> $" + order.getTotalCost() + "</p>"
+                + "      <p><strong>Total Cost:</strong>" + order.getTotalCost() + " VND</p>"
                 + "      <p><strong>Order Status:</strong> " + order.getStatus() + "</p>"
                 + "    </div>"
                 + "    <p>If you have any questions, feel free to contact us at support@hoversprite.com.</p>"
