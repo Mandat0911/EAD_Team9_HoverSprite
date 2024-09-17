@@ -3,8 +3,8 @@ package com.example.hoversprite.user;
 import com.example.hoversprite.oauthAPI.AuthenticationProvider;
 import com.example.hoversprite.Role.Role;
 import jakarta.persistence.Entity;
-// import jakarta.persistence.GeneratedValue;
-// import jakarta.persistence.GenerationType;
+ import jakarta.persistence.GeneratedValue;
+ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import jakarta.persistence.*;
@@ -48,13 +48,16 @@ public class User implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @Column(name = "verification_code", updatable = false)
+    private String verificationCode;
+
 //    @Enumerated(EnumType.STRING)
 //    AuthenticatedRoles role;
     @Enumerated(EnumType.STRING)
     AuthenticationProvider authenticationProvider;
 
     @Column(columnDefinition = "TINYINT(4)")
-    boolean enabled = true;
+    boolean enabled = false;
 
     @ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     @JoinTable(
@@ -106,7 +109,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
     }
 
     public void setFullName(){
