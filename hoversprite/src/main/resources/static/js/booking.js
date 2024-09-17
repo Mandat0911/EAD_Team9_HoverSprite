@@ -170,6 +170,7 @@ function validateField(field, validationFunction) {
 }
 
 let previouslySelectedTimeSlotButton = null;
+let selectedTimeSlot = null;
 
 function validateTimeSlot() {
     const errorMessage = document.getElementById('invalid-time-slot');
@@ -351,6 +352,9 @@ applyBtn.addEventListener("click", () => {
     updateDateInput();
 
     datepicker.hidden = true;
+    selectedTimeSlot = null;
+    previouslySelectedTimeSlotButton = null;
+    clearColumnHighlight();
     handleCalendarUpdates();
   }
 });
@@ -513,7 +517,6 @@ const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00'];
 // Function to manage calendar updates after date selection
 function handleCalendarUpdates() {
     updateWeekCalendar();
-    // highlightSelectedDay();
     renderWeekCalendarCells();
 }
 
@@ -548,18 +551,6 @@ function updateWeekCalendar() {
 
     });    
 }
-
-// Example backend data for available slots per time slot (fetch this dynamically from your API)
-// const availableSlots = {
-//     'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-//     'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-//     'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
-//     'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
-// };
-
 
 // Function to fetch available slots from the backend
 async function fetchAvailableSlotsForDate(weekStart) {
@@ -698,35 +689,32 @@ const createSlotButton = (availableSlots, dayId, timeSlot) => {
     return button;
 };
 
-// Function to highlight the selected day's column in the week calendar
-function highlightSelectedDay() {
-    let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+// Function to highlight the column for the selected day
+function highlightColumn(dayId) {
+    // Clear any previous highlights
+    clearColumnHighlight();
 
-    // Since our calendar starts on Monday, we need to remap the days
-    const dayMapping = [6, 0, 1, 2, 3, 4, 5]; // Mapping Sunday to index 6, Monday to index 0, etc.
-    selectedDayIndex = dayMapping[selectedDayIndex];
+    // Find the index of the selected day
+    const dayIndex = days.indexOf(dayId);
 
-    // Clear previous highlights
+    // Highlight the header for the selected day
+    const headerCell = document.getElementById(dayId);
+    headerCell.classList.add('highlight');
+
+    // Highlight time slot cells for the selected day
+    const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${dayIndex + 2})`); // +2 to skip the time column
+    cells.forEach(cell => cell.classList.add('highlight'));
+}
+
+// Function to clear the previous column highlight
+function clearColumnHighlight() {
     document.querySelectorAll('.highlight').forEach(cell => {
         cell.classList.remove('highlight');
-    });
-
-    // Highlight the column for the selected day
-    days.forEach((dayId, index) => {
-        if (index === selectedDayIndex) {
-            // // Highlight time slot cells + header for the selected day
-            // const headerCell = document.getElementById(dayId);  // This highlights the header
-            // headerCell.classList.add('highlight');
-
-            // Highlight time slot cells
-            const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
-            cells.forEach(cell => cell.classList.add('highlight'));
-        }
     });
 }
 
 // let previouslySelectedTimeSlotButton = null;
-let selectedTimeSlot = null;
+// let selectedTimeSlot = null;
 
 // Function to handle the "Select" button click
 function handleSlotSelection(button, dayId, timeSlot) {
@@ -737,6 +725,9 @@ function handleSlotSelection(button, dayId, timeSlot) {
         previouslySelectedTimeSlotButton.classList.remove('selected');
         previouslySelectedTimeSlotButton.textContent = `${previouslySelectedTimeSlotButton.dataset.available} slot${previouslySelectedTimeSlotButton.dataset.available > 1 ? 's' : ''}`;
         previouslySelectedTimeSlotButton.disabled = false; // Re-enable the button
+
+        // Remove highlight from the previously selected column
+        clearColumnHighlight();
     } 
 
     // Update the current button to selected state
@@ -760,8 +751,8 @@ function handleSlotSelection(button, dayId, timeSlot) {
     selectedDate.setDate(weekStart.getDate() + dayIndex); // Adjust it to the clicked day
 
     // Now that selectedDate is updated, reflect the change
+    highlightColumn(dayId);
     updateDateInput(); // Update the input field
-    highlightSelectedDay(); // Highlight the selected day in the week calendar
     displayDates(); // Update the calendar popup with the selected date highlighted
     updateTimeSummary();  
 }
@@ -813,6 +804,8 @@ function updateDateSummary() {
 updateTimeSummary();
 updateDateSummary();
 
+let userId;
+
 document.getElementById('booking-form').addEventListener('submit', async function (e) {
     e.preventDefault();  // Prevent default form submission
     // Disable the submit button to prevent multiple submissions
@@ -820,11 +813,20 @@ document.getElementById('booking-form').addEventListener('submit', async functio
     submitButton.disabled = true;
     submitButton.textContent = "Processing...";
     // Fetch user ID from session
-    const userId = document.getElementById('user-id').value;
+    // const userId = document.getElementById('user-id').value;
 
-    const order = {
+    let userRole = document.getElementById('user-role').value;
+    let orderStatus;
+    if (userRole === '[RECEPTIONIST]') {
+        orderStatus = 'CONFIRMED';
+    } else {
+        orderStatus = 'PENDING';
+    }
+
+    const order = { 
         user: {
-            id: parseInt(userId), 
+            // id: parseInt(userId), 
+            id: userId
         },
         cropType: cropType,
         farmlandArea: parseInt(area),
@@ -832,7 +834,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
         gregorianDate: gregorianDate,
         lunarDate: lunarDate,
         totalCost: total,
-        status: 'PENDING', 
+        status: orderStatus, 
         createdAt: new Date(),
         updatedAt: new Date()
     };
@@ -912,9 +914,10 @@ async function fetchFarmerDetails() {
 
         if (response.ok) {
             const user = await response.json();
-            document.getElementById('user-id').value = user.id;
+            // document.getElementById('user-id').value = user.id;
+            userId = user.id;
             // Concatenate first name, middle name, and last name to create full name
-            const fullName = `${user.firstName || ''} ${user.middleName || ''} ${user.lastName || ''}`.trim();
+            const fullName = `${user.lastName || ''} ${user.middleName || ''} ${user.firstName || ''}`.trim();
 
             // Autofill the form fields with the farmer's data
             document.getElementById('recep_name').value = fullName;

@@ -561,6 +561,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('farmerName').textContent = order.user.lastName + " " + order.user.middleName + " " + order.user.firstName;
         document.getElementById('farmerPhone').textContent = order.user.phone;
+        document.getElementById('farmerEmail').textContent = order.user.email;
         document.getElementById('farmerAddress').textContent = order.user.address;
 
         document.getElementById('cropType').textContent = order.cropType;

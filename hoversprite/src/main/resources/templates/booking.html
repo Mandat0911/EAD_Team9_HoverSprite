@@ -9,7 +9,8 @@
             </div>
 
             <form action="#" class="form" id="booking-form">
-                <input type="hidden" id="user-id">
+                <!-- <input type="hidden" id="user-id"> -->
+                <input type="hidden" id="user-role" th:value="${#authentication.principal.authorities}">
 
                 <!-- Form item - Farm Details -->
                 <div class="form-step form-step-active px-4 py-3">
@@ -177,44 +178,46 @@
 
                     <div class="form-group w-100 mt-5">
                         <label class="form-label">Time Slot *</label>
-                        <div id="week-calendar-container" class="mt-1 d-none">
-                            <!-- Date Header -->
-                            <div class="calendar-row header-row">
-                                <div class="calendar-cell time-cell"></div>
-                                <div class="calendar-cell header-cell" id="mon">
-                                    <div class="day-name">MON</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="tue">
-                                    <div class="day-name">TUE</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="wed">
-                                    <div class="day-name">WED</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="thu">
-                                    <div class="day-name">THU</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="fri">
-                                    <div class="day-name">FRI</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="sat">
-                                    <div class="day-name">SAT</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
-                                </div>
-                                <div class="calendar-cell header-cell" id="sun">
-                                    <div class="day-name">SUN</div>
-                                    <div class="gregorian-date"></div>
-                                    <div class="lunar-date"></div>
+                        <div id="week-calendar-scroll-container">
+                            <div id="week-calendar-container" class="mt-1 d-none">
+                                <!-- Date Header -->
+                                <div class="calendar-row header-row">
+                                    <div class="calendar-cell time-cell"></div>
+                                    <div class="calendar-cell header-cell" id="mon">
+                                        <div class="day-name">MON</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="tue">
+                                        <div class="day-name">TUE</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="wed">
+                                        <div class="day-name">WED</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="thu">
+                                        <div class="day-name">THU</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="fri">
+                                        <div class="day-name">FRI</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="sat">
+                                        <div class="day-name">SAT</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
+                                    <div class="calendar-cell header-cell" id="sun">
+                                        <div class="day-name">SUN</div>
+                                        <div class="gregorian-date"></div>
+                                        <div class="lunar-date"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
