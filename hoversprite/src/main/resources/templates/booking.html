@@ -145,9 +145,9 @@
                                         <button type="button" class="next">Next</button>
                                     </div>
                                     <!-- /.datepicker-header -->
-                                    <div class="datepicker-footer">
+                                    <!-- <div class="datepicker-footer">
                                         <button type="button" class="convert-to-lunar">Convert to Lunar</button>
-                                    </div>
+                                    </div> -->
                                     <!-- .days -->
                                     <div class="days">
                                         <span>Sun</span>
@@ -218,6 +218,7 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="invalid-time-slot" class="invalid-feedback d-none">Please select a time slot in the week calendar.</div>
                     </div>
                     
                     <div class="d-flex justify-content-end">
@@ -275,7 +276,7 @@
                         </div>
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-secondary btn-back">Back</button>
-                            <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                            <button type="submit" id="submit-button" class="btn btn-primary btn-submit">Submit</button>
                         </div>
                     </div>
                 </div>
@@ -322,4 +323,24 @@
             </div>
         </div>
     </div> 
+
+    <!-- TODO: modal pop up when click submit order
+     - create success: button to navigate to orders page
+     - create fail: button to try again (refresh booking page) -->
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalToggleLabel">Modal 1</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Order created successfully!
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open second modal</button>
+            </div>
+          </div>
+        </div>
+    </div>
 </div>

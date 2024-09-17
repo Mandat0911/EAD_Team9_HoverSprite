@@ -1,6 +1,10 @@
 package com.example.hoversprite.Order;
 
 import com.example.hoversprite.Sprayer.Sprayer;
+import com.example.hoversprite.user.User;
+import com.example.hoversprite.user.UserDetailService;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -8,10 +12,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -19,11 +28,31 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private UserDetailService userDetailService;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order createdOrder = orderService.createOrder(order);
-        return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+    public ResponseEntity<?> createOrder(@RequestBody Order order) {
+        try {
+            // Create the order in the database
+            Order createdOrder = orderService.createOrder(order);
+
+            // Fetch the user details for sending the email notification
+            User user = userDetailService.findById(order.getUser().getId());
+
+            // Send the order confirmation email to the user
+            sendOrderConfirmationEmail(user, createdOrder);
+
+            // Return the created order as a response with status 201 (Created)
+            return new ResponseEntity<>(createdOrder, HttpStatus.CREATED);
+        } catch (Exception e) {
+            // Handle any exception and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("message", "Failed to create order or send email."));
+        }
     }
 
     @GetMapping("/{id}")
@@ -134,17 +163,62 @@ public class OrderController {
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity<Page<Order>> getOrders(
-//            @RequestParam(value = "userId", required = false) Long userId,
-//            @RequestParam(value = "page", defaultValue = "0") int page,
-//            @RequestParam(value = "size", defaultValue = "10") int size,
-//            @RequestParam(value = "sortBy", defaultValue = "createdAt") String sortBy,
-//            @RequestParam(value = "direction", defaultValue = "DESC") String direction) {
-//
-//        Page<Order> orders = orderService.getOrders(userId, page, size, sortBy, direction);
-//        return ResponseEntity.ok(orders);
-//    }
+
+    private void sendOrderConfirmationEmail(User user, Order order) throws MessagingException, UnsupportedEncodingException {
+        String subject = "Order Confirmation";
+        String senderName = "HoverSprite";
+        String mailContent = "<html>"
+                + "<head>"
+                + "<style>"
+                + "body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; }"
+                + ".email-container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f7f7f7; border: 1px solid #ddd; border-radius: 10px; }"
+                + ".email-header { background-color: #4CAF50; padding: 10px; color: white; text-align: center; border-top-left-radius: 10px; border-top-right-radius: 10px; }"
+                + ".email-body { padding: 20px; background-color: white; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; }"
+                + ".email-footer { margin-top: 20px; font-size: 0.9em; color: #777; text-align: center; }"
+                + ".email-body h2 { color: #4CAF50; font-size: 24px; margin-bottom: 10px; }"
+                + ".email-body p { margin: 5px 0; }"
+                + ".order-details { margin: 20px 0; }"
+                + ".order-details p { margin: 5px 0; }"
+                + "</style>"
+                + "</head>"
+                + "<body>"
+                + "<div class='email-container'>"
+                + "  <div class='email-header'>"
+                + "    <h1>Order Confirmation</h1>"
+                + "  </div>"
+                + "  <div class='email-body'>"
+                + "    <h2>Hello, " + user.getFullName() + "</h2>"
+                + "    <p>Thank you for placing an order with HoverSprite. Here are the details of your order:</p>"
+                + "    <div class='order-details'>"
+                + "      <p><strong>Crop Type:</strong> " + order.getCropType() + "</p>"
+                + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " acres</p>"
+                + "      <p><strong>Time Slot:</strong> " + order.getTime() + "</p>"
+                + "      <p><strong>Total Cost:</strong> $" + order.getTotalCost() + "</p>"
+                + "      <p><strong>Order Status:</strong> " + order.getStatus() + "</p>"
+                + "    </div>"
+                + "    <p>If you have any questions, feel free to contact us at support@hoversprite.com.</p>"
+                + "    <p>Thank you for choosing HoverSprite!</p>"
+                + "  </div>"
+                + "  <div class='email-footer'>"
+                + "    <p>&copy; 2024 HoverSprite. All rights reserved.</p>"
+                + "  </div>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+
+        helper.setFrom("nguyenmandat0744@gmail.com", senderName);
+        helper.setTo(user.getEmail());
+
+        System.out.println(user.getEmail());
+        helper.setSubject(subject);
+        helper.setText(mailContent, true);
+
+        javaMailSender.send(message);
+    }
 }
 
 

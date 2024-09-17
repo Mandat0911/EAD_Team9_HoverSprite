@@ -1,122 +1,28 @@
-/* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.container {
-    text-align: center;
-    margin-top: 100px;
-}
-
-/* Button Styles */
-.back-button {
-    padding: 10px 20px;
-    cursor: pointer;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    position: absolute;
-    top: 20px;
-    left: 20px;
-}
-
-/* Copyright Page Specific Styles */
-h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-p {
-    font-size: 1.2em;
-    color: #666;
-    margin: 10px 0;
-    line-height: 1.6;
-}
-
-a {
-    color: #2196F3;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Home Page Styles (Carousel) */
-.carousel {
-    position: relative;
-}
-
-.carousel-inner img {
+.copyright-container .container {
     width: 100%;
-    height: auto;
+    padding: 30px 30px;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.carousel-caption {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-align: center;
-}
-
-.carousel-caption h3 {
-    font-size: 1.5em;
-    color: white;
-    margin: 0;
-}
-
-.carousel-caption h2 {
-    font-size: 2.5em;
-    color: white;
-    margin-top: 10px;
-}
-
-.carousel-caption .btn {
-    padding: 10px 20px;
-    background-color: #f44336;
-    color: white;
-    text-decoration: none;
+.copyright-container .box-area {
+    width: 60%;
+    margin: auto;
+    padding: 30px;
+    background-color: #fff;
     border-radius: 5px;
-    display: inline-block;
-    margin-top: 15px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
 }
 
-.carousel-caption .btn:hover {
-    background-color: #e53935;
+
+/* Centering Image */
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
 }
 
-/* Our Drones Section */
-.our-drones {
-    text-align: center;
-    margin: 50px 0;
-}
 
-.our-drones img {
-    width: 100%;
-    max-width: 500px;
-    margin-bottom: 20px;
-}
-
-/* Our Services Section */
-.index-service {
-    font-size: 1.5em;
-    margin-top: 20px;
-    color: #333;
-}
-
-.index-service-p {
-    font-size: 1.2em;
-    color: #777;
-    margin-top: 10px;
-}
-
-/* Safety Priority Section */
-.fa-shield-heart {
-    color: #4CAF50;
-}
