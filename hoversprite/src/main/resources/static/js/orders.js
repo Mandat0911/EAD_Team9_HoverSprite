@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     let currentPage = 0;
-    const pageSize = 3; // Number of items per page
+    const pageSize = 10; // Number of items per page
     let currentSortField = 'createdAt'; // Default sort field
     let currentSortDirection = 'DESC'; // Default sort direction
     let currentUserId;
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             currentSortField = item.getAttribute('data-sort-field');
             currentSortDirection = item.getAttribute('data-sort-direction');
-            fetchOrders(0, currentSortField, currentSortDirection, userId); // Reset to first page when sorting
+            fetchOrders(0, currentSortField, currentSortDirection, currentUserId); // Reset to first page when sorting
             updateSortDropdownText(item.textContent);
         });
     });
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('User ID not available. Please ensure you are logged in.');
             return;
         }
-        if (currentRole === '[RECEPTIONIST]') {
+        if (currentRole === '[RECEPTIONIST]' || currentRole === '[SPRAYER]') {
             console.log('User is an receptionist');
             // Show admin-specific elements
             apiUrl = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error fetching orders:', error);
-                showMessage('Error loading orders. Please try again.', 'danger');
+                showMessage('There are no orders. Please try again.', 'danger');
             });
     }
 
