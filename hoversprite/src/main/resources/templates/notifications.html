@@ -59,6 +59,7 @@
     <div id="userData"
          th:data-user-id="${#authentication.principal.id}"
          th:data-user-email="${#authentication.principal.email}"
+         th:data-user-role="${#authentication.authorities}"
          style="display: none;">
     </div>
 </div>
