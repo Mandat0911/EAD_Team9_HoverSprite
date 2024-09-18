@@ -1,6 +1,9 @@
 package com.example.hoversprite.Order;
 
 import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
@@ -14,6 +17,9 @@ import com.example.hoversprite.Sprayer.Sprayer;
 
 @Entity
 @Table(schema = "hoversprite", name = "orders")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "orderId")
 public class Order {
 
     @Id
@@ -53,10 +59,13 @@ public class Order {
     @Column(name = "Status")
     private OrderStatus status;
 
-    @ElementCollection
-    @CollectionTable(name = "order_sprayer_ids", joinColumns = @JoinColumn(name = "order_id"))
-    @Column(name = "sprayer_id")
-    private List<Long> sprayerIds = new ArrayList<>(2);
+    @ManyToMany
+    @JoinTable(
+            name = "order_sprayers",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "sprayer_id")
+    )
+    private List<Sprayer> sprayers = new ArrayList<>();
 
 
     // Constructors
@@ -67,29 +76,50 @@ public class Order {
 
 
 
-    public void addSprayerId(Long sprayerId) {
-        if (this.sprayerIds.size() < 2) {
-            this.sprayerIds.add(sprayerId);
+    public List<Sprayer> getSprayers() {
+        return sprayers;
+    }
+
+    public void setSprayers(List<Sprayer> sprayers) {
+        this.sprayers = sprayers;
+    }
+
+    public boolean addSprayer(Sprayer sprayer) {
+        if (this.sprayers.size() < 2 && !this.sprayers.contains(sprayer)) {
+            this.sprayers.add(sprayer);
+            sprayer.getOrders().add(this);
+            return true;
         }
+        return false;
     }
 
-    public void removeSprayerId(Long sprayerId) {
-        this.sprayerIds.remove(sprayerId);
+    public boolean removeSprayer(Sprayer sprayer) {
+        boolean removed = this.sprayers.remove(sprayer);
+        if (removed) {
+            sprayer.getOrders().remove(this);
+        }
+        return removed;
+    }
+    public void clearSprayers() {
+        for (Sprayer sprayer : this.sprayers) {
+            sprayer.getOrders().remove(this);
+        }
+        this.sprayers.clear();
     }
 
 
-    public Order(User user, String cropType, Integer farmlandArea, String time, Date lunarDate, Date gregorianDate, Date createdAt, Date updatedAt, Double totalCost, OrderStatus status, List<Long> sprayerIds) {
+    public Order(User user, String cropType, String time, Integer farmlandArea, Date lunarDate, Date gregorianDate, Date createdAt, Date updatedAt, Double totalCost, OrderStatus status, List<Sprayer> sprayers) {
         this.user = user;
         this.cropType = cropType;
-        this.farmlandArea = farmlandArea;
         this.time = time;
+        this.farmlandArea = farmlandArea;
         this.lunarDate = lunarDate;
         this.gregorianDate = gregorianDate;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.totalCost = totalCost;
         this.status = status;
-        this.sprayerIds = sprayerIds;
+        this.sprayers = sprayers;
     }
 
     public Long getOrderId() {
@@ -180,52 +210,6 @@ public class Order {
         this.status = status;
     }
 
-    public List<Long> getSprayerIds() {
-        return sprayerIds;
-    }
-
-    public void setSprayerIds(List<Long> sprayerIds) {
-        this.sprayerIds = sprayerIds;
-    }
-    // Helper methods for managing sprayer IDs
-    public boolean addSprayer(Sprayer sprayer) {
-        if (this.sprayerIds.size() < 2 && !this.sprayerIds.contains(sprayer.getUser().getId())) {
-            this.sprayerIds.add(sprayer.getUser().getId());
-            sprayer.setCurrentOrder(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeSprayer(Sprayer sprayer) {
-        boolean removed = this.sprayerIds.remove(sprayer.getUser().getId());
-        if (removed) {
-            sprayer.setCurrentOrder(null);
-        }
-        return removed;
-    }
-
-    public void clearSprayers() {
-        this.sprayerIds.clear();
-    }
-
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", user=" + user +
-                ", cropType='" + cropType + '\'' +
-                ", farmlandArea=" + farmlandArea +
-                ", time='" + time + '\'' +
-                ", lunarDate=" + lunarDate +
-                ", gregorianDate=" + gregorianDate +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", totalCost=" + totalCost +
-                ", status=" + status +
-                ", sprayerIds=" + sprayerIds +
-                '}';
-    }
 
     public enum OrderStatus {
         PENDING, CANCELLED, CONFIRMED, ASSIGNED, IN_PROGRESS, COMPLETED

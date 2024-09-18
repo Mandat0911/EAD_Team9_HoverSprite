@@ -2,20 +2,29 @@ package com.example.hoversprite.Sprayer;
 
 import com.example.hoversprite.user.User;
 import com.example.hoversprite.Order.Order;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(schema = "hoversprite", name = "sprayers")
-
-
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "userId")
 public class Sprayer {
 
     @Id
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", unique = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "level")
@@ -24,9 +33,19 @@ public class Sprayer {
     @Column(name = "available")
     private Boolean available;
 
-    @ManyToOne
-    @JoinColumn(name = "current_order_id")
-    private Order currentOrder;
+
+    @ManyToMany( mappedBy = "sprayers")
+    private List<Order> orders = new ArrayList<>();
+
+    // Constructors, getters, and setters
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public Sprayer() {
     }
@@ -63,22 +82,29 @@ public class Sprayer {
         this.available = available;
     }
 
-    public Order getCurrentOrder() {
-        return currentOrder;
+    public List<Order> getOrders() {
+        return orders;
     }
 
-    public void setCurrentOrder(Order currentOrder) {
-        this.currentOrder = currentOrder;
-        this.available = (currentOrder == null);
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
-    @Override
-    public String toString() {
-        return "Sprayer{" +
-                "user=" + user +
-                ", level='" + level + '\'' +
-                ", available=" + available +
-                ", currentOrder=" + currentOrder +
-                '}';
+    public void addOrder(Order order) {
+        this.orders.add(order);
+        order.getSprayers().add(this);
     }
+    public void removeOrder(Order order) {
+        this.orders.remove(order);
+        order.getSprayers().remove(this);
+    }
+    public boolean isAvailableForDate(Date date) {
+        for (Order order : orders) {
+            if (order.getGregorianDate().equals(date)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
