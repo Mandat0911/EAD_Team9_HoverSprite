@@ -37,7 +37,6 @@ function displayUserNotifications(page = 0) {
                     <td>${index + 1 + (page * pageSize)}</td>
                     <td>${new Date(notification.createdAt).toLocaleDateString('en-GB')}</td>
                     <td>${notification.message}</td>
-                    <td><button class="btn btn-link" onclick="viewNotificationDetails(${notification.notificationId})">→</button></td>
                 `;
                 notificationTable.appendChild(row);
             });

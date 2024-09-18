@@ -17,8 +17,6 @@ public class UserAPI {
     private UserRepository userRepository;
     @Autowired
     private UserDetailService userDetailService;
-    @Autowired
-    private UserDetailService userDetailService;
 
     @GetMapping("/all")
     @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")

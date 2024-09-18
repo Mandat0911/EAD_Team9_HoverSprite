@@ -822,7 +822,7 @@ async function fetchUserDetails() {
     }
 
     try {
-        const response = await fetch(`/users/by-phone/${phone}`);
+        const response = await fetch(`/api/users/by-phone/${phone}`);
 
         if (response.ok) {
             const user = await response.json();
@@ -857,7 +857,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
     const authUserId = document.getElementById('user-id').value;
     let userRole = document.getElementById('user-role').value;
     let orderStatus;
-    if (userRole === '[RECEPTIONIST') {
+    if (userRole === '[RECEPTIONIST]') {
         orderStatus = 'CONFIRMED';
     } else {
         orderStatus = 'PENDING';
