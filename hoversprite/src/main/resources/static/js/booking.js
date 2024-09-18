@@ -109,6 +109,10 @@ const inputsStep1 = {
     // email: document.getElementById('email'),
     // phone: document.getElementById('phone'),
     // address: document.getElementById('address'),
+    // name: document.getElementById('name'),
+    // email: document.getElementById('email'),
+    // phone: document.getElementById('phone'),
+    // address: document.getElementById('address'),
     area: document.getElementById('area'),
 };
 
@@ -127,6 +131,10 @@ function validateStep1() {
     let isValid = true;
 
     // Validate each field
+    // isValid = validateField(inputsStep1.name, isValidName) && isValid;
+    // isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
+    // isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
+    // isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
     // isValid = validateField(inputsStep1.name, isValidName) && isValid;
     // isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
     // isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
@@ -805,6 +813,39 @@ updateTimeSummary();
 updateDateSummary();
 
 let userId;
+async function fetchUserDetails() {
+    const phone = document.getElementById('recep_phone').value;
+
+    // Check if phone number is entered
+    if (phone.trim() === '') {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/users/by-phone/${phone}`);
+
+        if (response.ok) {
+            const user = await response.json();
+            userId = user.id;
+            // Concatenate first name, middle name, and last name to create full name
+            const fullName = `${user.firstName || ''} ${user.middleName || ''} ${user.lastName || ''}`.trim();
+
+            // Autofill the form fields with the farmer's data
+            document.getElementById('recep_name').value = fullName;
+            document.getElementById('recep_email').value = user.email;
+            document.getElementById('recep_address').value = user.address;
+        } else {
+            // Clear the fields if no farmer is found
+            document.getElementById('recep_name').value = '';
+            document.getElementById('recep_email').value = '';
+            document.getElementById('recep_address').value = '';
+            alert('No user found with this phone number.');
+        }
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        alert('An error occurred while fetching user details.');
+    }
+}
 
 document.getElementById('booking-form').addEventListener('submit', async function (e) {
     e.preventDefault();  // Prevent default form submission
@@ -813,19 +854,19 @@ document.getElementById('booking-form').addEventListener('submit', async functio
     submitButton.disabled = true;
     submitButton.textContent = "Processing...";
     // Fetch user ID from session
-    // const userId = document.getElementById('user-id').value;
-
+    const authUserId = document.getElementById('user-id').value;
     let userRole = document.getElementById('user-role').value;
     let orderStatus;
-    if (userRole === '[RECEPTIONIST]') {
+    if (userRole === '[RECEPTIONIST') {
         orderStatus = 'CONFIRMED';
     } else {
         orderStatus = 'PENDING';
+        userId = parseInt(authUserId);
     }
 
     const order = { 
         user: {
-            // id: parseInt(userId), 
+            // id: parseInt(authUserId)
             id: userId
         },
         cropType: cropType,
@@ -834,7 +875,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
         gregorianDate: gregorianDate,
         lunarDate: lunarDate,
         totalCost: total,
-        status: orderStatus, 
+        status: orderStatus,
         createdAt: new Date(),
         updatedAt: new Date()
     };
@@ -901,38 +942,42 @@ async function createOrUpdateTimeslot() {
     }
 }
 
-async function fetchFarmerDetails() {
-    const phone = document.getElementById('recep_phone').value;
+// async function fetchUserDetails() {
+//     const phone = document.getElementById('rep_phone').value;
+//
+//     // Check if phone number is entered
+//     if (phone.trim() === '') {
+//         return;
+//     }
+//
+//     try {
+//         const response = await fetch(`/api/users/by-phone/${phone}`);
+//
+//         if (response.ok) {
+//             const farmer = await response.json();
+//
+//             // Concatenate first name, middle name, and last name to create full name
+//             const fullName = `${farmer.firstName || ''} ${farmer.middleName || ''} ${farmer.lastName || ''}`.trim();
+//
+//             // Set the values in the respective input fields
+//             document.getElementById('rep_name').value = fullName;  // Display full name
+//             document.getElementById('rep_email').value = farmer.email || '';
+//             document.getElementById('rep_address').value = farmer.address || '';
+//         } else {
+//             // Clear the fields if no farmer is found
+//             document.getElementById('rep_name').value = '';
+//             document.getElementById('rep_email').value = '';
+//             document.getElementById('rep_address').value = '';
+//             alert('No farmer found with this phone number.');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching farmer details:', error);
+//         alert('An error occurred while fetching farmer details.');
+//     }
+// }
 
-    // Check if phone number is entered
-    if (phone.trim() === '') {
-        return;
-    }
 
-    try {
-        const response = await fetch(`/api/users/by-phone/${phone}`);
 
-        if (response.ok) {
-            const user = await response.json();
-            // document.getElementById('user-id').value = user.id;
-            userId = user.id;
-            // Concatenate first name, middle name, and last name to create full name
-            const fullName = `${user.lastName || ''} ${user.middleName || ''} ${user.firstName || ''}`.trim();
 
-            // Autofill the form fields with the farmer's data
-            document.getElementById('recep_name').value = fullName;
-            document.getElementById('recep_email').value = user.email;
-            document.getElementById('recep_address').value = user.address;
-        } else {
-            // Clear the fields if no farmer is found
-            document.getElementById('recep_name').value = '';
-            document.getElementById('recep_email').value = '';
-            document.getElementById('recep_address').value = '';
-            alert('No user found with this phone number.');
-        }
-    } catch (error) {
-        console.error('Error fetching user details:', error);
-        alert('An error occurred while fetching user details.');
-    }
-}
+
 

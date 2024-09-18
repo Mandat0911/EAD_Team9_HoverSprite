@@ -9,7 +9,7 @@
             </div>
 
             <form action="#" class="form" id="booking-form">
-                <!-- <input type="hidden" id="user-id"> -->
+                <input type="hidden" id="user-id" th:value="${#authentication.principal.id}">
                 <input type="hidden" id="user-role" th:value="${#authentication.principal.authorities}">
 
                 <!-- Form item - Farm Details -->
@@ -53,7 +53,7 @@
                             <div class="form-group input-group">
                                 <label for="phone" class="form-label d-block">Phone *</label>
                                 <div class="w-100 d-flex">
-                                    <input id="recep_phone" type="number" onblur="fetchFarmerDetails()" class="form-control" placeholder="Enter phone number" required>
+                                    <input id="recep_phone" type="number" class="form-control" placeholder="Enter phone number" onblur="fetchUserDetails()" required>
                                 </div>
                             </div>
         

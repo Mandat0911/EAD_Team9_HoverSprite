@@ -117,7 +117,7 @@ public class UserDetailService implements UserDetailsService {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("nguyenmandat0744@gmail.com", senderName);  // Make sure this email is correctly configured in your mail properties
+        helper.setFrom("nguyenmandat000@gmail.com", senderName);  // Make sure this email is correctly configured in your mail properties
         helper.setTo(user.getEmail());
         helper.setSubject(subject);
         helper.setText(mailContent, true);  // Enable HTML content
@@ -251,4 +251,5 @@ public class UserDetailService implements UserDetailsService {
     public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
+
 }
