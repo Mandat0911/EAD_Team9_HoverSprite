@@ -34,21 +34,29 @@ public class OrderService {
 
     @Transactional
     public boolean assignSprayerToOrder(Long orderId, Long sprayerId) {
-        Optional<Order> orderOptional = getOrderById(orderId);
-        Optional<Sprayer> sprayerOptional = sprayerRepository.findById(sprayerId);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        if (orderOptional.isPresent() && sprayerOptional.isPresent()) {
-            Order order = orderOptional.get();
-            Sprayer sprayer = sprayerOptional.get();
+        Sprayer sprayer = sprayerRepository.findById(sprayerId)
+                .orElseThrow(() -> new RuntimeException("Sprayer not found"));
 
-            if (order.addSprayer(sprayer)) {
-                orderRepository.save(order);
-                sprayerRepository.save(sprayer);
-                return true;
-            }
+        if (order.getSprayers().size() >= 2) {
+            throw new RuntimeException("Order already has maximum number of sprayers");
         }
-        return false;
+
+        if (!sprayer.isAvailableForDate(order.getGregorianDate())) {
+            throw new RuntimeException("Sprayer is not available for this date");
+        }
+
+        boolean added = order.addSprayer(sprayer);
+        if (added) {
+            orderRepository.save(order);
+            sprayerRepository.save(sprayer);
+        }
+
+        return added;
     }
+
 
     @Transactional
     public boolean removeSprayerFromOrder(Long orderId, Long sprayerId) {
@@ -68,12 +76,12 @@ public class OrderService {
         return false;
     }
 
-    public List<Sprayer> getSprayersForOrder(Order order) {
-        return order.getSprayerIds().stream()
-                .map(id -> sprayerRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Sprayer not found")))
-                .collect(Collectors.toList());
-    }
+//    public List<Sprayer> getSprayersForOrder(Order order) {
+//        return order.getSprayerIds().stream()
+//                .map(id -> sprayerRepository.findById(id)
+//                        .orElseThrow(() -> new EntityNotFoundException("Sprayer not found")))
+//                .collect(Collectors.toList());
+//    }
     /**
      * Create a new order
      */

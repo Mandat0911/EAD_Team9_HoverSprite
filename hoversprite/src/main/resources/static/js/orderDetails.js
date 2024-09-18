@@ -3,6 +3,7 @@ let apprenticeAdded = false;
 let sprayerToRemove = null;
 
 let sprayersToAssign = [];
+
 function safeGetElement(id) {
     const element = document.getElementById(id);
     if (!element) {
@@ -12,6 +13,7 @@ function safeGetElement(id) {
 }
 
 const addSprayerButton = safeGetElement('addSprayerButton');
+const confirmSprayerButton = safeGetElement('confirmSprayerButton');
 const sprayerSelectContainer = safeGetElement('sprayerSelectContainer');
 const sprayerSelect = safeGetElement('sprayerSelect');
 const sprayerError = safeGetElement('sprayerError');
@@ -37,49 +39,81 @@ function updateSprayerDropdown() {
     }
 }
 
-function assignSprayerToOrder(orderId, sprayerId) {
-// Function to handle Add Sprayer Button Click
-if(addSprayerButton) {
-    addSprayerButton.addEventListener('click', function() {
-        // If the select container is hidden, show it with animation
-        if (sprayerSelectContainer.classList.contains('d-none')) {
-            sprayerSelectContainer.classList.remove('d-none');
-            sprayerSelectContainer.classList.add('fade-in'); // Add animation
-        }
-        // If the select container is visible, and a sprayer is selected, add the sprayer
-        else {
-            // const selectedSprayerText = sprayerSelect.options[sprayerSelect.selectedIndex].text;
-            const selectedSprayerValue = sprayerSelect.value;
+function assignSprayerToOrder(orderId) {
+    if (addSprayerButton) {
+        addSprayerButton.addEventListener('click', function () {
+            if (sprayerSelectContainer.classList.contains('d-none')) {
+                sprayerSelectContainer.classList.remove('d-none');
+                sprayerSelectContainer.classList.add('fade-in');
+            } else {
+                const selectedSprayerValue = sprayerSelect.value;
 
-            if (selectedSprayerValue !== "") {
-                // Show confirmation modal before adding sprayer
-                const addSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('addSprayerConfirmationModal'));
-                addSprayerConfirmationModal.show();
+                if (selectedSprayerValue !== "") {
+                    // Show confirmation modal before adding sprayer
+                    const addSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('addSprayerConfirmationModal'));
+                    addSprayerConfirmationModal.show();
+                }
             }
+        });
+    }
+}
+function assignSprayersToOrderBackEnd(orderId, sprayers) {
+    const results = {
+        success: [],
+        failed: []
+    };
+
+    const assignmentPromises = sprayers.map(sprayer =>
+        fetch(`/api/orders/${orderId}/assign-sprayer/${sprayer.user.id}`, {
+        method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            // Add any additional headers here, such as authorization if required
+        },
+    })
+.then(response => {
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error(text || `Failed to assign sprayer ${sprayer.user.id}`);
+            });
         }
-    });
+        return response.text();
+    })
+        .then(data => {
+            results.success.push({ sprayer, message: data });
+            // Create a notification for successful assignment
+            return createNotification({
+                userId: sprayer.user.id,
+                message: `New order assigned: Order #${orderId}`,
+            orderId: orderId
+        }).then(() => ({ success: true, sprayer, message: data }));
+        })
+        .catch(error => {
+            results.failed.push({ sprayer, error: error.message });
+            return { success: false, sprayer, error: error.message };
+        })
+);
+
+    return Promise.all(assignmentPromises)
+        .then(() => results);
 }
 
-// Function to handle showing or hiding the 'no sprayer assigned' message, and other UI changes
 function handleSprayerState() {
-    if(sprayerError && addSprayerButton && noSprayerMessage) {
-        // If there are no sprayers assigned, show the "no sprayer" message and reset apprentice state
+    if (sprayerError && addSprayerButton && noSprayerMessage) {
         if (assignedSprayerContainer.childElementCount === 0) {
             noSprayerMessage.classList.remove('d-none');
             sprayerError.textContent = 'Please assign at least one sprayer to this order.';
             sprayerError.classList.remove('d-none');
             addSprayerButton.disabled = false;
             apprenticeAdded = false;
+            confirmSprayerButton.disabled = true;
         } else {
-            // Hide "no sprayer" message
             noSprayerMessage.classList.add('d-none');
 
-            // Check if there's an apprentice in the assigned sprayers
-            const hasApprentice = Array.from(assignedSprayerContainer.children).some(sprayerDiv => {
-                return sprayerDiv.querySelector('h6').textContent === 'Apprentice';
-            });
+            const hasApprentice = Array.from(assignedSprayerContainer.children).some(sprayerDiv =>
+                sprayerDiv.querySelector('h6').textContent === 'Apprentice'
+            );
 
-            // Check if there's an Adept or Expert in the assigned sprayers
             const hasAdeptOrExpert = Array.from(assignedSprayerContainer.children).some(sprayerDiv => {
                 const type = sprayerDiv.querySelector('h6').textContent;
                 return type === 'Adept' || type === 'Expert';
@@ -91,115 +125,178 @@ function handleSprayerState() {
                 apprenticeAdded = true;
                 updateSprayerDropdown(); // Disable apprentice options
                 addSprayerButton.disabled = false;
+                confirmSprayerButton.disabled = true;
             } else {
                 sprayerError.classList.add('d-none');
                 addSprayerButton.disabled = true; // Disable adding more sprayers
+                confirmSprayerButton.disabled = false;
             }
         }
     }
 }
 
-// Function to add a sprayer and handle the removal
-function addSprayerToContainer(sprayerText) {
 
-    // Add the selected sprayer to the assigned list
+
+function addSprayerToContainer(selectedSprayerValue) {
+    console.log("selectedSprayerValue:", selectedSprayerValue);
+
+    let selectedSprayer;
+    if (typeof selectedSprayerValue === 'string') {
+        try {
+            selectedSprayer = JSON.parse(selectedSprayerValue);
+        } catch (error) {
+            console.error("Error parsing sprayer value:", error);
+            return;
+        }
+    } else {
+        selectedSprayer = selectedSprayerValue;
+    }
+
+    const { lastName = '', middleName = '', firstName = '' } = selectedSprayer.user || {};
+    const fullName = `${lastName} ${middleName} ${firstName}`.trim();
+    const level = selectedSprayer.level || 'Unknown';
+
     const newSprayerDiv = document.createElement('div');
     newSprayerDiv.classList.add('new-sprayer-div', 'd-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
     newSprayerDiv.innerHTML = `
-    <div class="d-flex flex-row align-items-center">
-        <button class="btn btn-danger btn-sm remove-sprayer-btn">
-            <i class="fa-solid fa-minus"></i>
-        </button>
-        <h5 class="m-0">${sprayerText.split('(')[0]}</h5>
-    </div>
-    <div class="badge bg-secondary">
-        <h6 class="m-0">${sprayerText.split('(')[1].replace(')', '')}</h6>
-    </div>
+        <div class="d-flex flex-row align-items-center">
+            <button class="btn btn-danger btn-sm remove-sprayer-btn">
+                <i class="fa-solid fa-minus"></i>
+            </button>
+            <h5 class="m-0">${fullName}</h5>
+        </div>
+        <div class="badge bg-secondary">
+            <h6 class="m-0">${level}</h6>
+        </div>
     `;
     assignedSprayerContainer.appendChild(newSprayerDiv);
 
-    // Attach event listener to the remove button (minus icon)
-    newSprayerDiv.querySelector('.remove-sprayer-btn').addEventListener('click', function () {
-        sprayerToRemove = newSprayerDiv; // Store the sprayer to remove
-        const removeSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('removeSprayerConfirmationModal'));
-        removeSprayerConfirmationModal.show(); // Show the remove confirmation modal
+    newSprayerDiv.querySelector('.remove-sprayer-btn').addEventListener('click', () => {
+        showRemoveSprayerConfirmation(newSprayerDiv, selectedSprayer);
     });
 
-    // Hide the select container and reset it
     sprayerSelectContainer.classList.add('d-none');
     sprayerSelectContainer.classList.remove('fade-in');
-    sprayerSelect.value = ""; // Reset select box
+    sprayerSelect.value = "";
 
-    // Update the state after adding the sprayer
     handleSprayerState();
 }
 
- // Handle the confirmation button click inside the modal
- document.getElementById('confirmAddSprayer').addEventListener('click', function () {
-    const selectedSprayerText = sprayerSelect.options[sprayerSelect.selectedIndex].text;
+function removeSprayer(sprayerDiv, sprayer) {
+    // Remove the sprayer from the sprayersToAssign array
+    const index = sprayersToAssign.findIndex(s => s === JSON.stringify(sprayer));
+    if (index > -1) {
+        sprayersToAssign.splice(index, 1);
+    }
+
+    // Remove the sprayer div from the DOM
+    assignedSprayerContainer.removeChild(sprayerDiv);
+
+    // Update the allSprayers array to mark this sprayer as available again
+    const sprayerIndex = allSprayers.findIndex(s => s.id === sprayer.id);
+    if (sprayerIndex !== -1) {
+        allSprayers[sprayerIndex].available = true;
+    }
+
+    // Check if the removed sprayer was an apprentice
+    if (sprayer.level === 'Apprentice') {
+        apprenticeAdded = false;
+    } else {
+        // If it wasn't an apprentice, check if there are any apprentices left
+        apprenticeAdded = sprayersToAssign.some(s => {
+            const parsedSprayer = JSON.parse(s);
+            return parsedSprayer.level === 'Apprentice';
+        });
+    }
+
+    updateSprayerDropdown();
+    handleSprayerState();
+}
+
+
+function showRemoveSprayerConfirmation(sprayerDiv, sprayer) {
+    sprayerToRemove = sprayerDiv;
+    const removeSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('removeSprayerConfirmationModal'));
+    removeSprayerConfirmationModal.show();
+}
+
+document.getElementById('confirmAddSprayer').addEventListener('click', function () {
     const selectedSprayerValue = sprayerSelect.value;
 
     if (selectedSprayerValue !== "") {
-        addSprayerToContainer(selectedSprayerText);
+        let selectedSprayer;
+        if (typeof selectedSprayerValue === 'string') {
+            try {
+                selectedSprayer = JSON.parse(selectedSprayerValue);
+            } catch (error) {
+                console.error("Error parsing sprayer value:", error);
+                return;
+            }
+        } else {
+            selectedSprayer = selectedSprayerValue;
+        }
+        addSprayerToContainer(selectedSprayerValue);
+        sprayersToAssign.push(selectedSprayer);
+        console.log(sprayersToAssign);
 
-        // Hide the confirmation modal for adding sprayer
         const addSprayerConfirmationModal = bootstrap.Modal.getInstance(document.getElementById('addSprayerConfirmationModal'));
         addSprayerConfirmationModal.hide();
     }
 });
 
-// Handle the confirmation button click inside the modal for removing sprayer
 document.getElementById('confirmRemoveSprayer').addEventListener('click', function () {
     if (sprayerToRemove) {
-        assignedSprayerContainer.removeChild(sprayerToRemove);
-        sprayerToRemove = null; // Reset after removing
+        const sprayer = JSON.parse(sprayersToAssign.find(s => {
+            const parsed = JSON.parse(s);
+            return parsed.user.firstName === sprayerToRemove.querySelector('h5').textContent.split(' ').pop();
+        }));
 
-        // Recheck and update UI after removing a sprayer
-        handleSprayerState();
-
-        // Hide the remove confirmation modal
+        removeSprayer(sprayerToRemove, sprayer);
+        sprayerToRemove = null;
+        console.log(sprayersToAssign);
         const removeSprayerConfirmationModal = bootstrap.Modal.getInstance(document.getElementById('removeSprayerConfirmationModal'));
         removeSprayerConfirmationModal.hide();
     }
 });
 
+
 handleSprayerState();
 updateSprayerDropdown();
 
-function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
-    fetch(`/api/orders/${orderId}/assign-sprayer/${sprayerId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to assign sprayer to order');
-            }
-            return response.text();
-        })
-        .then(data => {
-            console.log(data); // Log success message
-
-            // Create notification for the sprayer
-            const notificationData = {
-                userId: sprayerId,
-                message: `New order assigned: Order #${orderId}`,
-                orderId: orderId
-            };
-
-            return createNotification(notificationData);
-        })
-        .then(createdNotification => {
-            console.log('Notification sent to sprayer:', createdNotification);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            sprayerError.textContent = 'Failed to assign sprayer to order or send notification. Please try again.';
-            sprayerError.classList.remove('d-none');
-        });
-}
+// function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
+//     fetch(/api/orders/${orderId}/assign-sprayer/${sprayerId}, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//     })
+//         .then(response => {
+//             if (!response.ok) {
+//                 throw new Error('Failed to assign sprayer to order');
+//             }
+//             return response.text();
+//         })
+//         .then(data => {
+//             console.log(data); // Log success message
+//
+//             // Create notification for the sprayer
+//             const notificationData = {
+//                 userId: sprayerId,
+//                 message: New order assigned: Order #${orderId},
+//                 orderId: orderId
+//             };
+//
+//             return createNotification(notificationData);
+//         })
+//         .then(createdNotification => {
+//             console.log('Notification sent to sprayer:', createdNotification);
+//         })
+//         .catch(error => {
+//             console.error('Error:', error);
+//             sprayerError.textContent = 'Failed to assign sprayer to order or send notification. Please try again.';
+//             sprayerError.classList.remove('d-none');
+//         });
+// }
 
 
 function fetchSprayers() {
@@ -325,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id');
     let currentUserId;
+    console.log(orderId);
     const cancelOrderButton = safeGetElement('cancelOrderButton');
     const confirmOrderButton = safeGetElement('confirmOrderButton');
     const statusUpdateButtons = safeGetElement('statusUpdateButtons');
@@ -333,12 +431,12 @@ document.addEventListener('DOMContentLoaded', function () {
     function updateOrderStatus(newStatus) {
         // Fetch the current order details first
         fetch(`/api/orders/${orderId}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch order details');
-                }
-                return response.json();
-            })
+    .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to fetch order details');
+            }
+            return response.json();
+        })
             .then(currentOrder => {
                 // Update the status in the order object
                 currentOrder.status = newStatus;
@@ -346,7 +444,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Send the updated order object to the server
                 return fetch(`/api/orders/${orderId}`, {
                     method: 'PUT',
-                    headers: {
+                        headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(currentOrder)
@@ -362,9 +460,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Create a notification for the status update
                 const notificationData = {
                     message: `Order #${orderId} status updated to ${newStatus}`,
-                    userId: updatedOrder.user.id, // Assuming the order has a userId field
+                userId: updatedOrder.user.id, // Assuming the order has a userId field
                     orderId: orderId
-                };
+            };
 
                 return createNotification(notificationData)
                     .then(() => updatedOrder);
@@ -394,8 +492,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Fetch order details
     fetch(`/api/orders/${orderId}`)
-        .then(response => response.json())
+.then(response => response.json())
         .then(order => {
+            console.log(order);
             // Populate order details
             displayOrderDetails(order);
             // Check if the order status is 'completed' before proceeding with feedback
@@ -419,54 +518,39 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error fetching order details:', error));
 
-    function handleAddSprayer() {
-        if (sprayerSelectContainer.classList.contains('d-none')) {
-            sprayerSelectContainer.classList.remove('d-none');
-            sprayerSelectContainer.classList.add('fade-in');
-        } else {
-            const selectedSprayerValue = sprayerSelect.value;
-            if (selectedSprayerValue !== "") {
-                const selectedSprayer = JSON.parse(selectedSprayerValue);
-                // console.log(selectedSprayer);
-                // Call the API to assign the sprayer to the order
-                // assignSprayerToOrder(orderId, selectedSprayer.user.id);
-                // updateOrderStatus('ASSIGNED');
-                const newSprayerDiv = document.createElement('div');
-                newSprayerDiv.classList.add('d-flex', 'flex-row', 'justify-content-between', 'align-items-center', 'my-2');
-                const fullName = selectedSprayer.user.lastName + " " + selectedSprayer.user.middleName + " " + selectedSprayer.user.firstName;
-                newSprayerDiv.innerHTML = `
-                <h5 class="m-0">${fullName}</h5>
-                <div class="badge bg-secondary">
-                    <h6 class="m-0">${selectedSprayer.level}</h6>
-                </div>
-            `;
-                assignedSprayerContainer.appendChild(newSprayerDiv);
+    confirmSprayerButton.addEventListener('click', function() {
 
-                sprayerSelectContainer.classList.add('d-none');
-                sprayerSelectContainer.classList.remove('fade-in');
-                sprayerSelect.value = "";
+        // Assume you have a way to get the order ID
 
-                if (selectedSprayer.level === 'Apprentice') {
-                    sprayerError.classList.remove('d-none');
-                    sprayerError.textContent = 'An Adept or Expert sprayer is required when assigning an Apprentice.';
-                    apprenticeAdded = true;
-                    updateSprayerDropdown();
-                } else {
-                    sprayerError.classList.add('d-none');
-                    addSprayerButton.disabled = true;
+
+        assignSprayersToOrderBackEnd(orderId, sprayersToAssign)
+            .then(results => {
+                console.log('Assignment results:', results);
+
+                if (results.success.length > 0) {
+                    alert(`Successfully assigned ${results.success.length} sprayer(s).`);
                 }
-                noSprayerMessage.classList.add('d-none');
 
-                // Update the allSprayers array to mark this sprayer as unavailable
-                const sprayerIndex = allSprayers.findIndex(s => s.id === selectedSprayer.id);
-                if (sprayerIndex !== -1) {
-                    allSprayers[sprayerIndex].available = false;
+                if (results.failed.length > 0) {
+                    alert(`Failed to assign ${results.failed.length} sprayer(s). Check console for details.`);
+                    console.error('Failed assignments:', results.failed);
                 }
-                updateSprayerDropdown();
-            }
-        }
-    }
 
+                // Update UI or perform any other actions based on results
+                updateOrderStatus('ASSIGNED');
+            })
+            .catch(error => {
+                console.error('Error in batch assignment:', error);
+                alert('An error occurred during sprayer assignment. Please try again.');
+            })
+            .finally(() => {
+
+                // Clear the sprayersToAssign array after processing if needed
+                sprayersToAssign = [];
+            });
+
+
+    });
 
     function updateSprayerDisplay(order) {
         const noSprayerMessage = safeGetElement('noSprayerMessage');
@@ -480,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function () {
             assignedSprayerContainer.innerHTML = '';
         }
 
-        if ((!order.sprayerIds || order.sprayerIds.length === 0) && order.status.toLowerCase() === 'confirmed') {
+        if ((!order.sprayers || order.sprayers.length === 0) && order.status.toLowerCase() === 'confirmed') {
             if (noSprayerMessage) {
                 noSprayerMessage.classList.remove('d-none');
             }
@@ -489,13 +573,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sprayerSection.classList.remove('d-none');
             }
             if (addSprayerButton) {
-                addSprayerButton.onclick = () => {
-                    console.log('clicked');
-                    if (sprayerSelectContainer) {
-                        sprayerSelectContainer.classList.remove('d-none');
-                    }
-                    handleAddSprayer();
-                };
+                assignSprayerToOrder();
             }
         } else {
             if (noSprayerMessage) {
@@ -510,8 +588,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             // Fetch and display assigned sprayers
-            const sprayerPromises = order.sprayerIds.map(sprayerId =>
-                fetch(`/api/sprayers/${sprayerId}`)
+            // Fetch and display assigned sprayers
+            const sprayerPromises = order.sprayers.map(sprayer =>
+                fetch(`/api/sprayers/${sprayer.user.id}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Sprayer not found');
@@ -519,7 +598,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return response.json();
                     })
                     .catch(error => {
-                        console.error(`Error fetching sprayer ${sprayerId}:`, error);
+                        console.error(`Error fetching sprayer ${sprayer.user.id}:`, error);
                         return null;
                     })
             );
@@ -555,13 +634,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //Function to display detail of order
     function displayOrderDetails(order) {
+        console.log("reach")
         document.getElementById('orderNumber').textContent = `Order #${order.orderId}`;
         document.getElementById('orderStatus').textContent = order.status;
         document.getElementById('orderStatus').classList.add(`bg-${getStatusColor(order.status)}`);
 
         document.getElementById('farmerName').textContent = order.user.lastName + " " + order.user.middleName + " " + order.user.firstName;
         document.getElementById('farmerPhone').textContent = order.user.phone;
-        document.getElementById('farmerEmail').textContent = order.user.email;
         document.getElementById('farmerAddress').textContent = order.user.address;
 
         document.getElementById('cropType').textContent = order.cropType;

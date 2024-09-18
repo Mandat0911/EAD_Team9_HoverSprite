@@ -64,12 +64,16 @@ public class OrderController {
     }
 
     @PostMapping("/{orderId}/assign-sprayer/{sprayerId}")
-    public ResponseEntity<String> assignSprayerToOrder(@PathVariable Long orderId, @PathVariable Long sprayerId) {
-        boolean assigned = orderService.assignSprayerToOrder(orderId, sprayerId);
-        if (assigned) {
-            return ResponseEntity.ok("Sprayer successfully assigned to order");
-        } else {
-            return ResponseEntity.badRequest().body("Failed to assign sprayer to order");
+    public ResponseEntity<?> assignSprayerToOrder(@PathVariable Long orderId, @PathVariable Long sprayerId) {
+        try {
+            boolean assigned = orderService.assignSprayerToOrder(orderId, sprayerId);
+            if (assigned) {
+                return ResponseEntity.ok().body("Sprayer assigned successfully");
+            } else {
+                return ResponseEntity.badRequest().body("Failed to assign sprayer");
+            }
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -85,16 +89,16 @@ public class OrderController {
 
 
 
-    @GetMapping("/{orderId}/sprayers")
-    public ResponseEntity<List<Sprayer>> getSprayersForOrder(@PathVariable Long orderId) {
-        Optional<Order> orderOptional = orderService.getOrderById(orderId);
-        if (orderOptional.isPresent()) {
-            List<Sprayer> sprayers = orderService.getSprayersForOrder(orderOptional.get());
-            return ResponseEntity.ok(sprayers);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/{orderId}/sprayers")
+//    public ResponseEntity<List<Sprayer>> getSprayersForOrder(@PathVariable Long orderId) {
+//        Optional<Order> orderOptional = orderService.getOrderById(orderId);
+//        if (orderOptional.isPresent()) {
+//            List<Sprayer> sprayers = orderService.getSprayersForOrder(orderOptional.get());
+//            return ResponseEntity.ok(sprayers);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 //    @GetMapping("/user/{userId}")
 //    public ResponseEntity<Page<Order>> getOrders(
 //            @RequestParam Long userId, // Ensure userId is being passed in

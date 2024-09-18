@@ -11,12 +11,7 @@
                     <div class="card-body py-4">
                         <div class="d-flex justify-content-between align-items-center">
                             <h3 id="orderNumber" class="fw-bold m-0" style="color: var(--primary-color);"></h3>
-                            <p sec:authorize="hasAnyAuthority('SPRAYER', 'FARMER')" id="orderStatus" class="status badge m-0"></p>
-                            <div sec:authorize="hasAnyAuthority('RECEPTIONIST')" class="dropdown">
-                                <button id="orderStatus" class="btn dropdown-toggle status badge m-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                </button>
-                                <ul class="dropdown-menu" id="orderStatusOptions"></ul>
-                            </div>
+                            <p id="orderStatus" class="status badge m-0"></p>
                         </div>
                         <hr class="my-3">
                         <div class="d-flex flex-column">
@@ -28,10 +23,6 @@
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Phone</h5>
                                 <h5 id="farmerPhone"></h5>
-                            </div>
-                            <div class="d-flex flex-row justify-content-between align-items-center my-1">
-                                <h5>Email</h5>
-                                <h5 id="farmerEmail"></h5>
                             </div>
                             <div class="d-flex flex-row justify-content-between align-items-center my-1">
                                 <h5>Address</h5>
@@ -96,6 +87,9 @@
                                 <h6 id="sprayerError" class="text-danger my-3"></h6>
                                 <button class="btn btn-sm btn-primary fw-bold" id="addSprayerButton">
                                     <i class="fa-solid fa-plus"></i> Add Sprayer
+                                </button>
+                                <button class="btn btn-sm btn-primary fw-bold" id="confirmSprayerButton">
+                                    <i class="fa-solid fa-plus"></i> Confirm Add Sprayer
                                 </button>
 
                                 <!-- Select another sprayer dropdown (hidden initially) -->
