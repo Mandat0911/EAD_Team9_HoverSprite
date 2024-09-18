@@ -898,3 +898,72 @@ async function createOrUpdateTimeslot() {
         console.error('Error creating/updating timeslot:', error);
     }
 }
+
+// async function fetchUserDetails() {
+//     const phone = document.getElementById('rep_phone').value;
+//
+//     // Check if phone number is entered
+//     if (phone.trim() === '') {
+//         return;
+//     }
+//
+//     try {
+//         const response = await fetch(`/api/users/by-phone/${phone}`);
+//
+//         if (response.ok) {
+//             const farmer = await response.json();
+//
+//             // Concatenate first name, middle name, and last name to create full name
+//             const fullName = `${farmer.firstName || ''} ${farmer.middleName || ''} ${farmer.lastName || ''}`.trim();
+//
+//             // Set the values in the respective input fields
+//             document.getElementById('rep_name').value = fullName;  // Display full name
+//             document.getElementById('rep_email').value = farmer.email || '';
+//             document.getElementById('rep_address').value = farmer.address || '';
+//         } else {
+//             // Clear the fields if no farmer is found
+//             document.getElementById('rep_name').value = '';
+//             document.getElementById('rep_email').value = '';
+//             document.getElementById('rep_address').value = '';
+//             alert('No farmer found with this phone number.');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching farmer details:', error);
+//         alert('An error occurred while fetching farmer details.');
+//     }
+// }
+
+async function fetchUserDetails() {
+    const phone = document.getElementById('rep_phone').value;
+
+    // Check if phone number is entered
+    if (phone.trim() === '') {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/users/by-phone/${phone}`);
+
+        if (response.ok) {
+            const farmer = await response.json();
+
+            // Ensure you are using the correct field names from the backend response
+            document.getElementById('rep_name').value = farmer.name;  // Use appropriate field name
+            document.getElementById('rep_email').value = farmer.email || '';
+            document.getElementById('rep_address').value = farmer.address || '';
+        } else {
+            // Clear the fields if no farmer is found
+            document.getElementById('rep_name').value = '';
+            document.getElementById('rep_email').value = '';
+            document.getElementById('rep_address').value = '';
+            alert('No farmer found with this phone number.');
+        }
+    } catch (error) {
+        console.error('Error fetching farmer details:', error);
+        alert('An error occurred while fetching farmer details.');
+    }
+}
+
+
+
+

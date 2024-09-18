@@ -248,4 +248,8 @@ public class UserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new NoSuchElementException("User not found with ID: " + id));
     }
 
+    public User findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
+    }
+
 }
