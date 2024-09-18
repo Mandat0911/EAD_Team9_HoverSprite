@@ -197,47 +197,7 @@
     }
 }
 
-@media (max-width: 768px) { 
-    .booking-container > .d-flex {
-        flex-direction: column;
-        align-items: center;
-    }
-    .box-container {
-        width: 100%;
-    }
-    .booking-container .form-group {
-        width: 100%;
-    }
 
-    .box-container:nth-child(2) {
-        width: 100%;
-        position: relative;
-        right: 0;
-        margin-top: 20px;
-        transform: translateY(-5%);
-        transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    
-    .slide-left {
-        transform: translateY(-2%);
-    }
-    
-    .slide-in {
-        transform: translateY(-100%);
-    }
-
-    .box-container .button-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .box-container .btn {
-        margin: 2rem 0 0 0;
-    }
-
-    .booking-container hr.hidden {
-        display: block;
-    }
-}
 
 /* Calendar styling */
 #week-calendar-container {
@@ -481,5 +441,69 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* horizontally scroll for week calendar */
+/* Make the week calendar container horizontally scrollable */
+#week-calendar-scroll-container {
+    overflow-x: auto;   /* Allow horizontal scrolling */
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    width: 100%;        /* Ensure it takes the full width of the parent container */
+    white-space: nowrap; /* Prevent elements from wrapping */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling for mobile devices */
+}
+
+/* Ensure the calendar's inner content extends beyond the container's width */
+#week-calendar-container {
+    display: inline-block; /* Keep the content inline and non-wrapping */
+    min-width: 800px;      /* You can adjust this based on your design */
+}
+
+/* Optional: Hide scrollbar on webkit-based browsers */
+#week-calendar-scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+
+@media (max-width: 768px) { 
+    .booking-container > .d-flex {
+        flex-direction: column;
+        align-items: center;
+    }
+    .box-container {
+        width: 100%;
+    }
+    .booking-container .form-group {
+        width: 100%;
+    }
+
+    .box-container:nth-child(2) {
+        width: 100%;
+        position: relative;
+        right: 0;
+        margin-top: 20px;
+        transform: translateY(-5%);
+        transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    
+    .slide-left {
+        transform: translateY(-2%);
+    }
+    
+    .slide-in {
+        transform: translateY(-100%);
+    }
+
+    .box-container .button-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .box-container .btn {
+        margin: 2rem 0 0 0;
+    }
+
+    .booking-container hr.hidden {
+        display: block;
     }
 }

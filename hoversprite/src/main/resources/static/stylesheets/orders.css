@@ -59,22 +59,22 @@
 }
 
 .orders-container .status-confirmed {
-    color: #A6BFF6;
+    color: var(--light-blue);
 }
 
 .orders-container .status-assigned {
-    color: #5A77E0;
+    color: var(--secondary-color);
 }
 
-.orders-container .status-inprogress {
-    color: #7AA1E0;
+.orders-container .status-in_progress {
+    color: var(--primary-color);
 }
 
 .orders-container .status-completed {
     color: #4CAF50;
 }
 
-.orders-container .status-canceled {
+.orders-container .status-cancelled {
     color: #D9414F;
 }
 

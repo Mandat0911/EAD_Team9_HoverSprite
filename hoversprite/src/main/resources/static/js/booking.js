@@ -105,10 +105,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* FORM VALIDATION */
 const inputsStep1 = {
-    name: document.getElementById('name'),
-    email: document.getElementById('email'),
-    phone: document.getElementById('phone'),
-    address: document.getElementById('address'),
+    // name: document.getElementById('name'),
+    // email: document.getElementById('email'),
+    // phone: document.getElementById('phone'),
+    // address: document.getElementById('address'),
+    // name: document.getElementById('name'),
+    // email: document.getElementById('email'),
+    // phone: document.getElementById('phone'),
+    // address: document.getElementById('address'),
     area: document.getElementById('area'),
 };
 
@@ -127,10 +131,14 @@ function validateStep1() {
     let isValid = true;
 
     // Validate each field
-    isValid = validateField(inputsStep1.name, isValidName) && isValid;
-    isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
-    isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
-    isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
+    // isValid = validateField(inputsStep1.name, isValidName) && isValid;
+    // isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
+    // isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
+    // isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
+    // isValid = validateField(inputsStep1.name, isValidName) && isValid;
+    // isValid = validateField(inputsStep1.email, isValidEmail) && isValid;
+    // isValid = validateField(inputsStep1.phone, isValidPhone) && isValid;
+    // isValid = validateField(inputsStep1.address, isValidAddress) && isValid;
     isValid = validateField(inputsStep1.area, isValidArea) && isValid;
     return isValid;
 }
@@ -139,6 +147,7 @@ function validateStep2() {
     let isValid = true;
 
     isValid = validateField(inputsStep2.datePicker, isValidDatePicker) && isValid;
+    isValid = validateTimeSlot() && isValid;
 
     return isValid;
 }
@@ -166,6 +175,22 @@ function validateField(field, validationFunction) {
     }
 
     return isValid;
+}
+
+let previouslySelectedTimeSlotButton = null;
+let selectedTimeSlot = null;
+
+function validateTimeSlot() {
+    const errorMessage = document.getElementById('invalid-time-slot');
+    if (!previouslySelectedTimeSlotButton) {
+        errorMessage.classList.remove('d-none');
+        errorMessage.classList.add('d-block');
+        return false;
+    } else {
+        errorMessage.classList.add('d-none');
+        errorMessage.classList.remove('d-block');
+        return true;
+    }
 }
 
 function showError(field) {
@@ -276,11 +301,11 @@ const dates = datepicker.querySelector(".dates");
 let selectedDate = new Date();
 let year = selectedDate.getFullYear();
 let month = selectedDate.getMonth();
-let isLunar = false;
+// let isLunar = false;
 
 // Show datepicker
 dateInput.addEventListener("click", () => {
-    isLunar = false;
+    // isLunar = false;
     datepicker.hidden = false;
 });
 
@@ -335,6 +360,9 @@ applyBtn.addEventListener("click", () => {
     updateDateInput();
 
     datepicker.hidden = true;
+    selectedTimeSlot = null;
+    previouslySelectedTimeSlotButton = null;
+    clearColumnHighlight();
     handleCalendarUpdates();
   }
 });
@@ -462,30 +490,30 @@ const createButton = (text, isDisabled = false, type = 0) => {
     button.classList.toggle("selected", selected);
     return button;
 };
-const convertBtn = datepicker.querySelector(".convert-to-lunar");
+// const convertBtn = datepicker.querySelector(".convert-to-lunar");
 
 // Convert solar date to lunar date
-const convertToLunar = () => {
-  const solarDate = selectedDate;
+// const convertToLunar = () => {
+//   const solarDate = selectedDate;
   
-  // Convert to lunar using the Lunar object from lunar-javascript
-  const lunar = Lunar.fromDate(solarDate);
-  const lunarDay = String(lunar.getDay()).padStart(2, '0');
-  const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
+//   // Convert to lunar using the Lunar object from lunar-javascript
+//   const lunar = Lunar.fromDate(solarDate);
+//   const lunarDay = String(lunar.getDay()).padStart(2, '0');
+//   const lunarMonth = String(lunar.getMonth()).padStart(2, '0');
 
-  // Format the lunar date
-  const lunarDateStr = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
+//   // Format the lunar date
+//   const lunarDateStr = `${lunarDay}/${lunarMonth}/${lunar.getYear()}`;
   
-  // Display the lunar date in the input field
-  dateInput.value = lunarDateStr;
-  datepicker.hidden = true;
-};
+//   // Display the lunar date in the input field
+//   dateInput.value = lunarDateStr;
+//   datepicker.hidden = true;
+// };
 
-convertBtn.addEventListener("click", () => {
-    convertToLunar();
-    isLunar = true;
-    updateDateSummary(); // Update the order summary after lunar conversion
-});
+// convertBtn.addEventListener("click", () => {
+//     convertToLunar();
+//     isLunar = true;
+//     updateDateSummary(); // Update the order summary after lunar conversion
+// });
 
 displayDates();
 
@@ -497,7 +525,6 @@ const timeSlots = ['4:00', '5:00', '6:00', '7:00', '16:00', '17:00'];
 // Function to manage calendar updates after date selection
 function handleCalendarUpdates() {
     updateWeekCalendar();
-    // highlightSelectedDay();
     renderWeekCalendarCells();
 }
 
@@ -532,18 +559,6 @@ function updateWeekCalendar() {
 
     });    
 }
-
-// Example backend data for available slots per time slot (fetch this dynamically from your API)
-// const availableSlots = {
-//     'mon': { '4:00': 2, '5:00': 1, '6:00': 1, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'tue': { '4:00': 1, '5:00': 2, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-//     'wed': { '4:00': 0, '5:00': 0, '6:00': 2, '7:00': 1, '16:00': 2, '17:00': 2},
-//     'thu': { '4:00': 2, '5:00': 2, '6:00': 2, '7:00': 0, '16:00': 2, '17:00': 2},
-//     'fri': { '4:00': 2, '5:00': 1, '6:00': 0, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'sat': { '4:00': 0, '5:00': 2, '6:00': 2, '7:00': 2, '16:00': 2, '17:00': 2},
-//     'sun': { '4:00': 1, '5:00': 2, '6:00': 1, '7:00': 1, '16:00': 2, '17:00': 2}
-// };
-
 
 // Function to fetch available slots from the backend
 async function fetchAvailableSlotsForDate(weekStart) {
@@ -682,46 +697,46 @@ const createSlotButton = (availableSlots, dayId, timeSlot) => {
     return button;
 };
 
-// Function to highlight the selected day's column in the week calendar
-function highlightSelectedDay() {
-    let selectedDayIndex = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+// Function to highlight the column for the selected day
+function highlightColumn(dayId) {
+    // Clear any previous highlights
+    clearColumnHighlight();
 
-    // Since our calendar starts on Monday, we need to remap the days
-    const dayMapping = [6, 0, 1, 2, 3, 4, 5]; // Mapping Sunday to index 6, Monday to index 0, etc.
-    selectedDayIndex = dayMapping[selectedDayIndex];
+    // Find the index of the selected day
+    const dayIndex = days.indexOf(dayId);
 
-    // Clear previous highlights
+    // Highlight the header for the selected day
+    const headerCell = document.getElementById(dayId);
+    headerCell.classList.add('highlight');
+
+    // Highlight time slot cells for the selected day
+    const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${dayIndex + 2})`); // +2 to skip the time column
+    cells.forEach(cell => cell.classList.add('highlight'));
+}
+
+// Function to clear the previous column highlight
+function clearColumnHighlight() {
     document.querySelectorAll('.highlight').forEach(cell => {
         cell.classList.remove('highlight');
     });
-
-    // Highlight the column for the selected day
-    days.forEach((dayId, index) => {
-        if (index === selectedDayIndex) {
-            // Highlight time slot cells + header for the selected day
-            const headerCell = document.getElementById(dayId);  // This highlights the header
-            headerCell.classList.add('highlight');
-
-            // Highlight time slot cells
-            const cells = document.querySelectorAll(`.calendar-row .calendar-cell:nth-child(${index + 2})`); // Adjusted index + 2 to skip the time column
-            cells.forEach(cell => cell.classList.add('highlight'));
-        }
-    });
 }
 
-let previouslySelectedButton = null;
-let selectedTimeSlot = null;
+// let previouslySelectedTimeSlotButton = null;
+// let selectedTimeSlot = null;
 
 // Function to handle the "Select" button click
 function handleSlotSelection(button, dayId, timeSlot) {
 
     // If there was a previously selected button, reset it
-    if (previouslySelectedButton) {
-        previouslySelectedButton.classList.add('available');
-        previouslySelectedButton.classList.remove('selected');
-        previouslySelectedButton.textContent = `${previouslySelectedButton.dataset.available} slot${previouslySelectedButton.dataset.available > 1 ? 's' : ''}`;
-        previouslySelectedButton.disabled = false; // Re-enable the button
-    }
+    if (previouslySelectedTimeSlotButton) {
+        previouslySelectedTimeSlotButton.classList.add('available');
+        previouslySelectedTimeSlotButton.classList.remove('selected');
+        previouslySelectedTimeSlotButton.textContent = `${previouslySelectedTimeSlotButton.dataset.available} slot${previouslySelectedTimeSlotButton.dataset.available > 1 ? 's' : ''}`;
+        previouslySelectedTimeSlotButton.disabled = false; // Re-enable the button
+
+        // Remove highlight from the previously selected column
+        clearColumnHighlight();
+    } 
 
     // Update the current button to selected state
     button.classList.remove('available');
@@ -730,7 +745,7 @@ function handleSlotSelection(button, dayId, timeSlot) {
     button.disabled = true; // Disable the selected button
 
     // Store the current button as the newly selected button
-    previouslySelectedButton = button;
+    previouslySelectedTimeSlotButton = button;
 
     // Update the selectedTimeSlot
     selectedTimeSlot = `${timeSlot} - ${parseInt(timeSlot) + 1}:00`;  // Example format: "4:00 - 5:00"
@@ -744,8 +759,8 @@ function handleSlotSelection(button, dayId, timeSlot) {
     selectedDate.setDate(weekStart.getDate() + dayIndex); // Adjust it to the clicked day
 
     // Now that selectedDate is updated, reflect the change
+    highlightColumn(dayId);
     updateDateInput(); // Update the input field
-    highlightSelectedDay(); // Highlight the selected day in the week calendar
     displayDates(); // Update the calendar popup with the selected date highlighted
     updateTimeSummary();  
 }
@@ -768,7 +783,7 @@ let gregorianDate;
 let lunarDate;
 
 function updateDateSummary() {
-    if (!isLunar) {
+    // if (!isLunar) {
         // gregorianDate = dateInput.value;
         const [day, month, year] = dateInput.value.split('/').map(Number);
         gregorianDate = new Date(year, month - 1, day);
@@ -776,12 +791,12 @@ function updateDateSummary() {
         // Convert the Gregorian date to Lunar
         const lunar = Lunar.fromDate(selectedDate);
         lunarDate = new Date(lunar.getYear(), lunar.getMonth() - 1, lunar.getDay());
-    } else {
-        gregorianDate = selectedDate;
-        // lunarDate = dateInput.value;
-        const [day, month, year] = dateInput.value.split('/').map(Number);
-        lunarDate = new Date(year, month - 1, day);
-    }
+    // } else {
+    //     gregorianDate = selectedDate;
+    //     // lunarDate = dateInput.value;
+    //     const [day, month, year] = dateInput.value.split('/').map(Number);
+    //     lunarDate = new Date(year, month - 1, day);
+    // }
     summaryGregDate.textContent = gregorianDate.toLocaleDateString("en-GB", {
         year: "numeric",
         month: "2-digit",
@@ -797,15 +812,62 @@ function updateDateSummary() {
 updateTimeSummary();
 updateDateSummary();
 
+let userId;
+async function fetchUserDetails() {
+    const phone = document.getElementById('recep_phone').value;
+
+    // Check if phone number is entered
+    if (phone.trim() === '') {
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/users/by-phone/${phone}`);
+
+        if (response.ok) {
+            const user = await response.json();
+            userId = user.id;
+            // Concatenate first name, middle name, and last name to create full name
+            const fullName = `${user.firstName || ''} ${user.middleName || ''} ${user.lastName || ''}`.trim();
+
+            // Autofill the form fields with the farmer's data
+            document.getElementById('recep_name').value = fullName;
+            document.getElementById('recep_email').value = user.email;
+            document.getElementById('recep_address').value = user.address;
+        } else {
+            // Clear the fields if no farmer is found
+            document.getElementById('recep_name').value = '';
+            document.getElementById('recep_email').value = '';
+            document.getElementById('recep_address').value = '';
+            alert('No user found with this phone number.');
+        }
+    } catch (error) {
+        console.error('Error fetching user details:', error);
+        alert('An error occurred while fetching user details.');
+    }
+}
+
 document.getElementById('booking-form').addEventListener('submit', async function (e) {
     e.preventDefault();  // Prevent default form submission
-
+    // Disable the submit button to prevent multiple submissions
+    const submitButton = document.querySelector('#submit-button');  // Make sure the button has this ID in your HTML
+    submitButton.disabled = true;
+    submitButton.textContent = "Processing...";
     // Fetch user ID from session
-    const userId = document.getElementById('user-id').value;
+    const authUserId = document.getElementById('user-id').value;
+    let userRole = document.getElementById('user-role').value;
+    let orderStatus;
+    if (userRole === '[RECEPTIONIST]') {
+        orderStatus = 'CONFIRMED';
+    } else {
+        orderStatus = 'PENDING';
+        userId = parseInt(authUserId);
+    }
 
-    const order = {
+    const order = { 
         user: {
-            id: parseInt(userId), 
+            // id: parseInt(authUserId)
+            id: userId
         },
         cropType: cropType,
         farmlandArea: parseInt(area),
@@ -813,7 +875,7 @@ document.getElementById('booking-form').addEventListener('submit', async functio
         gregorianDate: gregorianDate,
         lunarDate: lunarDate,
         totalCost: total,
-        status: 'PENDING', 
+        status: orderStatus,
         createdAt: new Date(),
         updatedAt: new Date()
     };
@@ -830,7 +892,9 @@ document.getElementById('booking-form').addEventListener('submit', async functio
 
         if (orderResponse.ok) {
             const data = await orderResponse.json();
-            alert('Order created successfully!');
+            // alert('Order created successfully!');
+            const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+            successModal.show();
 
             // Send a request to create or update the Timeslot
             await createOrUpdateTimeslot();
@@ -839,16 +903,15 @@ document.getElementById('booking-form').addEventListener('submit', async functio
             // window.location.href = '/orders';
         } else {
             const errorData = await orderResponse.json();  // Get error response data
-            if (errorData.message === 'No available sessions for the selected time slot.') {
-                alert('The selected time slot is fully booked. Please choose another slot.');
-            } else {
-                alert('Failed to create order.');
-                console.log('Error details:', errorData);
-            }
+            const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+            failureModal.show();
+            console.log('Error details:', errorData);
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('An error occurred while creating the order.');
+        // alert('An error occurred while creating the order.');
+        const failureModal = new bootstrap.Modal(document.getElementById('failureModal'));
+        failureModal.show();
     }
 });
 
@@ -878,3 +941,43 @@ async function createOrUpdateTimeslot() {
         console.error('Error creating/updating timeslot:', error);
     }
 }
+
+// async function fetchUserDetails() {
+//     const phone = document.getElementById('rep_phone').value;
+//
+//     // Check if phone number is entered
+//     if (phone.trim() === '') {
+//         return;
+//     }
+//
+//     try {
+//         const response = await fetch(`/api/users/by-phone/${phone}`);
+//
+//         if (response.ok) {
+//             const farmer = await response.json();
+//
+//             // Concatenate first name, middle name, and last name to create full name
+//             const fullName = `${farmer.firstName || ''} ${farmer.middleName || ''} ${farmer.lastName || ''}`.trim();
+//
+//             // Set the values in the respective input fields
+//             document.getElementById('rep_name').value = fullName;  // Display full name
+//             document.getElementById('rep_email').value = farmer.email || '';
+//             document.getElementById('rep_address').value = farmer.address || '';
+//         } else {
+//             // Clear the fields if no farmer is found
+//             document.getElementById('rep_name').value = '';
+//             document.getElementById('rep_email').value = '';
+//             document.getElementById('rep_address').value = '';
+//             alert('No farmer found with this phone number.');
+//         }
+//     } catch (error) {
+//         console.error('Error fetching farmer details:', error);
+//         alert('An error occurred while fetching farmer details.');
+//     }
+// }
+
+
+
+
+
+

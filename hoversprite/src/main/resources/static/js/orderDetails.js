@@ -412,7 +412,6 @@ function fetchSprayers() {
         });
 }
 
-
 //function to create notifications
 function createNotification(notificationData) {
     return fetch('/api/notifications', {  // Adjust the URL if needed
@@ -517,14 +516,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('id');
     let currentUserId;
-    console.log(orderId);
     const cancelOrderButton = safeGetElement('cancelOrderButton');
     const confirmOrderButton = safeGetElement('confirmOrderButton');
+    const startServiceButton = safeGetElement('startServiceButton');
+    const completeOrderButton = safeGetElement('completeOrderButton');
     const statusUpdateButtons = safeGetElement('statusUpdateButtons');
     const confirmSprayerButton = safeGetElement('confirmSprayerButton');
 
     fetchSprayers();
-    console.log(allSprayers);
+
     function updateOrderStatus(newStatus) {
         // Fetch the current order details first
         fetch(`/api/orders/${orderId}`)
@@ -587,6 +587,19 @@ document.addEventListener('DOMContentLoaded', function () {
             updateOrderStatus('CONFIRMED');
         });
     }
+
+    if (startServiceButton) {
+        startServiceButton.addEventListener('click', function () {
+            updateOrderStatus('IN_PROGRESS');
+        });
+    }
+
+    if (completeOrderButton) {
+        completeOrderButton.addEventListener('click', function () {
+            updateOrderStatus('COMPLETED');
+        });
+    }
+
     // Fetch order details
     fetch(`/api/orders/${orderId}`)
         .then(response => response.json())
@@ -731,16 +744,21 @@ document.addEventListener('DOMContentLoaded', function () {
         return Promise.resolve();
     }
 
+    function formatOrderStatus(status) {
+        return status.replace(/_/g, ' '); // Replace all underscores with spaces
+    }
 
     //Function to display detail of order
     function displayOrderDetails(order) {
-        console.log("reach")
+        const formattedStatus = formatOrderStatus(order.status);
         document.getElementById('orderNumber').textContent = `Order #${order.orderId}`;
-        document.getElementById('orderStatus').textContent = order.status;
+        // document.getElementById('orderStatus').textContent = order.status;
+        document.getElementById('orderStatus').textContent = formattedStatus;
         document.getElementById('orderStatus').classList.add(`bg-${getStatusColor(order.status)}`);
 
         document.getElementById('farmerName').textContent = order.user.lastName + " " + order.user.middleName + " " + order.user.firstName;
         document.getElementById('farmerPhone').textContent = order.user.phone;
+        document.getElementById('farmerEmail').textContent = order.user.email;
         document.getElementById('farmerAddress').textContent = order.user.address;
 
         document.getElementById('cropType').textContent = order.cropType;
@@ -751,14 +769,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Update total cost in the payment section
         document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
-        if (order.status.toLowerCase() === 'pending') {
-            if (statusUpdateButtons) {
-                statusUpdateButtons.style.display = 'block';
-            }
+        // if (order.status.toLowerCase() === 'pending') {
+        //     if (statusUpdateButtons) {
+        //         statusUpdateButtons.style.display = 'block';
+        //     }
+        // } else {
+        //     if (statusUpdateButtons) {
+        //         statusUpdateButtons.style.display = 'none';
+        //     }
+        // }
+
+        // Receptionist buttons visibility
+        if (order.status === 'PENDING') {
+            statusUpdateButtons.style.display = 'block';
         } else {
-            if (statusUpdateButtons) {
-                statusUpdateButtons.style.display = 'none';
+            statusUpdateButtons.style.display = 'none';
+        }
+
+        // Show/hide buttons based on order status and user role
+        if (order.status === 'ASSIGNED') {
+            statusUpdateButtons.style.display = 'block';
+            startServiceButton.classList.remove('d-none');
+            completeOrderButton.classList.add('d-none');
+        } else if (order.status === 'IN_PROGRESS') {
+            if (startServiceButton) {
+                statusUpdateButtons.style.display = 'block';
+                startServiceButton.classList.add('d-none');
             }
+            completeOrderButton.classList.remove('d-none');
+        } else {
+            startServiceButton.classList.add('d-none');
+            completeOrderButton.classList.add('d-none');
         }
         // Show/hide sprayer section based on order status
         const sprayerSection = document.getElementById('sprayerSection');

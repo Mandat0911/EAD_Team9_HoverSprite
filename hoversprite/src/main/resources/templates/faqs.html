@@ -1,88 +1,91 @@
 <div th:fragment="content" class="faq-container">
-    <!-- FAQ Header -->
-    <section class="pt-5">
-        <div class="container">
-            <h1 class="text-center" style="color: var(--primary-color);">Frequently Asked Questions</h1>
-            <h5 class="text-center" style="color: var(--primary-color);">Find answers to the most commonly asked questions about our services and drones.</h5>
-        </div>
-    </section>
+    <div class="container faq__form active">
+        <!-- <div class="row d-flex border rounded-5 p-3 bg-white shadow box-area">
+            <div class="row vh-50 w-100 align-self-center">
+                <div class="col-12 px-3">
+                    <div class="row vh-50">
+                        <div class="col align-items-center p-3 p-lg-5 w-100"> -->
+                            <!-- FAQ Header -->
+                            <section class="pt-5">
+                                <div class="container text-center">
+                                    <h1 class="fw-bolder" style="color: var(--primary-color);">Frequently Asked Questions</h1>
+                                    <h5 class="fw-lighter fs-6" style="color: var(--primary-color);">
+                                        Find answers to the most commonly asked questions about our services and drones.
+                                    </h5>
+                                </div>
+                            </section>
 
-    <!-- FAQ Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="accordion" id="faqAccordion">
-                
-                <!-- Question 1 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="faqOne">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                            What services does HoverSprite offer?
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="faqOne" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            HoverSprite specializes in organic pesticide and fertilizer spraying using advanced drones. Our services ensure optimal coverage, precision, and crop safety, with drones suited for different types of agriculture, including orchards, cereal fields, and vegetable farms.
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Question 2 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="faqTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            How do I book a spraying service?
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            You can easily book a spraying service by visiting our <a th:href="@{/booking}">booking page</a>. Once registered, you can select your crop type, choose the appropriate spraying service, and schedule a convenient time. You will also receive updates on your booking status.
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Question 3 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="faqThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            What are the safety measures for drone spraying?
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            Our drones adhere to the highest safety standards. We conduct regular maintenance and thorough inspections to ensure safe and reliable performance. Additionally, our operators are trained to follow strict safety protocols while spraying to minimize any risks to crops, animals, or people.
-                        </div>
-                    </div>
-                </div>
+                            <!-- FAQ Section -->
+                            <section class="py-5">
+                                <div class="container">
+                                    <div class="accordion" id="faqAccordion">
 
-                <!-- Question 4 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="faqFour">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                            How can I contact customer support?
-                        </button>
-                    </h2>
-                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="faqFour" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            You can reach our customer support team 24/7 by calling our hotline or sending us a message via our <a href="/contact">contact page</a>. Our team is always available to assist you with any inquiries or concerns.
-                        </div>
-                    </div>
-                </div>
+                                        <!-- Question 1 -->
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faqOne">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                                    What services does HoverSprite offer?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="faqOne" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body">
+                                                    HoverSprite specializes in organic pesticide and fertilizer spraying using advanced drones. Our services ensure optimal coverage, precision, and crop safety, with drones suited for different types of agriculture, including orchards, cereal fields, and vegetable farms.
+                                                </div>
+                                            </div>
+                                        </div>
 
-                <!-- Question 5 -->
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="faqFive">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-                            What payment methods are accepted?
-                        </button>
-                    </h2>
-                    <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="faqFive" data-bs-parent="#faqAccordion">
-                        <div class="accordion-body">
-                            We accept a variety of payment methods, including credit/debit cards, online banking, and mobile payment solutions. Our platform uses secure encryption to protect your transactions.
-                        </div>
+                                        <!-- Question 2 -->
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faqTwo">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                    How do I book a spraying service?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="faqTwo" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body">
+                                                    You can easily book a spraying service by visiting our <a th:href="@{/booking}">booking page</a>. Once registered, you can select your crop type, choose the appropriate spraying service, and schedule a convenient time. You will also receive updates on your booking status.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Question 3 -->
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faqThree">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                                    What are the safety measures for drone spraying?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="faqThree" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body">
+                                                    Our drones adhere to the highest safety standards. We conduct regular maintenance and thorough inspections to ensure safe and reliable performance. Additionally, our operators are trained to follow strict safety protocols while spraying to minimize any risks to crops, animals, or people.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        
+                                        <!-- Question 4 -->
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header" id="faqFive">
+                                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                                                    What payment methods are accepted?
+                                                </button>
+                                            </h2>
+                                            <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="faqFive" data-bs-parent="#faqAccordion">
+                                                <div class="accordion-body">
+                                                    We currently accept 2 types of payments: credit/debit cards and cash on delivery.
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </section>
+                        <!-- </div>
                     </div>
                 </div>
 
             </div>
-        </div>
-    </section>
+        </div> -->
+    </div>
 </div>
+

@@ -2,22 +2,22 @@ package com.example.hoversprite.controllers;
 
 import com.example.hoversprite.Role.RoleRepository;
 import com.example.hoversprite.service.PasswordValidationService;
-import com.example.hoversprite.user.User;
-import com.example.hoversprite.user.UserDetailService;
-import com.example.hoversprite.user.UserRepository;
+import com.example.hoversprite.user.*;
 
+import java.security.Principal;
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.hoversprite.user.User;
 import com.example.hoversprite.Role.RoleRepository;
-import com.example.hoversprite.user.UserRepository;
 import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
@@ -63,20 +63,36 @@ public class PageController implements ErrorController {
     }
 
     @PostMapping("/process_register")
-    public String processRegister(User user, RedirectAttributes redirectAttributes) {
+    public String processRegister(User user, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         // Validate the password
         passwordValidationService.validatePassword(user.getPassword());
 
         try {
             userDetailService.registerUser(user);
-            return "redirect:/login";
+            String siteURL = Utility.getSiteURL(request);
+            userDetailService.sendVerificationEmail(user, siteURL);
+            return "redirect:/announceUser";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             return "redirect:/register";
         }
     }
 
+    @GetMapping("/announceUser")
+    public String announceVerifyUser(Model model, User user) {
+        model.addAttribute("title", "Check Your Email");
+        model.addAttribute("content", "announceVerifyUser");
+        model.addAttribute("css", "/stylesheets/login.css");
+
+        // Add authenticated user's email to the model, if applicable
+//        model.addAttribute("user", user.getEmail()); // Assuming the principal's name is the email
+
+        return "layout";
+    }
+
+
     @GetMapping("/booking")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\", \"FARMER\")")
     public String booking(Model model) {
         model.addAttribute("title", "Booking");
         model.addAttribute("content", "booking");
@@ -94,8 +110,6 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-
-
     @GetMapping("/orders/order_details")
     public String orderDetail(Model model) {
         model.addAttribute("title", "Order Details");
@@ -106,6 +120,7 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/users")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
     public String users(Model model) {
         model.addAttribute("title", "Users Management");
         model.addAttribute("content", "users");
@@ -126,14 +141,14 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-    @GetMapping("/account/user_profile")
-    public String userProfile(Model model) {
-        model.addAttribute("title", "User Profile");
-        model.addAttribute("content", "userProfile");
-        model.addAttribute("css", "/stylesheets/account.css");
-        model.addAttribute("js", "/js/userProfile.js");
-        return "layout";
-    }
+    // @GetMapping("/account/user_profile")
+    // public String userProfile(Model model) {
+    //     model.addAttribute("title", "User Profile");
+    //     model.addAttribute("content", "userProfile");
+    //     model.addAttribute("css", "/stylesheets/account.css");
+    //     model.addAttribute("js", "/js/userProfile.js");
+    //     return "layout";
+    // }
 
     @GetMapping("/account/notifications")
     public String notifications(Model model) {
@@ -191,7 +206,7 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-    @GetMapping("/account/users/edit/{id}")
+    @GetMapping("/account/edit/user/{id}")
     public String showEditUserForm(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
@@ -212,8 +227,29 @@ public class PageController implements ErrorController {
             return "redirect:/account";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
-            return "redirect:/account/users/edit/" + user.getId();
+            return "redirect:/account/edit/user/" + user.getId();
         }
+    }
+
+    @GetMapping("/verify")
+    public String verifyAccount(@Param("code") String code, Model model) {
+        boolean verified = userDetailService.verify(code);
+
+        String pageTitle = verified ? "Verification Succeed!" : "Verification Failed";
+        model.addAttribute("title", pageTitle);
+
+        // If verification succeeds, you might want to return a "success" view
+        if (verified) {
+            model.addAttribute("message", "Your account has been successfully verified.");
+        } else {
+            model.addAttribute("message", "Invalid verification code or account already verified.");
+        }
+
+        // Assuming the layout will handle what is shown based on content
+        model.addAttribute("content", "verifyUser");
+        model.addAttribute("css", "/stylesheets/faqs.css");
+
+        return "layout"; // Make sure "layout" is a valid view
     }
 
 

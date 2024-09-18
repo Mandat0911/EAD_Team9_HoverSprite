@@ -1,64 +1,60 @@
-<div th:fragment="content" class="booking-container" xmlns:sec="http://www.w3.org/1999/xhtml">
-    <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Update Personal Information</h1>
+<div th:fragment="content" class="booking-container py-5" xmlns:sec="http://www.w3.org/1999/xhtml">
     <div class="d-flex justify-content-center align-items-center">
         <div class="box-container">
+            <h1 class="text-center my-3 fw-bold"  style="color: var(--primary-color);">Update Personal Information</h1>
+
             <form th:action="@{/account/update}" method="post" id="booking-form">
-                <div th:if="${error}">
-                    <p class="text-danger" th:text="${error}"></p>
-                </div>
-                <input type="hidden" id="user-id" name="id" th:value="${#authentication.principal.id}">
-
                 <!-- Farmer Details -->
-                <div class="form-step form-step-active px-4 py-3">
+                <div class="form-step form-step-active px-4 py-2">
                     <div class="row">
-                        <div class="col-md-6" sec:authorize="hasAuthority('FARMER')">
-                            <h4 class="fw-bold" style="color: var(--primary-color);">Farmer Details</h4>
-                            <div class="form-group input-group">
-                                <label for="phone" class="form-label d-block">Phone *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="phone" name="phone" type="number" class="form-control" placeholder="Enter phone number" th:value="${#authentication.principal.phone}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="phone" class="form-label d-block">Phone *</label>
+                            <div class="w-100 d-flex">
+                                <input id="phone" name="phone" type="number" class="form-control" placeholder="Enter phone number" th:value="${#authentication.principal.phone}" required>
                             </div>
+                        </div>
 
-                            <div class="form-group input-group">
-                                <label for="firstName" class="form-label d-block">First Name *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="firstName" name="firstName" type="text" class="form-control" placeholder="Enter first name" th:value="${#authentication.principal.firstName}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="firstName" class="form-label d-block">First Name *</label>
+                            <div class="w-100 d-flex">
+                                <input id="firstName" name="firstName" type="text" class="form-control" placeholder="Enter first name" th:value="${#authentication.principal.firstName}" required>
                             </div>
+                        </div>
 
-                            <div class="form-group input-group">
-                                <label for="middleName" class="form-label d-block">Middle Name *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="middleName" name="middleName" type="text" class="form-control" placeholder="Enter middle name" th:value="${#authentication.principal.middleName}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="middleName" class="form-label d-block">Middle Name *</label>
+                            <div class="w-100 d-flex">
+                                <input id="middleName" name="middleName" type="text" class="form-control" placeholder="Enter middle name" th:value="${#authentication.principal.middleName}" required>
                             </div>
+                        </div>
 
-                            <div class="form-group input-group">
-                                <label for="lastName" class="form-label d-block">Last Name *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="lastName" name="lastName" type="text" class="form-control" placeholder="Enter last name" th:value="${#authentication.principal.lastName}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="lastName" class="form-label d-block">Last Name *</label>
+                            <div class="w-100 d-flex">
+                                <input id="lastName" name="lastName" type="text" class="form-control" placeholder="Enter last name" th:value="${#authentication.principal.lastName}" required>
                             </div>
+                        </div>
 
-                            <div class="form-group input-group">
-                                <label for="email" class="form-label d-block">Email *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="email" name="email" type="text" class="form-control" placeholder="Enter email" th:value="${#authentication.principal.email}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="email" class="form-label d-block">Email *</label>
+                            <div class="w-100 d-flex">
+                                <input id="email" name="email" type="text" class="form-control" placeholder="Enter email" th:value="${#authentication.principal.email}" required>
                             </div>
+                        </div>
 
-                            <div class="form-group input-group">
-                                <label for="address" class="form-label d-block">Address *</label>
-                                <div class="w-100 d-flex">
-                                    <input id="address" name="address" type="text" class="form-control" placeholder="Enter address" th:value="${#authentication.principal.address}" required>
-                                </div>
+                        <div class="form-group input-group">
+                            <label for="address" class="form-label d-block">Address *</label>
+                            <div class="w-100 d-flex">
+                                <input id="address" name="address" type="text" class="form-control" placeholder="Enter address" th:value="${#authentication.principal.address}" required>
                             </div>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button type="submit" class="btn btn-primary btn-next">Update</button>
+                        <a th:href="@{/account}">
+                            <button type="button" class="btn btn-secondary">Cancel</button>
+                        </a>
+                        <button type="submit" class="btn btn-primary btn-update">Update</button>
                     </div>
                 </div>
             </form>

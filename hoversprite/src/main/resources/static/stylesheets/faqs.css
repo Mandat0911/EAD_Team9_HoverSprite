@@ -1,19 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-
-body {
-    font-family: 'Poppins', sans-serif !important;
+/* FAQ Container Styles */
+.faq-container {
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
 }
 
-/* FAQ Section */
-.faq-container h1 {
-    font-weight: bold;
-    color: var(--text-color);
-}
-
+/* Accordion Button Styles */
 .faq-container .accordion-button {
     font-weight: bold;
     background-color: var(--primary-color);
     color: white;
+    border-radius: 5px;
+    padding: 15px;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease;
 }
 
 .faq-container .accordion-button:focus {
@@ -22,14 +23,38 @@ body {
 
 .faq-container .accordion-button:not(.collapsed) {
     background-color: var(--secondary-color);
+    color: white;
 }
 
 .faq-container .accordion-item {
     border: none;
+    margin-bottom: 15px;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Accordion Body Styles */
 .faq-container .accordion-body {
     font-size: 1rem;
     color: #666;
+    padding: 20px;
+    background-color: white;
+    border-top: 1px solid #ddd;
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+    .faq-container h1 {
+        font-size: 2rem;
+    }
+    
+    .faq-container .accordion-button {
+        font-size: 1rem;
+        padding: 10px;
+    }
+    
+    .faq-container .accordion-body {
+        font-size: 0.9rem;
+    }
+}
