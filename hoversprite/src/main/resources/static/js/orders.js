@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('User ID not available. Please ensure you are logged in.');
             return;
         }
-        if (currentRole === '[RECEPTIONIST]' || currentRole === '[SPRAYER]') {
+        if (currentRole === '[RECEPTIONIST]') {
             console.log('User is an receptionist');
             // Show admin-specific elements
             apiUrl = `/api/orders?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
@@ -49,48 +49,90 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log('User is a regular user');
             // Show user-specific elements
              apiUrl = `/api/orders/user/${currentUserId}?page=${page}&size=${pageSize}&sortBy=${sortBy}&direction=${direction}`;
+
+        }
+        if(currentRole === '[SPRAYER]'){
+           let  farmerApiUrl = `/api/sprayers/${currentUserId}/orders`;
+            showMessage('Loading...', 'info');
+            fetch(farmerApiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data); // Log the entire response for debugging
+                    console.log(typeof data);
+                    const tableBody = document.getElementById('ordersTableBody');
+                    if (!tableBody) {
+                        console.error('Table body element not found.');
+                        return;
+                    }
+
+                    tableBody.innerHTML = ''; // Clear existing rows
+
+                    if (data.length === 0) {
+                        showMessage('No orders found.', 'info');
+                    } else {
+                        data.forEach((order, index) => {
+                            const row = createOrderRow(order, (page * pageSize) + index + 1);
+                            tableBody.appendChild(row);
+                        });
+                        hideMessage();
+                    }
+
+                    updatePagination(data);
+                    addRowClickListeners();
+                })
+                .catch(error => {
+                    console.error('Error fetching orders:', error);
+                    showMessage('There was an error fetching orders. Please try again.', 'danger');
+                });
+        }
+        if(apiUrl) {
+            showMessage('Loading...', 'info');
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Response data:', data); // Log the entire response for debugging
+                    console.log(typeof data);
+                    const tableBody = document.getElementById('ordersTableBody');
+                    if (!tableBody) {
+                        console.error('Table body element not found.');
+                        return;
+                    }
+
+                    tableBody.innerHTML = ''; // Clear existing rows
+
+                    if (data.length === 0) {
+                        showMessage('No orders found.', 'info');
+                    } else {
+                        let sortedOrders = data.content;
+                        if (sortBy === 'status') {
+                            sortedOrders = groupAndSortOrdersByStatus(sortedOrders);
+                        }
+                        sortedOrders.forEach((order, index) => {
+                            const row = createOrderRow(order, (page * pageSize) + index + 1);
+                            tableBody.appendChild(row);
+                        });
+                        hideMessage();
+                    }
+
+                    updatePagination(data);
+                    addRowClickListeners();
+                })
+                .catch(error => {
+                    console.error('Error fetching orders:', error);
+                    showMessage('There are no orders. Please try again.', 'danger');
+                });
         }
 
-        showMessage('Loading...', 'info');
-        fetch(apiUrl)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Response data:', data); // Log the entire response for debugging
-
-                const tableBody = document.getElementById('ordersTableBody');
-                if (!tableBody) {
-                    console.error('Table body element not found.');
-                    return;
-                }
-
-                tableBody.innerHTML = ''; // Clear existing rows
-
-                if (data.content.length === 0) {
-                    showMessage('No orders found.', 'info');
-                } else {
-                    let sortedOrders = data.content;
-                    if (sortBy === 'status') {
-                        sortedOrders = groupAndSortOrdersByStatus(sortedOrders);
-                    }
-                    sortedOrders.forEach((order, index) => {
-                        const row = createOrderRow(order, (page * pageSize) + index + 1);
-                        tableBody.appendChild(row);
-                    });
-                    hideMessage();
-                }
-
-                updatePagination(data);
-                addRowClickListeners();
-            })
-            .catch(error => {
-                console.error('Error fetching orders:', error);
-                showMessage('There are no orders. Please try again.', 'danger');
-            });
     }
 
 
