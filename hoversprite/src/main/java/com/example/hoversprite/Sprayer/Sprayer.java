@@ -2,8 +2,8 @@ package com.example.hoversprite.Sprayer;
 
 import com.example.hoversprite.user.User;
 import com.example.hoversprite.Order.Order;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
@@ -33,8 +33,7 @@ public class Sprayer {
     @Column(name = "available")
     private Boolean available;
 
-
-    @ManyToMany( mappedBy = "sprayers")
+    @ManyToMany(mappedBy = "sprayers")
     private List<Order> orders = new ArrayList<>();
 
     // Constructors, getters, and setters

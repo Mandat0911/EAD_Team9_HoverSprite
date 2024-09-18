@@ -1,5 +1,6 @@
 package com.example.hoversprite.Sprayer;
 
+import com.example.hoversprite.Order.Order;
 import com.example.hoversprite.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,15 @@ public class SprayerService {
             return sprayerRepository.save(existingSprayer);
         }
         return null;
+    }
+    public List<Order> getSprayerOrders(Long sprayerId) {
+        Optional<Sprayer> sprayerOptional = sprayerRepository.findById(sprayerId);
+        if (sprayerOptional.isPresent()) {
+            Sprayer sprayer = sprayerOptional.get();
+            return sprayer.getOrders();
+        } else {
+            throw new RuntimeException("Sprayer not found with id: " + sprayerId);
+        }
     }
 
 

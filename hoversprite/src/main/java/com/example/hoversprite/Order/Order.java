@@ -1,11 +1,6 @@
 package com.example.hoversprite.Order;
 
-import com.fasterxml.jackson.annotation.JsonFilter;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 
 
@@ -17,9 +12,7 @@ import com.example.hoversprite.Sprayer.Sprayer;
 
 @Entity
 @Table(schema = "hoversprite", name = "orders")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "orderId")
+
 public class Order {
 
     @Id
@@ -29,6 +22,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIdentityReference(alwaysAsId = true)
     private User user;
 
     @Column(name = "CropType")
@@ -59,22 +53,21 @@ public class Order {
     @Column(name = "Status")
     private OrderStatus status;
 
+
+
     @ManyToMany
     @JoinTable(
             name = "order_sprayers",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "sprayer_id")
     )
+    @JsonIdentityReference(alwaysAsId = true)
     private List<Sprayer> sprayers = new ArrayList<>();
-
 
     // Constructors
 
     public Order() {
     }
-
-
-
 
     public List<Sprayer> getSprayers() {
         return sprayers;

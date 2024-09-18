@@ -1,7 +1,7 @@
 let allSprayers = [];
 let apprenticeAdded = false;
 let sprayerToRemove = null;
-
+let currentDate;
 let sprayersToAssign = [];
 
 function safeGetElement(id) {
@@ -20,6 +20,88 @@ const sprayerError = safeGetElement('sprayerError');
 const noSprayerMessage = safeGetElement('noSprayerMessage');
 const assignedSprayerContainer = safeGetElement('assignedSprayerContainer');
 
+function fetchSprayerOrders(sprayerId) {
+    return fetch(`/api/sprayers/${sprayerId}/orders`)
+        .then(response => {
+            if (!response.ok) {
+                if (response.status === 404) {
+                    return []; // Return empty array if sprayer has no orders
+                }
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+
+        })
+        .catch(error => {
+            console.error(`Error fetching orders for sprayer ${sprayerId}:`, error);
+            return []; // Return empty array in case of error
+        });
+}
+function updateSprayerAvailability(checkDate) {
+    // Ensure checkDate is a Date object
+    const checkDateObj = checkDate instanceof Date ? checkDate : new Date(checkDate);
+    // Check if the date is valid
+    if (isNaN(checkDateObj.getTime())) {
+        return Promise.reject(new Error('Invalid date provided'));
+    }
+
+    return fetchAllSprayersOrders()
+        .then(allOrders => {
+            // Convert checkDate to start of day for accurate comparison
+            const checkDateStart = new Date(checkDateObj.setHours(0, 0, 0, 0));
+
+            // Update each sprayer's availability
+            return allSprayers.map(sprayer => {
+                const sprayerOrders = allOrders[sprayer.userId] || [];
+                const hasOrderOnDate = sprayerOrders.some(order => {
+                    const orderDate = new Date(order.gregorianDate);
+                    return orderDate.getTime() === checkDateStart.getTime();
+                });
+
+                // Create a new sprayer object with updated availability
+                return {
+                    ...sprayer,
+                    available: !hasOrderOnDate
+                };
+            });
+        })
+        .then(updatedSprayers => {
+            // Update the allSprayers array
+            allSprayers = updatedSprayers;
+            console.log('Updated sprayers:', allSprayers);
+            updateSprayerDropdown();
+            return updatedSprayers;
+        })
+        .catch(error => {
+            console.error('Error updating sprayer availability:', error);
+            throw error;
+        });
+}
+
+function fetchAllSprayersOrders() {
+    // Create an object to store orders for each sprayer
+    const allOrders = {};
+
+    // Create an array of promises, one for each sprayer
+    const orderPromises = allSprayers.map(sprayer =>
+        fetchSprayerOrders(sprayer.userId)
+            .then(orders => {
+
+                allOrders[sprayer.userId] = orders;
+            })
+    );
+
+    // Wait for all promises to resolve
+    return Promise.all(orderPromises)
+        .then(() => {
+            console.log('All sprayers orders:', allOrders);
+            return allOrders;
+        })
+        .catch(error => {
+            console.error('Error fetching orders for all sprayers:', error);
+            throw error;
+        });
+}
 // Function to update the sprayer select dropdown
 function updateSprayerDropdown() {
     if (sprayerSelect) {
@@ -65,34 +147,34 @@ function assignSprayersToOrderBackEnd(orderId, sprayers) {
 
     const assignmentPromises = sprayers.map(sprayer =>
         fetch(`/api/orders/${orderId}/assign-sprayer/${sprayer.user.id}`, {
-        method: 'POST',
+            method: 'POST',
             headers: {
-            'Content-Type': 'application/json',
-            // Add any additional headers here, such as authorization if required
-        },
-    })
-.then(response => {
-        if (!response.ok) {
-            return response.text().then(text => {
-                throw new Error(text || `Failed to assign sprayer ${sprayer.user.id}`);
-            });
-        }
-        return response.text();
-    })
-        .then(data => {
-            results.success.push({ sprayer, message: data });
-            // Create a notification for successful assignment
-            return createNotification({
-                userId: sprayer.user.id,
-                message: `New order assigned: Order #${orderId}`,
-            orderId: orderId
-        }).then(() => ({ success: true, sprayer, message: data }));
+                'Content-Type': 'application/json',
+                // Add any additional headers here, such as authorization if required
+            },
         })
-        .catch(error => {
-            results.failed.push({ sprayer, error: error.message });
-            return { success: false, sprayer, error: error.message };
-        })
-);
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(text || `Failed to assign sprayer ${sprayer.user.id}`);
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                results.success.push({ sprayer, message: data });
+                // Create a notification for successful assignment
+                return createNotification({
+                    userId: sprayer.user.id,
+                    message: `New order assigned: Order #${orderId}`,
+                    orderId: orderId
+                }).then(() => ({ success: true, sprayer, message: data }));
+            })
+            .catch(error => {
+                results.failed.push({ sprayer, error: error.message });
+                return { success: false, sprayer, error: error.message };
+            })
+    );
 
     return Promise.all(assignmentPromises)
         .then(() => results);
@@ -213,13 +295,13 @@ function removeSprayer(sprayerDiv, sprayer) {
 }
 
 
-
 function showRemoveSprayerConfirmation(sprayerDiv, sprayer) {
     sprayerToRemove = sprayerDiv;
     const removeSprayerConfirmationModal = new bootstrap.Modal(document.getElementById('removeSprayerConfirmationModal'));
     removeSprayerConfirmationModal.show();
 }
 
+console.log(document.getElementById('confirmAddSprayer'));
 document.getElementById('confirmAddSprayer').addEventListener('click', function () {
     const selectedSprayerValue = sprayerSelect.value;
 
@@ -253,22 +335,22 @@ document.getElementById('confirmRemoveSprayer').addEventListener('click', functi
         });
 
         if (sprayer) {
-            console.log(sprayer);
             removeSprayer(sprayerToRemove, sprayer);
-            console.log(sprayersToAssign);
         } else {
             console.error('Sprayer not found');
         }
+    }
         sprayerToRemove = null;
         console.log(sprayersToAssign);
         const removeSprayerConfirmationModal = bootstrap.Modal.getInstance(document.getElementById('removeSprayerConfirmationModal'));
         removeSprayerConfirmationModal.hide();
-    }
+
 });
 
 
 handleSprayerState();
 updateSprayerDropdown();
+
 
 // function assignSprayerToOrder(orderId, sprayerId, sprayerName) {
 //     fetch(/api/orders/${orderId}/assign-sprayer/${sprayerId}, {
@@ -315,15 +397,21 @@ function fetchSprayers() {
             return response.json();
         })
         .then(data => {
+
             allSprayers = data;
+            updateSprayerAvailability(currentDate);
             updateSprayerDropdown();
         })
         .catch(error => {
             console.error('Error fetching sprayers:', error);
-            sprayerError.textContent = 'Error loading sprayers. Please try again later.';
-            sprayerError.classList.remove('d-none');
+            const sprayerError = document.getElementById('sprayerError'); // Make sure this element exists
+            if (sprayerError) {
+                sprayerError.textContent = 'Error loading sprayers. Please try again later.';
+                sprayerError.classList.remove('d-none');
+            }
         });
 }
+
 
 //function to create notifications
 function createNotification(notificationData) {
@@ -433,17 +521,19 @@ document.addEventListener('DOMContentLoaded', function () {
     const cancelOrderButton = safeGetElement('cancelOrderButton');
     const confirmOrderButton = safeGetElement('confirmOrderButton');
     const statusUpdateButtons = safeGetElement('statusUpdateButtons');
-    fetchSprayers();
+    const confirmSprayerButton = safeGetElement('confirmSprayerButton');
 
+    fetchSprayers();
+    console.log(allSprayers);
     function updateOrderStatus(newStatus) {
         // Fetch the current order details first
         fetch(`/api/orders/${orderId}`)
-    .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch order details');
-            }
-            return response.json();
-        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch order details');
+                }
+                return response.json();
+            })
             .then(currentOrder => {
                 // Update the status in the order object
                 currentOrder.status = newStatus;
@@ -451,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Send the updated order object to the server
                 return fetch(`/api/orders/${orderId}`, {
                     method: 'PUT',
-                        headers: {
+                    headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify(currentOrder)
@@ -467,9 +557,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Create a notification for the status update
                 const notificationData = {
                     message: `Order #${orderId} status updated to ${newStatus}`,
-                userId: updatedOrder.user.id, // Assuming the order has a userId field
+                    userId: updatedOrder.user.id, // Assuming the order has a userId field
                     orderId: orderId
-            };
+                };
 
                 return createNotification(notificationData)
                     .then(() => updatedOrder);
@@ -499,11 +589,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     // Fetch order details
     fetch(`/api/orders/${orderId}`)
-.then(response => response.json())
+        .then(response => response.json())
         .then(order => {
-            console.log(order);
             // Populate order details
             displayOrderDetails(order);
+            currentDate = order.gregorianDate;
+            fetchSprayers();
             // Check if the order status is 'completed' before proceeding with feedback
             if (order.status.toLowerCase() === 'completed') {
                 return fetchExistingFeedback(orderId).then(existingFeedback => {
@@ -525,39 +616,41 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .catch(error => console.error('Error fetching order details:', error));
 
-    confirmSprayerButton.addEventListener('click', function() {
+    if(confirmSprayerButton !== null) {
+        confirmSprayerButton.addEventListener('click', function () {
 
-        // Assume you have a way to get the order ID
-
-
-        assignSprayersToOrderBackEnd(orderId, sprayersToAssign)
-            .then(results => {
-                console.log('Assignment results:', results);
-
-                if (results.success.length > 0) {
-                    alert(`Successfully assigned ${results.success.length} sprayer(s).`);
-                }
-
-                if (results.failed.length > 0) {
-                    alert(`Failed to assign ${results.failed.length} sprayer(s). Check console for details.`);
-                    console.error('Failed assignments:', results.failed);
-                }
-
-                // Update UI or perform any other actions based on results
-                updateOrderStatus('ASSIGNED');
-            })
-            .catch(error => {
-                console.error('Error in batch assignment:', error);
-                alert('An error occurred during sprayer assignment. Please try again.');
-            })
-            .finally(() => {
-
-                // Clear the sprayersToAssign array after processing if needed
-                sprayersToAssign = [];
-            });
+            // Assume you have a way to get the order ID
 
 
-    });
+            assignSprayersToOrderBackEnd(orderId, sprayersToAssign)
+                .then(results => {
+                    console.log('Assignment results:', results);
+
+                    if (results.success.length > 0) {
+                        alert(`Successfully assigned ${results.success.length} sprayer(s).`);
+                    }
+
+                    if (results.failed.length > 0) {
+                        alert(`Failed to assign ${results.failed.length} sprayer(s). Check console for details.`);
+                        console.error('Failed assignments:', results.failed);
+                    }
+
+                    // Update UI or perform any other actions based on results
+                    updateOrderStatus('ASSIGNED');
+                })
+                .catch(error => {
+                    console.error('Error in batch assignment:', error);
+                    alert('An error occurred during sprayer assignment. Please try again.');
+                })
+                .finally(() => {
+
+                    // Clear the sprayersToAssign array after processing if needed
+                    sprayersToAssign = [];
+                });
+
+
+        });
+    }
 
     function updateSprayerDisplay(order) {
         const noSprayerMessage = safeGetElement('noSprayerMessage');
@@ -597,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Fetch and display assigned sprayers
             // Fetch and display assigned sprayers
             const sprayerPromises = order.sprayers.map(sprayer =>
-                fetch(`/api/sprayers/${sprayer.user.id}`)
+                fetch(`/api/sprayers/${sprayer}`)
                     .then(response => {
                         if (!response.ok) {
                             throw new Error('Sprayer not found');
@@ -605,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         return response.json();
                     })
                     .catch(error => {
-                        console.error(`Error fetching sprayer ${sprayer.user.id}:`, error);
+                        console.error(`Error fetching sprayer ${sprayer}:`, error);
                         return null;
                     })
             );

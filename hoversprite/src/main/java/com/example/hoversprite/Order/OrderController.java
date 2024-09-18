@@ -55,16 +55,16 @@ public class OrderController {
 
 
 
-    @GetMapping("/{orderId}/sprayers")
-    public ResponseEntity<List<Sprayer>> getSprayersForOrder(@PathVariable Long orderId) {
-        Optional<Order> orderOptional = orderService.getOrderById(orderId);
-        if (orderOptional.isPresent()) {
-            List<Sprayer> sprayers = orderService.getSprayersForOrder(orderOptional.get());
-            return ResponseEntity.ok(sprayers);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @GetMapping("/{orderId}/sprayers")
+//    public ResponseEntity<List<Sprayer>> getSprayersForOrder(@PathVariable Long orderId) {
+//        Optional<Order> orderOptional = orderService.getOrderById(orderId);
+//        if (orderOptional.isPresent()) {
+//            List<Sprayer> sprayers = orderService.getSprayersForOrder(orderOptional.get());
+//            return ResponseEntity.ok(sprayers);
+//        } else {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 //    @GetMapping("/user/{userId}")
 //    public ResponseEntity<Page<Order>> getOrders(
 //            @RequestParam Long userId, // Ensure userId is being passed in

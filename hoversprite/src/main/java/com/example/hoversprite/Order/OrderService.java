@@ -68,12 +68,12 @@ public class OrderService {
         return false;
     }
 
-    public List<Sprayer> getSprayersForOrder(Order order) {
-        return order.getSprayerIds().stream()
-                .map(id -> sprayerRepository.findById(id)
-                        .orElseThrow(() -> new EntityNotFoundException("Sprayer not found")))
-                .collect(Collectors.toList());
-    }
+//    public List<Sprayer> getSprayersForOrder(Order order) {
+//        return order.getSprayerIds().stream()
+//                .map(id -> sprayerRepository.findById(id)
+//                        .orElseThrow(() -> new EntityNotFoundException("Sprayer not found")))
+//                .collect(Collectors.toList());
+//    }
     /**
      * Create a new order
      */
@@ -85,7 +85,7 @@ public class OrderService {
         if (availableSessions <= 0) {
             throw new IllegalStateException("No available sessions for the selected time slot.");
         }
-        
+
         return orderRepository.save(order);
     }
 
