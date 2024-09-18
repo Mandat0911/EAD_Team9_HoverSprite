@@ -194,7 +194,7 @@ public class OrderController {
                 + "      <p><strong>Crop Type:</strong> " + order.getCropType() + "</p>"
                 + "      <p><strong>Farmland Area:</strong> " + order.getFarmlandArea() + " decare</p>"
                 + "      <p><strong>Time Slot:</strong> " + order.getTime() + "</p>"
-                + "      <p><strong>Total Cost:</strong>" + order.getTotalCost() + " VND</p>"
+                + "      <p><strong>Total Cost:</strong>" + order.getTotalCost() + "VND</p>"
                 + "      <p><strong>Order Status:</strong> " + order.getStatus() + "</p>"
                 + "    </div>"
                 + "    <p>If you have any questions, feel free to contact us at support@hoversprite.com.</p>"
@@ -211,7 +211,7 @@ public class OrderController {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("nguyenmandat0744@gmail.com", senderName);
+        helper.setFrom("nguyenmandat000@gmail.com", senderName);
         helper.setTo(user.getEmail());
 
         System.out.println(user.getEmail());

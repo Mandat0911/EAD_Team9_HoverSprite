@@ -31,11 +31,12 @@ public class UserAPI {
         URI userURI = URI.create("/users/" + savedUser.getId());
         return ResponseEntity.created(userURI).body(savedUser);
     }
+
     @GetMapping("/by-phone/{phone}")
     public ResponseEntity<User> getFarmerByPhone(@PathVariable String phone) {
-        User user  = userDetailService.findByPhone(phone);
-        if (user != null) {
-            return new ResponseEntity<>(user, HttpStatus.OK);
+        User farmer = userDetailService.findByPhone(phone);
+        if (farmer != null) {
+            return new ResponseEntity<>(farmer, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);  // Return 404 if not found
         }
