@@ -11,14 +11,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.hoversprite.user.User;
 import com.example.hoversprite.Role.RoleRepository;
-import com.example.hoversprite.user.UserRepository;
 import com.example.hoversprite.service.PasswordValidationService;
 
 @Controller
@@ -93,6 +92,7 @@ public class PageController implements ErrorController {
 
 
     @GetMapping("/booking")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\", \"FARMER\")")
     public String booking(Model model) {
         model.addAttribute("title", "Booking");
         model.addAttribute("content", "booking");
@@ -110,8 +110,6 @@ public class PageController implements ErrorController {
         return "layout";
     }
 
-
-
     @GetMapping("/orders/order_details")
     public String orderDetail(Model model) {
         model.addAttribute("title", "Order Details");
@@ -123,6 +121,7 @@ public class PageController implements ErrorController {
     }
 
     @GetMapping("/users")
+    @PreAuthorize("hasAnyAuthority(\"RECEPTIONIST\")")
     public String users(Model model) {
         model.addAttribute("title", "Users Management");
         model.addAttribute("content", "users");
