@@ -184,7 +184,7 @@ public class UserDetailService implements UserDetailsService {
         user.setLastName("");  // Default value for last name
         user.setPassword("");  // Default value for password (you may want to handle this properly)
         user.setMiddleName("");  // Default value for middle name
-        user.setPhone(email);  // Default value for phone
+        user.setPhone("");  // Default value for phone
 
         // Fetch the role and ensure it is managed by the persistence context
         Role roleUser = roleRepository.findByName("FARMER");
