@@ -163,7 +163,7 @@
                         <!-- Display Total Cost -->
                         <div class="d-flex flex-row justify-content-between align-items-center my-2">
                             <h5 class="m-0">Total Cost:</h5>
-                            <h5 id="totalCost" class="m-0 text-success">150,000 VND</h5>
+                            <h5 id="total-cost" class="m-0 text-success">150,000 VND</h5>
                         </div>
 
                         <!-- Input: Receive Amount -->
@@ -190,9 +190,7 @@
                 
                     <!-- Sprayer buttons -->
                     <button id="startServiceButton" class="btn btn-primary d-none m-0" sec:authorize="hasAuthority('SPRAYER')">Start Service</button>
-                    
-                    <!-- Both Sprayer and Farmer can see the 'Complete' button -->
-                    <button id="completeOrderButton" class="btn btn-success d-none m-0" sec:authorize="hasAnyAuthority('SPRAYER', 'FARMER')">Complete</button>
+                    <button id="completeOrderButton" class="btn btn-success d-none m-0" sec:authorize="hasAnyAuthority('SPRAYER')">Complete</button>
                 </div> 
             </div>
         </div>

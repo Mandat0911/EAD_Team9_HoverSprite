@@ -438,32 +438,6 @@ function createNotification(notificationData) {
 }
 
 
-const totalCost = 150000; // example total cost
-const receiveAmountInput = safeGetElement('receiveAmount');
-const changeContainer = safeGetElement('changeContainer');
-const changeAmount = safeGetElement('changeAmount');
-
-// Listen for input changes in the received amount
-if (receiveAmountInput) {
-    receiveAmountInput.addEventListener('input', function () {
-        const receiveAmount = parseInt(receiveAmountInput.value);
-
-        if (isNaN(receiveAmount) || receiveAmount < 0) {
-            changeContainer.classList.add('d-none');
-            return;
-        }
-
-        if (receiveAmount >= totalCost) {
-            // Calculate the change
-            const change = receiveAmount - totalCost;
-            changeAmount.textContent = change.toLocaleString() + ' VND';
-            changeContainer.classList.remove('d-none');
-        } else {
-            changeContainer.classList.add('d-none');
-        }
-    });
-}
-
 function updateFeedbackSection(status, hasFeedback) {
     const feedbackSection = safeGetElement('feedbackSection');
     const feedbackDisplaySection = document.getElementById('feedbackDisplaySection');
@@ -769,6 +743,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Update total cost in the payment section
         document.getElementById('totalCost').textContent = `${order.totalCost.toLocaleString()} VND`;
+        const total_cost = safeGetElement('total-cost');
+        if (total_cost) {
+            total_cost.textContent = `${order.totalCost.toLocaleString()} VND`;
+        }
         // if (order.status.toLowerCase() === 'pending') {
         //     if (statusUpdateButtons) {
         //         statusUpdateButtons.style.display = 'block';
@@ -778,6 +756,31 @@ document.addEventListener('DOMContentLoaded', function () {
         //         statusUpdateButtons.style.display = 'none';
         //     }
         // }
+        const totalCost = order.totalCost; 
+        const receiveAmountInput = safeGetElement('receiveAmount');
+        const changeContainer = safeGetElement('changeContainer');
+        const changeAmount = safeGetElement('changeAmount');
+
+        // Listen for input changes in the received amount
+        if (receiveAmountInput) {
+            receiveAmountInput.addEventListener('input', function () {
+                const receiveAmount = parseInt(receiveAmountInput.value);
+
+                if (isNaN(receiveAmount) || receiveAmount < 0) {
+                    changeContainer.classList.add('d-none');
+                    return;
+                }
+
+                if (receiveAmount >= totalCost) {
+                    // Calculate the change
+                    const change = receiveAmount - totalCost;
+                    changeAmount.textContent = change.toLocaleString() + ' VND';
+                    changeContainer.classList.remove('d-none');
+                } else {
+                    changeContainer.classList.add('d-none');
+                }
+            });
+        }
 
         // Receptionist buttons visibility
         if (order.status === 'PENDING') {
