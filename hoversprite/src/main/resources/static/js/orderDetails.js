@@ -782,24 +782,49 @@ document.addEventListener('DOMContentLoaded', function () {
         // Receptionist buttons visibility
         if (order.status === 'PENDING') {
             statusUpdateButtons.style.display = 'block';
+            if(confirmOrderButton){
+                confirmOrderButton.classList.remove('d-none');
+            }
+            if(cancelOrderButton){
+                cancelOrderButton.classList.remove('d-none');
+            }
         } else {
             statusUpdateButtons.style.display = 'none';
+            if(confirmOrderButton){
+                confirmOrderButton.classList.add('d-none');
+            }
+            if(cancelOrderButton){
+                cancelOrderButton.classList.add('d-none');
+            }
         }
 
         // Show/hide buttons based on order status and user role
         if (order.status === 'ASSIGNED') {
             statusUpdateButtons.style.display = 'block';
-            startServiceButton.classList.remove('d-none');
-            completeOrderButton.classList.add('d-none');
+            if(startServiceButton){
+                startServiceButton.classList.remove('d-none');
+            }
+            if(completeOrderButton){
+                completeOrderButton.classList.add('d-none');
+            }
+
         } else if (order.status === 'IN_PROGRESS') {
             if (startServiceButton) {
                 statusUpdateButtons.style.display = 'block';
                 startServiceButton.classList.add('d-none');
             }
-            completeOrderButton.classList.remove('d-none');
+            if(completeOrderButton){
+                completeOrderButton.classList.remove('d-none');
+            }
+
         } else {
-            startServiceButton.classList.add('d-none');
-            completeOrderButton.classList.add('d-none');
+            if(startServiceButton){
+                startServiceButton.classList.add('d-none');
+            }
+            if(completeOrderButton) {
+                completeOrderButton.classList.add('d-none');
+            }
+
         }
         // Show/hide sprayer section based on order status
         const sprayerSection = document.getElementById('sprayerSection');
