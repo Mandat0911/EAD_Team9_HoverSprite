@@ -141,6 +141,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //     return row;
     // }
+    function formatOrderStatus(status) {
+        return status.replace(/_/g, ' '); // Replace all underscores with spaces
+    }
+
     function createOrderRow(order, rowNumber) {
         const row = document.createElement('tr');
         row.setAttribute('data-order-id', order.orderId);
@@ -173,9 +177,10 @@ document.addEventListener('DOMContentLoaded', function () {
         row.appendChild(totalCostCell);
     
         // Status column
+        const formattedStatus = formatOrderStatus(order.status);
         const statusCell = document.createElement('td');
         statusCell.classList.add(`status-${order.status.toLowerCase()}`);
-        statusCell.textContent = order.status;
+        statusCell.textContent = formattedStatus;
         row.appendChild(statusCell);
     
         // Details Link column
